@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Crawl link #{{ id }}{% endblock %}
+
+{% block body %}
+
+<div class="container">
+
+    <h1><a href="/">Yazoo</a> Crawl Link #{{ id }}</h1>
+    <hr>
+    <table class="table">
+        <tbody>
+        <tr>
+        <td>Title
+        <td>{{title}}
+
+        <tr>
+        <td>URL
+        <td>{{url}}
+
+        <tr>
+        <td>Description
+        <td>{{description}}
+
+        <tr>
+        <td>Image
+        <td>{{image}}
+
+        <tr>
+        <td>authorName
+        <td>{{authorName}}
+
+        <tr>
+        <td>authorUrl
+        <td>{{authorUrl}}
+
+        </tbody>
+    </table>
+    <!--
+    $info->title; //The page title
+$info->description; //The page description
+$info->url; //The canonical url
+$info->keywords; //The page keywords
+
+$info->image; //The thumbnail or main image
+
+$info->code->html; //The code to embed the image, video, etc
+$info->code->width; //The exact width of the embed code (if exists)
+$info->code->height; //The exact height of the embed code (if exists)
+$info->code->ratio; //The aspect ratio (width/height)
+
+$info->authorName; //The resource author
+$info->authorUrl; //The author url
+
+$info->cms; //The cms used
+$info->language; //The language of the page
+$info->languages; //The alternative languages
+
+$info->providerName; //The provider name of the page (Youtube, Twitter, Instagram, etc)
+$info->providerUrl; //The provider url
+$info->icon; //The big icon of the site
+$info->favicon; //The favicon of the site (an .ico file or a png with up to 32x32px)
+
+$info->publishedTime; //The published time of the resource
+$info->license; //The license url of the resource
+$info->feeds; //The RSS/Atom feeds
+    -->
+
+    <hr>
+    {{dump(info)}}
+
+</div>
+{% endblock %}

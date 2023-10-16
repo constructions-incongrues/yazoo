@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Link Stats{% endblock %}
+
+{% block body %}
+
+<div class="example-wrapper">
+<section class="container">
+    <div class="row">
+        <h1><a href="/">Yazoo</a> Stats
+            <small>{{ count }} links</small>
+        </h1>
+        <hr>
+    </div>
+
+
+    <div class="row">
+
+    <div class="col-6">
+            <h3>HTTP Status</h3>
+            <table class="table table-sm table-hover">
+                <thead>
+                    <th>n</th>
+                    <th>status</th>
+
+                </thead>
+                <tbody>
+                {% for r in statuscodes %}
+                    <tr>
+                    <td class="text-muted">{{ r.num|e }}
+                    <td><span class="badge bg-secondary">{{ r.status|e }}</span>
+                    {{ r.info|e }}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <h3>mime types</h3>
+            <table class="table table-sm table-hover">
+                <thead>
+                    <th>n</th>
+                    <th>status</th>
+
+                </thead>
+                <tbody>
+                {% for r in mimetypes %}
+                    <tr>
+                    <td class="text-muted">{{ r.num|e }}
+                    <td><span class="badge bg-secondary">{{ r.mimetype|e }}</span>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="col-6 table-responsive">
+            <h3>Providers</h3>
+            <table class="table table-sm table-hover">
+                <thead>
+                    <th>n</th>
+                    <th>provider</th>
+                </thead>
+                <tbody>
+                {% for r in providers %}
+                    <tr>
+                    <td class="text-muted">{{ r.num|e }}</td>
+                    <td>{{ r.provider|e }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+    <!--
+    <ul>
+        <li>Your controller at <code><a href="{{ '/var/www/snif2/src/Controller/StatsController.php'|file_link(0) }}">src/Controller/StatsController.php</a></code></li>
+        <li>Your template at <code><a href="{{ '/var/www/snif2/templates/stats/index.html.twig'|file_link(0) }}">templates/stats/index.html.twig</a></code></li>
+    </ul>
+    -->
+
+</div>
+{% endblock %}

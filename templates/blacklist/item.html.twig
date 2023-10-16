@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Blacklist Item{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h1>Blacklisted Item</h1>
+    <hr>
+
+    <li>#{{item.id}}
+    <li>{{item.host}}
+    <li>{{item.comment}}
+
+    <hr>
+    <a href="/blacklist/delete/{{item.id}}" class="btn btn-danger">Delete item</a>
+</div>
+
+
+{% endblock %}

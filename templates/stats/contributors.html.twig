@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Link Stats{% endblock %}
+
+{% block body %}
+
+<div class="example-wrapper">
+<section class="container">
+    <div class="row">
+        <h1>Link Contributors</h1>
+        <hr>
+    </div>
+    
+    
+    <div class="row">
+        <div class="col-6">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <th>n</th>                    
+                    <th>Contributor</th>                    
+                    <th>AuthUserID</th>                    
+                </thead>
+                <tbody>            
+                {% for r in contributors %}
+                    <tr>
+                    <td>{{ r.num|e }}
+                    <td>Contributor name
+                    <td class="text-muted">{{ r.contributor_id|e }}
+                    
+                {% endfor %}
+                </tbody>
+                </table>
+            
+        </div>        
+    </div>
+
+
+
+
+</div>
+{% endblock %}

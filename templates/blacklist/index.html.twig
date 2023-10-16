@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Host Blacklist{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h1><a href="/">Yazoo</a> Host Blacklist
+        <button class="btn btn-primary" id="btnAdd">Add host</button>
+    </h1>
+    <hr>
+    <table class="table table-sm table-hover">
+    <thead>
+        <th width="30">#</th>
+        <th>Host</th>
+        <th>Comment</th>
+        <th>Updated</th>
+    </thead>
+    {% for r in records %}
+        <tr>
+        <td class="text-muted"><a href="/blacklist/item/{{r.id}}">{{r.id}}</a>
+        <td><a href="{{r.host}}">{{r.host}}</a>
+        <td class="text-muted">{{r.comment}}
+        <td class="text-muted">{{r.updated_at}}
+        </tr>
+    {% endfor %}
+    </table>
+
+
+</div>
+
+<script>
+let btnAdd=document.getElementById('btnAdd');
+
+btnAdd.addEventListener('click',function(){
+    let host=prompt("Enter host/url to blacklist");
+    if(!host)return;
+    document.location.href="/blacklist/add/" + host;
+});
+
+</script>
+{% endblock %}
