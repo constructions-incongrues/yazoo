@@ -65,7 +65,7 @@
                 {% for r in providers %}
                     <tr>
                     <td class="text-muted">{{ r.num|e }}</td>
-                    <td>{{ r.provider|e }}</td>
+                    <td><a href="/stats/provider/{{ r.provider}}">{{ r.provider}}</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>

@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Youtube Stats{% endblock %}
+
+{% block body %}
+
+<div class="example-wrapper">
+<section class="container">
+    <div class="row">
+        <h1><a href="/">Yazoo</a> Provider : {{provider}}</h1>
+        <hr>
+    </div>
+
+    <!--
+    <li>Total links where provider is Youtube
+    <li>Links Waiting
+    <li>Links Crawled (done)
+    <li>Links That are not videos (no key)
+    <li>Links That are dead
+    -->
+
+    <div class="row">
+        <div class="col-6">
+            <h3>HTTP Status</h3>
+            <table class="table table-sm table-hover">
+                <thead>
+                    <th>n</th>
+                    <th>statuses</th>
+                </thead>
+                <tbody>
+
+                </tbody>
+                </table>
+
+        </div>
+
+        <div class="col-6">
+            <h3>Mime types</h3>
+            <table class="table table-sm table-hover">
+                <thead>
+                    <th>n</th>
+                    <th>statuses</th>
+                </thead>
+                <tbody>
+
+                </tbody>
+                </table>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

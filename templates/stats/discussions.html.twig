@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Link Stats{% endblock %}
+
+{% block body %}
+
+<div class="example-wrapper">
+<section class="container">
+    <div class="row">
+        <h1><a href="/">Yazoo</a> Discussions / Topics</h1>
+        <hr>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <th>n</th>
+                    <th>Discussion</th>
+                    <!--<th>AuthUserID</th>-->
+                </thead>
+                <tbody>
+                {% for r in discussions %}
+                    <tr>
+                    <td><i class="text-muted">{{ r.num }}</a>
+                    <td>{{ r.name }} <a href="https://www.musiques-incongrues.net/forum/discussion/{{ r.discussion_id }}">{{ r.discussion_id }}</a>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                </table>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
