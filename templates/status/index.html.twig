@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Yazoo Status{% endblock %}
+
+{% block body %}
+
+<meta http-equiv="refresh" content="60">
+
+<div class="container">
+    <h1><a href="/">Yazoo</a> Status ✅</h1>
+    <hr/>
+
+
+    <div class="row">
+
+        <div class="col-12">
+            <h3>Crawling progress: {{progress_pct}}% <small class="text-muted">{{total_visited}}/{{total_links}} URLs</small></h3>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: {{progress_pct}}%" aria-valuenow="{{progress_pct}}" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+        <!--
+        <div class="col-12">
+            <li>Last new record: {{last_link_time|ago}}</li>
+            <li>Last crawl: {{last_crawl_time|ago}}</li>
+        </div>
+        -->
+    </div>
+
+<hr/>
+
+    <div class="row">
+
+        <div class="col-6">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <th width=50>#</th>
+                    <th>Last crawled URL</th>
+                    <th class="text-end" width="100">Crawled at</th>
+                </thead>
+                <tbody>
+                {% for r in last_crawled %}
+                    <tr>
+                    <td class="text-muted"><a href="/link/{{ r.id }}">{{ r.id }}</a>
+                    <td class="text-muted">{{ r.url }}
+                    <td class="text-muted text-end"><span class="badge bg-success">{{r.VisitedAt|ago}}</span>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-6">
+            <table class="table table-sm table-hover table-responsive">
+                <thead>
+                    <th width="50">#</th>
+                    <th>Last links URL</th>
+                    <th width="100" class="text-end">Created at</th>
+                </thead>
+                <tbody>
+                {% for r in last_records %}
+                    <tr>
+                    <td class="text-muted"><a href="/link/{{ r.id }}">{{ r.id }}</a>
+                    <td class="text-muted">{{ r.url }}
+                    <td class="text-muted text-end"><span class="badge bg-secondary">{{r.CreatedAt|ago}}</span>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+</div>
+
+{% endblock %}
