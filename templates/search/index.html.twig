@@ -8,13 +8,14 @@
 <div class="container">
     <div class="row">
         <h1>Yazoo
+        <small><a href="/images" title="Images">👀</a></small>
         <!--
         <small><a href="/musique" title="Musique">🎶</a></small>
-        <small><a href="/images" title="Images">👀</a></small>
         <small><a href="/videos" title="Video">📼</a></small>
         -->
         <small><a href="/stats" title="stats">📊</a></small>
-        <small><a href="/blacklist" title="blacklist">💀</a></small>
+        <small><a href="/status" title="status">🚩</a></small>
+
         </h1>
     </div>
     <div class="row">
@@ -29,7 +30,7 @@
         <div class="col-12">
         {% for r in results %}
             <div class="result">
-                <h4><a href="{{ r.url }}">{{ r.title|default('no title') }}</a></h4>
+                <h4>[{{r.provider}}] <a href="{{ r.url }}">{{ r.title|default('no title') }}</a></h4>
                 <span class="badge bg-secondary">{{ r.status }}</span> <i class="text-muted">{{ r.url }}</i> <br />
                 {% if r.description %}
                     {{ r.description }}

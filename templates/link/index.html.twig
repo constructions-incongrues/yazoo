@@ -9,6 +9,7 @@
     <h1><a href="/">Yazoo</a> Link #{{ id }}</h1>
 
     <h3>{{ link.title }}</h3>
+    <pre>{{ link.description }}</pre>
     <hr>
 
     <ul>
@@ -20,27 +21,42 @@
 
         <li>Provider : <code>{{ link.provider }}</code></li>
         <li>Status : <code>{{ link.status }}</code></li>
-        <li>Canonical <code>{{ link.canonical }}</code></li>
-
+        <li>Canonical <a href="{{ link.canonical }}">{{ link.canonical }}</a></li>
+    <!--
         <li>Title : {{ link.title }}</li>
         <li>Description : {{ link.description }}</li>
-        <li>mimetype : {{ link.mimetype }}</li>
-
-        <li><a href="https://www.musiques-incongrues.net/forum/discussion/{{ discussion_id }}/">Discussion #{{ discussion_id }}</a> / Comment #{{ comment_id }}</li>
+        -->
+        {% if link.mimetype %}
+          <li>mimetype : {{ link.mimetype }}</li>
+        {% endif %}
+        {% if visited_at %}
+          <li>Last visit : {{ visited_at|date("Y-m-d H:i:s") }}</li>
+        {% else %}
+          <li><b>Not yet crawled!</b></li>
+        {% endif %}
+        <li><a href="/?q=discussion:{{ discussion_id }}">Discussion#{{ discussion_id }}</a> <a href="https://www.musiques-incongrues.net/forum/discussion/{{ discussion_id }}/">{{ discussion }}</a> </li>
+        <li>Comment #{{ comment_id }}</li>
     </ul>
 
     <hr>
     <a href="{{url}}" class='btn btn-primary'>Open</a>
-    <a href="/link/{{id}}/crawl" class='btn btn-default'>Crawl now</a>
     <a href="/link/{{id}}/delete" class='btn btn-default'>Delete</a>
     <hr>
-    <div id="preview">{{preview|raw}}</div>
+    <div class="row">
+      <div class="col-6">
+        {{preview|raw}}
+      </div>
+      <div class="col-6">
+        <div id="preview2">please wait</div>
+      </div>
+    </div>
+
 
 </div>
 
 <script>
-let el=document.getElementById('preview');
-//el.innerHTML="<i>fetching preview...</i>";
+let el=document.getElementById('preview2');
+el.innerHTML="<i>fetching preview...</i>";
 console.log('fetching preview...');
 fetch('/link/{{id}}/embed')
   .then(response => {

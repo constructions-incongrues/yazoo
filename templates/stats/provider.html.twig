@@ -28,7 +28,13 @@
                     <th>statuses</th>
                 </thead>
                 <tbody>
-
+                {% for r in statuscodes %}
+                    <tr>
+                    <td class="text-muted">{{ r.num|e }}
+                    <td><span class="badge bg-secondary">{{ r.status|e }}</span>
+                    {{ r.info|e }}
+                    </tr>
+                {% endfor %}
                 </tbody>
                 </table>
 
@@ -42,7 +48,12 @@
                     <th>statuses</th>
                 </thead>
                 <tbody>
-
+                {% for r in mimetypes %}
+                    <tr>
+                    <td class="text-muted">{{ r.num|e }}
+                    <td><span class="badge bg-secondary">{{ r.mimetype|e }}</span>
+                    </tr>
+                {% endfor %}
                 </tbody>
                 </table>
 
