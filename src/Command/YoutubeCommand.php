@@ -37,11 +37,12 @@ class YoutubeCommand extends Command
         ;
     }
 
-    public function removeInvalidUTF8Characters($text) {
-        // Match only valid UTF-8 characters
-        $pattern = '/[\x{0009}\x{000A}\x{000D}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u';
-        return preg_replace($pattern, '', $text);
-    }
+
+    // public function removeInvalidUTF8Characters($text) {//This is total crap
+    //     // Match only valid UTF-8 characters
+    //     $pattern = '/[\x{0009}\x{000A}\x{000D}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u';
+    //     return preg_replace($pattern, '', $text);
+    // }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -57,11 +58,12 @@ class YoutubeCommand extends Command
         }
 
         //Get Youtube Videos with no status
-        $links=$this->linkRepository->findByProvider('Youtube', 30);
+        $links=$this->linkRepository->findWaitingProvider('Youtube', 30);
+
         foreach($links as $link){
             $url=$link->getUrl();
-            echo "#".$link->getId();
-            echo "\t$url\t";
+            //echo "#".$link->getId();
+            //echo "\t$url\t";
 
             $key=$this->youtubeService->url2key($url);//extract youtube videoID
 
@@ -71,36 +73,37 @@ class YoutubeCommand extends Command
             }
 
             //$key="fvUJyKxC9uw";//not available
-
-            $data=$this->youtubeService->fetch2($key);
+            $snippet=$this->youtubeService->fetchSnippet($url);
             //dd($data);
             //echo count($data['items']);
-            if ($data['items']&&count($data['items'])>0) { //Got VIDEO
+            if ($snippet) { //Got VIDEO
 
-                $items=$data['items'][0]['snippet'];
-                //dd($items);
-                $title=$items['title'];
+                //dd($snippet);
+                $title=$snippet['title'];
                 echo "$title\n";
-                //$description=$items['description'];
-                //dd($items);
-                $link->setTitle($this->removeInvalidUTF8Characters($items['title']));
-                $link->setDescription($this->removeInvalidUTF8Characters($items['description']));
-                $thumbs=$items['thumbnails'];
 
-                //image
-                if( $thumbs['default']) {
-                    $link->setImage($thumbs['default']["url"]);
+                $snippet['description']=str_replace('’',"'",$snippet['description']);//accent pourri, DB pas contente
+
+                $link->setTitle($snippet['title']);
+                $link->setDescription($snippet['description']);
+
+
+                $thumb_url=$this->youtubeService->thumbnailUrl($snippet['thumbnails']);
+                //image. must try to find the largest !
+                if ( $thumb_url ) {
+                    $link->setImage($thumb_url);
                 }
+
                 $link->setStatus(200);//ok
+
             } else {
                 echo "[404]\n";
                 $link->setTitle('Video unavailable');
                 $link->setStatus(404);//not found
             }
-
+            $link->visited();
             $this->linkRepository->save($link,true);
-            exit;//Now make sure its SAVED !!
-
+            //exit('exit()');//Now make sure its SAVED !!
 
         }
 

@@ -29,7 +29,7 @@ class DatabaseService
         return $this->connection->fetchAllAssociative($sql);
     }
 
-    public function executePreparedStatement($sql, array $parameters = [])  
+    public function executePreparedStatement($sql, array $parameters = [])
     {
         $stmt = $this->connection->prepare($sql);
 
@@ -39,7 +39,7 @@ class DatabaseService
         }
 
         $stmt->executeStatement();
-        
+
         // Fetch the results as an associative array
         //return $stmt->fetchAllAssociative();
     }

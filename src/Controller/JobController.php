@@ -7,6 +7,7 @@ use App\Repository\LinkRepository;
 use App\Service\CommentService;
 use App\Service\ExtractService;
 use App\Service\MusiqueIncongrueService;
+use App\Service\YoutubeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,11 +28,13 @@ class JobController extends AbstractController
     public function sync(LinkRepository $linkRepository, DiscussionRepository $discussionRepository, MusiqueIncongrueService $MI, ExtractService $extractService): JsonResponse
     {
         $start_time=time();
-        $data=$MI->fetchComments();//Fetch From Directus/MusiqueIncongrues
-        //var_dump($data['data']);
+
 
         $dat=[];//payload
+
+        //Sync Links
         $dat['new_urls']=0;
+        $data=$MI->fetchComments();//Fetch From Directus/MusiqueIncongrues
         foreach($data['data'] as $r){
             $r['urls']=$extractService->extractUrls($r['Body']);
             if (count($r['urls'])) {
@@ -40,12 +43,14 @@ class JobController extends AbstractController
             }
         }
 
-
-        //Fetch Discussions
+        //Sync Discussions
         $dat['new_discussions']=0;
         $discussions=$MI->fetchDiscussions();//Fetch From Directus/MusiqueIncongrues
         //$dat['discussions']=$discussions['data'];
         foreach($discussions['data'] as $discussion){
+            //$discussion['Name'] = utf8_encode($discussion['Name']);
+            //$discussion['Name'] = mb_convert_encoding($discussion['Name'], 'UTF-8', 'ISO-8859-1');
+
             $discussionRepository->saveDiscussion($discussion['DiscussionID'], $discussion['Name'], $discussion['DateCreated']);
             $dat['new_discussions']++;
         }
@@ -63,19 +68,74 @@ class JobController extends AbstractController
         $dat['count']=0;
         $discussions=$MI->fetchDiscussions();//Fetch From Directus/MusiqueIncongrues
         $dat['discussions']=$discussions['data'];
-        foreach($dat['discussions'] as $discussion){
-            $discussionRepository->saveDiscussion($discussion['DiscussionID'], $discussion['Name'], $discussion['DateCreated']);
+        //dd($dat['discussions']);
+        return $this->json($dat);
+    }
+
+    #[Route('/job/images', name: 'app_job_crawl_images')]
+    public function crawlImages(LinkRepository $linkRepository): JsonResponse
+    {
+        $dat=[];
+        $dat['count']=0;
+        $links=$linkRepository->findWaitingImages(5);
+        foreach($links as $link){
+            $link->getUrl();
             $dat['count']++;
         }
 
         return $this->json($dat);
     }
 
-    #[Route('/job/crawl', name: 'app_job_crawl')]
-    public function crawl(): JsonResponse
+    #[Route('/job/youtube', name: 'app_job_youtube')]
+    public function crawlYoutube(LinkRepository $linkRepository, YoutubeService $youtubeService): JsonResponse
     {
+        //crawl youtube video, USING the youtube API
         $dat=[];
-        $dat['TODO']='todo';
+        $dat['count']=0;
+        $dat['found']=0;
+        $dat['404']=0;
+        $links=$linkRepository->findWaitingProvider('youtube', 5);
+        foreach($links as $link){
+
+            $url=$link->getUrl();
+            //echo "$url";
+
+            $snippet=$youtubeService->fetchSnippet($url);
+            //dd($snippet);
+
+
+            if (count($snippet)) {//Found video
+
+                //$snippet['description']=str_replace('’',"'",$snippet['description']);//accent pourri, DB pas contente
+
+                $snippet['description'] = iconv('UTF-8', 'ASCII//TRANSLIT', $snippet['description']);
+
+                //echo $snippet['description']."<br />";
+                // Detect the encoding
+                //$dat['encoding'] = mb_detect_encoding($snippet['description'], mb_detect_order(), true);
+
+                $thumbnail_url=$youtubeService->thumbnailUrl($snippet['thumbnails']);
+                $link->setStatus(200);
+                $link->setTitle($snippet['title']);
+                $link->setDescription($snippet['description']);
+                if ($thumbnail_url) {
+                    $link->setImage($thumbnail_url);
+                }
+                $dat['found']++;
+            }else{
+                $link->setStatus(404);//not found
+                $link->setTitle('not found');
+                $dat[404]++;
+            }
+
+            //dd($snippet);
+            $link->visited();
+
+            $linkRepository->save($link,true);
+            //dd($snippet);
+            $dat['count']++;
+        }
+        $dat['msg']='done';
         return $this->json($dat);
     }
 

@@ -125,7 +125,7 @@ class MusiqueIncongrueService
      *
      * @return array
      */
-    public function fetchDiscussions(int $limit=30): array
+    public function fetchDiscussions(int $limit=100): array
     {
         $this->authenticate();
 
@@ -149,7 +149,23 @@ class MusiqueIncongrueService
         $endpoint.="&limit=$limit";
         $endpoint.="&sort=" . urlencode("DiscussionID");
         $endpoint.="&filter[DiscussionID][gt]=$lastDiscussionID";
-        return $this->fetch($endpoint);
+        $data= $this->fetch($endpoint);
+        //dd($data);exit;
+        foreach($data['data'] as $k=>$r){
+            $Name=$r['Name'];
+
+            //latin1_swedish_ci to UTF8 Manual encoding fix
+            $Name=str_replace('Ã ','à',$Name);//a grave
+            $Name=str_replace('Ã©','é',$Name);
+            $Name=str_replace('Ã¨','è',$Name);//e accent grave
+            $Name=str_replace('Ãª','ê',$Name);//e accent circonflexe
+            $Name=str_replace('Ã§','ç',$Name);//cedille
+            $Name=str_replace('Ã¯','ï',$Name);//i trema
+            $Name=str_replace('Ã´','ô',$Name);//
+
+            $data['data'][$k]['Name']=$Name;
+        }
+        return $data;
     }
 
 }

@@ -1,9 +1,14 @@
 <?php
-
+/**
+ * General purpose crawler.
+ * Test/Debug only ?
+ * Real crawler are triggered by API endpoints : /job/crawl or /job/youtube etc
+ */
 namespace App\Command;
 
 use App\Repository\BlacklistRepository;
 use App\Repository\LinkRepository;
+use App\Repository\SearchRepository;
 use App\Service\HttpStatusService;
 use Embed\Embed;
 use Exception;
@@ -24,16 +29,19 @@ class CrawlCommand extends Command
 {
 
     private $linkrepo;
+    private $searchRepository;
+
     private $blacklistRepository;
 
     private $logger;
 
     private $extractService;
 
-    public function __construct(LinkRepository $linkrepo, LoggerInterface $logger, BlacklistRepository $blacklistRepository)
+    public function __construct(LinkRepository $linkrepo, LoggerInterface $logger, SearchRepository $searchRepository, BlacklistRepository $blacklistRepository)
     {
         parent::__construct();
         $this->linkrepo=$linkrepo;
+        $this->searchRepository=$searchRepository;
         $this->blacklistRepository=$blacklistRepository;
         $this->logger=$logger;
     }
@@ -61,29 +69,26 @@ class CrawlCommand extends Command
         }
 
 
-        //$factory = $embed->getExtractorFactory();
-        //Remove the adapter for pinterest.com, so it will use the default extractor
-        //$factory->removeAdapter('imageshack.us');
-        //$factory->addAdapter('imageshack.us', MySite::class);
-
         $httpstatusservice=new HttpStatusService();
 
-        while($links=$this->linkrepo->findWhereStatusIsNull()){
-        //while($links=$this->linkrepo->findImages()){
+        //while($links=$this->linkrepo->findWhereStatusIsNull()){
+        //while($links=$this->linkrepo->findWaitingProvider('Myspace',10)){
+        //while($links=$this->linkrepo->findWaitingImages(10)){
+        while($data=$this->searchRepository->search($arg1)){
+            $links=$data['results'];
             //print_r($links);exit;
 
             foreach($links as $link){
 
                 $url=$link->getUrl();
 
-                //TODO implement rate/limits
+                //Youtube Got a dedicated Crawler
                 if (preg_match("/(youtube\.com|youtu\.be)/",$url)) {
-                    //skip
                     continue;
                 }
 
                 //Check against blacklist
-                if($this->blacklistRepository->isBlacklisted($url)){
+                if ($this->blacklistRepository->isBlacklisted($url)) {
                     $io->error("$url is blacklisted");
                     $this->linkrepo->delete($link);
                     continue;
@@ -127,8 +132,13 @@ class CrawlCommand extends Command
 
 
                     $meta=[];
-                    $meta['title']=$info->title; //The page title
-                    $link->setTitle($info->title);
+                    if($info->title){
+                        $meta['title']=$info->title; //The page title
+                        $link->setTitle($info->title);
+                    }else{
+                        $link->setTitle(basename($url));
+                    }
+
                     $meta['description']=$info->description; //The page description
                     $link->setDescription($info->description);
                     $meta['canonical']=(string)$info->url; //The canonical url
@@ -143,6 +153,7 @@ class CrawlCommand extends Command
                     //$meta['lang']=$info->language; //The language of the page
                     $meta['provider']=$info->providerName; //The provider name of the page (Youtube, Twitter, Instagram, etc)
                     $link->setProvider($info->providerName);
+
                     print_r($meta);
 
                     //Fix 301 that are 404
@@ -153,14 +164,15 @@ class CrawlCommand extends Command
                     }
 
                 }
-
+                $link->visited();
                 $this->linkrepo->save($link,true);
             }
         }
 
 
 
-        $io->success("ok");
+        $io->success("Done");
+
         return Command::SUCCESS;
     }
 }

@@ -2,10 +2,12 @@
 
 namespace App\Service;
 
+/**
+ * Methods to extract links from text (forum posts)
+ */
 class ExtractService
 {
-    
-    
+
     /**
      * Extract a list of url strings from a given text
      * Focus on bbcode URL's first, and match stray urls last
@@ -17,13 +19,13 @@ class ExtractService
         //echo $text;
         //$pattern = '/\bhttps?:\/\/\S+\b/';
         //[url]http://dreynaline.free.fr/[/url] [img]http://dreynaline.free.fr/images/recto.jpg[/img]
-        
+
         $reg_bblinks='/\[(img|url)\](.*?)\[\/(img|url)\]/i';
 
         $urls=[];
 
         preg_match_all($reg_bblinks, $text, $o);
-        
+
         for($i=0;$i<count($o[0]);$i++){
             $match=$o[0][$i];
             $url=$o[2][$i];
@@ -31,9 +33,9 @@ class ExtractService
             $text=str_replace($match,'', $text);//remove matches
             $urls[]=$url;
         }
-        
+
         //[url=http://www.youtube.com/watch?v=0a1VMkeGkZs]
-        
+
         $reg2='/\[url=(http.*?)\]/i';
         preg_match_all($reg2, $text, $o);
         for($i=0;$i<count($o[0]);$i++){
@@ -42,19 +44,19 @@ class ExtractService
             $text=str_replace($match,'', $text);//remove matches
             $urls[]=$url;
         }
-        
-        //Finaly, match/catch leftovers        
+
+        //Finaly, match/catch leftovers
         $pattern = '/\bhttps?:\/\/\S+\b/';//minimal detection pattern
         preg_match_all($pattern, $text, $o);
         foreach($o[0] as $url){
             $text=str_replace($url,'', $text);//remove matches
             $urls[]=$url;
         }
-        
+
         //echo "<li>leftovers:$text";
-        
+
         //Make some cleaning
-        foreach($urls as $k=>$url){          
+        foreach($urls as $k=>$url){
             $urls[$k]=$this->sanitize($url);
         }
 
@@ -62,7 +64,7 @@ class ExtractService
     }
 
     public function sanitize(string $url)
-    {           
+    {
         $url=trim($url);
 
         //Link doesnt start with `http` or `www`
@@ -74,10 +76,10 @@ class ExtractService
         if (preg_match("/\[.*/", $url)) {
             $url=preg_replace("/\[.*/", '', $url);
         }
-            
+
         // - http://*
-        //this is invalid   
-        
+        //this is invalid
+
         // - AND
         if(strlen($url)<5)$url='';
 
@@ -93,21 +95,21 @@ class ExtractService
 
         return trim($url);
     }
-    
-    
+
+
     /**
      * Parse comments and extract links
      *
      * @return array
      */
-    
+
      public function parseComments(array $records)
     {
         //We should extract bbcode tags first
-        
+
         //minimal detection pattern
         $pattern = '/\bhttps?:\/\/\S+\b/';
-        
+
         $reg_img='/\[img\](.*?)\[\/img\]/i';
         $reg_url='/\[url\](.*?)\[\/url\]/i';
 
@@ -118,48 +120,8 @@ class ExtractService
                 //print_r($urls);
                 $links=array_merge($links,$urls);
             }
-            
-            
-            /*
-            $body=$record['Body'];
-            
-            preg_match_all($pattern,$body, $o);
-            
-            //[img]http://i69.photobucket.com/albums/i57/taueber/f_farNnightwem_2885629.jpg[/img]
-            
-            foreach($o[0] as $url){
-                
-                preg_match_all($reg_img, $body, $img);
-                foreach($img[0] as $urlimg){
-                    echo "<li>[IMG]=$urlimg";
-                }
-
-
-                preg_match_all($reg_url, $body, $urls);
-                foreach($urls[0] as $urlurl){
-                    echo "<li>[URL]=$urlurl";
-                }
-                
-                echo "<li>$url\n";
-                
-            }
-            */
-            
-            /*
-            if (count($o[0])) {
-                $link=[];
-                $link['urls']=$o[0];
-                $link['CommentID']=$record['CommentID'];
-                $link['DiscussionID']=$record['DiscussionID'];
-                $link['AuthUserID']=$record['AuthUserID'];                
-                $links[]=$link;
-                error_log($o[0][0], 3, "/tmp/links.log");
-            }
-            */
         }
         return $links;
     }
-
- 
 
 }

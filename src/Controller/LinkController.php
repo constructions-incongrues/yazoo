@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\BlacklistRepository;
+use App\Repository\DiscussionRepository;
 use App\Repository\LinkRepository;
 use App\Service\HttpStatusService;
 
@@ -18,18 +19,20 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class LinkController extends AbstractController
 {
     private $linkRepository;
+    private $discussionRepository;
     private $blacklistRepository;
 
-    public function __construct(LinkRepository $linkRepository, BlacklistRepository $blacklistRepository)
+    public function __construct(LinkRepository $linkRepository, DiscussionRepository $discussionRepository, BlacklistRepository $blacklistRepository)
     {
         $this->linkRepository=$linkRepository;
+        $this->discussionRepository=$discussionRepository;
         $this->blacklistRepository=$blacklistRepository;
     }
 
     #[Route('/link/{id}', name: 'app_link_preview')]
     public function index(int $id): Response
     {
-        $url='test';
+        //$url='test';
         $link=$this->linkRepository->find($id);
 
         if (!$link) {
@@ -45,10 +48,12 @@ class LinkController extends AbstractController
             'canonical'=>$link->getCanonical(),
             'status'=>$link->getStatus(),
             'discussion_id'=>$link->getDiscussionId(),
+            'discussion'=>$this->discussionRepository->getName($link->getDiscussionId()),
             'comment_id'=>$link->getCommentId(),
-            //'title'=>$link->getTitle(),
-            //'description'=>$link->getDescription(),
+            'title'=>$link->getTitle(),
+            'description'=>$link->getDescription(),
             'preview' => $link->getPreview(),
+            'visited_at'=>$link->getVisitedAt(),
         ]);
     }
 

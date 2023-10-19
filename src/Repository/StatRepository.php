@@ -40,16 +40,32 @@ class StatRepository extends ServiceEntityRepository
     //- Count By Users
     //- By Provider
 
-
-
-    public function statusCodes()
+    public function countVisitedLinks():int
     {
-        $results= $this->createQueryBuilder('l')
+        $max=$this->createQueryBuilder('e')
+           ->select('COUNT(e.id)')
+           ->where('e.visited_at IS NOT NULL')
+            ->getQuery()
+            ->getSingleScalarResult();
+        return $max|0;
+    }
+
+
+    public function statusCodes(string $provider='')
+    {
+
+        $queryBuilder= $this->createQueryBuilder('l')
             ->select('COUNT(l.id) AS num','l.status')
             ->groupBy('l.status')
-            ->orderBy('num', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->orderBy('num', 'DESC');
+
+        if ($provider) {
+            $queryBuilder->andWhere('l.provider LIKE :provider')
+                ->setParameter('provider', $provider);
+        }
+
+
+        $results= $queryBuilder->getQuery()->getResult();
 
         foreach($results as $k=>$v){
             if($v['status']===0){
@@ -84,26 +100,54 @@ class StatRepository extends ServiceEntityRepository
            ->getResult();
     }
 
+    public function discussions()
+    {
+        /*
+        return $this->createQueryBuilder('l')
+           ->select('COUNT(l.id) AS num','l.discussion_id')
+           ->groupBy('l.discussion_id')
+           ->orderBy('num', 'DESC')
+           ->getQuery()
+           ->getResult();
+        */
+        return $this->createQueryBuilder('l')
+            ->select('COUNT(l.id) AS num', 'l.discussion_id') // Selects the count of records, discussion_id, and discussion_name
+            //->leftJoin('l.discussion', 'd') // Joins the discussion entity (assuming 'discussion' is the relationship)
+            ->groupBy('l.discussion_id') // Groups the results by discussion_id and discussion_name
+            ->having('num > 30') // LIMIT to topics of interest
+            ->orderBy('num', 'DESC') // Orders the results by count in descending order
+            ->getQuery()
+            ->getResult();
+    }
+
     public function providers()
     {
         return $this->createQueryBuilder('l')
            ->select('COUNT(l.id) AS num','l.provider')
             ->andWhere("l.provider NOT LIKE '' ")
            ->groupBy('l.provider')
+           ->having('num > 4')
            ->orderBy('num', 'DESC')
            ->getQuery()
            ->getResult();
     }
 
-    public function mimetypes()
+    public function mimetypes(string $provider=''): array
     {
-        return $this->createQueryBuilder('l')
-           ->select('COUNT(l.id) AS num','l.mimetype')
+        $queryBuilder=$this->createQueryBuilder('l')
+            ->select('COUNT(l.id) AS num','l.mimetype')
             ->andWhere("l.mimetype IS NOT NULL")
-           ->groupBy('l.mimetype')
-           ->orderBy('num', 'DESC')
-           ->getQuery()
-           ->getResult();
+            ->groupBy('l.mimetype')
+            ->orderBy('num', 'DESC');
+
+        if ($provider) {
+            $queryBuilder->andWhere('l.provider LIKE :provider')
+                ->setParameter('provider', $provider);
+        }
+
+        $results=$queryBuilder->getQuery()
+            ->getResult();
+        return $results;
     }
 
 
@@ -114,6 +158,7 @@ class StatRepository extends ServiceEntityRepository
      * @param [type] $value
      * @return array
      */
+    /*
     public function findByStatusField($value, int $limit=10): array
    {
        return $this->createQueryBuilder('l')
@@ -125,8 +170,9 @@ class StatRepository extends ServiceEntityRepository
            ->getResult()
        ;
    }
+*/
 
-
+/*
    public function findWhereStatusIsNull(): array
    {
        return $this->createQueryBuilder('l')
@@ -138,7 +184,7 @@ class StatRepository extends ServiceEntityRepository
            ->getResult()
        ;
    }
-
+*/
 
 
 

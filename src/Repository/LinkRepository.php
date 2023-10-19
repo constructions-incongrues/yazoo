@@ -204,17 +204,45 @@ class LinkRepository extends ServiceEntityRepository
     * @return Link[] Returns an array of Link objects
     */
 
-    public function findByStatusField($value): array
-   {
-       return $this->createQueryBuilder('l')
-           ->andWhere('l.status = :val')
-           ->setParameter('val', $value)
-           ->orderBy('l.id', 'ASC')
-           ->setMaxResults(10)
-           ->getQuery()
-           ->getResult()
-       ;
-   }
+    public function findByProvider(string $value, int $limit=30): array
+    {
+        return $this->createQueryBuilder('l')
+            //->where('l.status<1')
+            ->andWhere('l.status IS NULL')
+            ->andWhere('l.provider = :val')
+            ->setParameter('val', $value)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Return provider links, ordered by visited_at
+     * This is used by crawlers, so we focus on the oldest updated records.
+     * @param string $provider
+     * @return void
+     */
+    public function findWaitingProvider(string $provider, int $limit=30): array
+    {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.provider = :provider')
+            ->setParameter('provider', $provider)
+            ->orderBy('l.visited_at', 'ASC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findWaitingImages(int $limit=30): array
+    {
+        return $this->createQueryBuilder('l')
+        ->andWhere('l.mimetype LIKE :mimetype')
+        ->setParameter('mimetype', 'image%')
+        ->orderBy('l.visited_at', 'ASC')//get the `oldest` records
+        ->setMaxResults($limit)
+        ->getQuery()
+        ->getResult();
+    }
 
 
    public function findWhereStatusIsNull(): array
@@ -239,7 +267,6 @@ class LinkRepository extends ServiceEntityRepository
            ->setMaxResults(30)
            ->getQuery()
            ->getResult();
-
    }
 
    public function findImages():array
@@ -254,6 +281,8 @@ class LinkRepository extends ServiceEntityRepository
            ->getResult();
    }
 
+   /*
+   //this is crap
    public function findExtension(string $ext):array
    {
     return $this->createQueryBuilder('l')
@@ -264,9 +293,8 @@ class LinkRepository extends ServiceEntityRepository
            ->setMaxResults(30)
            ->getQuery()
            ->getResult();
-
    }
-
+   */
 
     /**
      * Return the highest Comment_id in the links table, so we know where to search;
@@ -281,5 +309,7 @@ class LinkRepository extends ServiceEntityRepository
         ->getSingleScalarResult();
         return $max|0;
     }
+
+
 
 }

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entity\Discussion;
+
 use App\Repository\LinkRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -44,7 +46,7 @@ class Link
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 1023, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable:true)]
@@ -55,6 +57,12 @@ class Link
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $visited_at = null;
+
+    //#[ORM\ManyToOne(inversedBy: 'links')]
+    //private ?discussion $discussion = null;
 
 
 
@@ -192,8 +200,7 @@ class Link
     public function setDescription(?string $description): static
     {
         if ($description) {
-            $description=substr($description,0,255);
-            //$description=$this->sanitizeString($description);
+            $description=substr($description,0,1023);//max db length
         }
         $this->description = $description;
 
@@ -257,7 +264,7 @@ class Link
         if($parsed['host']=="www.youtube.com"){
             $youtube_id='';//xKQskYS18vI
             preg_match("/v=([0-9a-z_-]{11})/i",$url,$o);
-            print_r($o);
+            //print_r($o);
             if ($o[1]) {
                 $youtube_id=$o[1];
             }
@@ -322,6 +329,41 @@ class Link
     {
         $this->mimetype = $mimetype;
 
+        return $this;
+    }
+
+    public function getDiscussion(): ?discussion
+    {
+        return $this->discussion;
+    }
+
+    public function setDiscussion(?discussion $discussion): static
+    {
+        $this->discussion = $discussion;
+
+        return $this;
+    }
+
+    public function getVisitedAt(): ?\DateTimeImmutable
+    {
+        return $this->visited_at;
+    }
+
+    public function setVisitedAt(?\DateTimeImmutable $visited_at): static
+    {
+        $this->visited_at = $visited_at;
+
+        return $this;
+    }
+
+    /**
+     * Set visited_at to 'NOW'
+     *
+     * @return void
+     */
+    public function visited(): static
+    {
+        $this->visited_at = new \DateTimeImmutable();
         return $this;
     }
 

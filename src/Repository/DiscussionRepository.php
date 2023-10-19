@@ -57,11 +57,24 @@ class DiscussionRepository extends ServiceEntityRepository
 
    public function findOneById($value): ?Discussion
    {
-       return $this->createQueryBuilder('d')
-           ->andWhere('d.DiscussionId = :val')
-           ->setParameter('val', $value)
+        return $this->createQueryBuilder('d')
+           ->andWhere('d.discussion_id = :id')
+           ->setParameter('id', $value)
            ->getQuery()
            ->getOneOrNullResult();
+   }
+
+
+   /**
+    * Get Discussion name
+    *
+    * @param integer $discussion_id
+    * @return string
+    */
+   public function getName(int $discussion_id):string
+   {
+        $discussion=$this->findOneById($discussion_id);
+        return $discussion->getName();
    }
 
    public function saveDiscussion(int $discussion_id, string $name, string $dateCreated): Discussion
@@ -73,4 +86,6 @@ class DiscussionRepository extends ServiceEntityRepository
         $this->save($discussion, true);
         return $discussion;
    }
+
+
 }

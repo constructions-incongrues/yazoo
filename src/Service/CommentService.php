@@ -9,7 +9,7 @@ class CommentService
 {
     private $connection;
 
-    
+
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
@@ -28,7 +28,7 @@ class CommentService
      */
     public function getDatabaseComments(int $startId, int $limit)
     {
-        
+
         $sql="SELECT CommentID, DiscussionID, AuthUserID, Body FROM mi.LUM_Comment WHERE CommentID>=$startId AND Deleted='0' LIMIT $limit;";
         return $this->executeRawQuery($sql);
     }

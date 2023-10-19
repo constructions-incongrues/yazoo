@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\SearchRepository;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,9 +13,12 @@ class SearchController extends AbstractController
 {
 
     private $searchRepository;
-    public function __construct(SearchRepository $searchRepository)
+    private $loggerInterface;
+
+    public function __construct(SearchRepository $searchRepository, LoggerInterface $loggerInterface)
     {
         $this->searchRepository=$searchRepository;
+        $this->loggerInterface=$loggerInterface;
     }
 
     #[Route('/', name: 'app_search_landing')]
@@ -27,6 +31,9 @@ class SearchController extends AbstractController
         }
 
         $data=$this->searchRepository->search($q, 1, 30);
+
+
+        //$this->loggerInterface->log('log', $q);//TODO
 
         return $this->render('search/index.html.twig', [
             'q' => $q,
