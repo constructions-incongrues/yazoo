@@ -42,9 +42,14 @@ class StatRepository extends ServiceEntityRepository
 
     public function countVisitedLinks():int
     {
+        $oneMonthAgo = new \DateTimeImmutable();
+        $oneMonthAgo = $oneMonthAgo->modify('-1 month');
+
         $max=$this->createQueryBuilder('e')
            ->select('COUNT(e.id)')
            ->where('e.visited_at IS NOT NULL')
+           ->andWhere('e.visited_at > :oneMonthAgo')
+            ->setParameter('oneMonthAgo', $oneMonthAgo)
             ->getQuery()
             ->getSingleScalarResult();
         return $max|0;

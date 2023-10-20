@@ -159,18 +159,21 @@ class LinkRepository extends ServiceEntityRepository
 
     /**
      * Replace http with https for known domains
+     * May help to get httpstatus 200 instead of 301
      *
      * @param string $url
      * @return string
      */
     private function httpsFix(string $url):string
     {
-
+        //TODO: move this method somewhere else.
         $list=[];
         // We know those providers use https
         $list[]='www.youtube.com';
         $list[]='www.myspace.com';
         $list[]='www.dailymotion.com';
+        $list[]='i.imgur.com';
+        //$list[]='any.bandcamp.com';//not sure how to do it ?
 
         $x=parse_url($url);
 
@@ -178,7 +181,7 @@ class LinkRepository extends ServiceEntityRepository
             return $url;
         }
 
-        if ($x['scheme']=='https') {
+        if ($x['scheme']=='https') {//ok
             return $url;
         }
 

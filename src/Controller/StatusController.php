@@ -29,9 +29,9 @@ class StatusController extends AbstractController
         //Get progress
 
         $last_records=$this->linkRepository->findBy([],['created_at' => 'DESC'], 20);
-        //$last_crawled=$this->linkRepository->findLastCrawled();
-        $last_crawled=$this->linkRepository->findBy([],['visited_at'=>'DESC'], 20);
-        //dd($last_records);
+        $last_crawled=$this->linkRepository->findBy([],['visited_at'=> 'DESC'], 20);
+        //dd($last_crawled);
+
         $countTotal=$this->statRepository->countLinks();
         $countVisited=$this->statRepository->countVisitedLinks();
         //exit("$countTotal / $countVisited");

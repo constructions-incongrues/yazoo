@@ -30,7 +30,7 @@
           <li>mimetype : {{ link.mimetype }}</li>
         {% endif %}
         {% if visited_at %}
-          <li>Last visit : {{ visited_at|date("Y-m-d H:i:s") }}</li>
+          <li>Last visit : {{ visited_at|ago }}</li>
         {% else %}
           <li><b>Not yet crawled!</b></li>
         {% endif %}

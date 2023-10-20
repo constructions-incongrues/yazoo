@@ -76,10 +76,11 @@ class CrawlCommand extends Command
         //while($links=$this->linkrepo->findWaitingImages(10)){
         while($data=$this->searchRepository->search($arg1)){
             $links=$data['results'];
+
             //print_r($links);exit;
 
             foreach($links as $link){
-
+                //dd($link);
                 $url=$link->getUrl();
 
                 //Youtube Got a dedicated Crawler
