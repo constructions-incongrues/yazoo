@@ -11,7 +11,24 @@ Link Database et Moteur de recherche
  - Blacklisted domains
  - API
 
+## Requirements
+
+- PHP 8.1
+- php-curl
+- Mysql/MariaDB
+- n8n
+
 
 ## Installation
 
-Configurer le .env
+Configure .env, then:
+
+```
+composer install
+./bin/console make:migration
+./bin/console doctrine:migrations:migrate
+```
+
+## n8n
+
+Use n8n for your api calls.
