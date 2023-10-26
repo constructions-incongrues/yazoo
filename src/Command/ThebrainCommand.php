@@ -40,7 +40,7 @@ class ThebrainCommand extends Command
 
         $urls=[];
 
-        for($i=190; $i<=195; $i++){
+        for($i=36; $i<=195; $i++){
             $url='https://www.thebrainradio.com/listen.php?episode=' . $i;
             //https://packagist.org/packages/embed/embed
             $embed = new Embed();

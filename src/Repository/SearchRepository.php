@@ -241,12 +241,11 @@ class SearchRepository extends ServiceEntityRepository
      * @param integer $limit
      * @return void
      */
-    public function searchImages(string $q, int $page=1, int $limit=10)
+    public function searchImages(string $q, int $page=1, int $limit=10):array
     {
         $Q=$this->parseQuery($q);//extract filters (status:200, provider:youtube)
 
         $queryBuilder = $this->createQueryBuilder('l')
-            //->select('l.id, l.url, l.provider, l.comment_id, l.title, l.description, l.status, l.mimetype')
             ->where('(l.url LIKE :searchTerm OR l.title LIKE :searchTerm)')
             ->setParameter('searchTerm', '%'.trim((string)$Q['q']).'%')
             ->andWhere("l.mimetype LIKE :mimetype")
@@ -254,20 +253,56 @@ class SearchRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
             ->setFirstResult(($page - 1) * $limit);
 
-        //Apply Filters
+
         $queryBuilder =$this->applyFilters($queryBuilder, $Q);
 
+        // Clone the original query builder to create a count query builder
+        $countQueryBuilder = clone $queryBuilder;
+        $countQueryBuilder->select('COUNT(l.id)');
+        $count = (int)$countQueryBuilder->getQuery()->getSingleScalarResult();
 
-     // Clone the original query builder to create a count query builder
-     $countQueryBuilder = clone $queryBuilder;
-     $countQueryBuilder->select('COUNT(l.id)');
-     $count = (int)$countQueryBuilder->getQuery()->getSingleScalarResult();
+        $query=$queryBuilder->getQuery();
+        //$sql = $query->getSQL();
 
-     $query=$queryBuilder->getQuery();
+        $results = $query->getResult();
 
-     //$sql = $query->getSQL();
+        return [
+            'count' => $count,
+            'results' => $results,
+        ];
+    }
 
-     $results = $query->getResult();
+
+    public function searchVideos(string $q, int $page=1, int $limit=10):array
+    {
+        $Q=$this->parseQuery($q);//extract filters (status:200, provider:youtube)
+
+        $queryBuilder = $this->createQueryBuilder('l')
+            ->where('(l.url LIKE :searchTerm OR l.title LIKE :searchTerm)')
+
+            ->setParameter('searchTerm', '%'.trim((string)$Q['q']).'%')
+
+            ->andWhere("l.status < 400")
+            ->andWhere("l.provider LIKE :provider")
+            ->setParameter('provider', 'youtube')//99percent of video content
+
+            ->orderBy('l.visited_at', 'DESC')
+
+            ->setMaxResults($limit)
+            ->setFirstResult(($page - 1) * $limit);
+
+
+        $queryBuilder =$this->applyFilters($queryBuilder, $Q);
+
+        // Clone the original query builder to create a count query builder
+        $countQueryBuilder = clone $queryBuilder;
+        $countQueryBuilder->select('COUNT(l.id)');
+        $count = (int)$countQueryBuilder->getQuery()->getSingleScalarResult();
+
+        $query=$queryBuilder->getQuery();
+        //$sql = $query->getSQL();
+
+        $results = $query->getResult();
 
         return [
             'count' => $count,

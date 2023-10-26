@@ -76,7 +76,7 @@ class LinkRepository extends ServiceEntityRepository
 
 
         // AutoFix https for known domains
-        $url=$this->httpsFix($url);
+        //$url=$this->httpsFix($url);
 
         $link=new Link();
         $link->setContributorId($contributor_id);
@@ -157,43 +157,7 @@ class LinkRepository extends ServiceEntityRepository
     }
 
 
-    /**
-     * Replace http with https for known domains
-     * May help to get httpstatus 200 instead of 301
-     *
-     * @param string $url
-     * @return string
-     */
-    private function httpsFix(string $url):string
-    {
-        //TODO: move this method somewhere else.
-        $list=[];
-        // We know those providers use https
-        $list[]='www.youtube.com';
-        $list[]='www.myspace.com';
-        $list[]='www.dailymotion.com';
-        $list[]='i.imgur.com';
-        //$list[]='any.bandcamp.com';//not sure how to do it ?
 
-        $x=parse_url($url);
-
-        if (!$x) {
-            return $url;
-        }
-
-        if ($x['scheme']=='https') {//ok
-            return $url;
-        }
-
-        //echo "$url\n";
-        //print_r($x);
-
-        if ($x['host']&&in_array($x['host'],$list)) {
-            //exit("$url http->https");
-            return str_replace('http://','https://',$url);
-        }
-        return $url;
-    }
 
     public function delete(Link $entity): void
     {
