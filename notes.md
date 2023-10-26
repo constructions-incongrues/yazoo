@@ -1,12 +1,5 @@
-# Yazoo - Moteur de recherche de media
+# Notes
 
-## Features
- - Search Video (youtube/dailymotion)
- - Search Audio (bandcamp/soundcloud/mp3)
- - Search Images (stray files) .png .jpg .jpeg .gif .webm
- - Stats
- - Status
- - Blacklist domains
 
 ## TODO
 - Check domain using Symfony validator
