@@ -15,8 +15,8 @@ class MusiqueIncongrueService
      *
      * @var [type]
      */
-    private $email;
-    private $password;//from .ENV
+    private $directus_email;
+    private $directus_password;
     private $token=null;
 
     private $linkRepository;
@@ -26,8 +26,14 @@ class MusiqueIncongrueService
     {
         $this->linkRepository=$linkRepository;
         $this->discussionRepository=$discussionRepository;
-        $this->email=$_ENV['DIRECTUS_EMAIL'];
-        $this->password=$_ENV['DIRECTUS_PASS'];
+
+        if (isset($_ENV['DIRECTUS_EMAIL'])) {
+            $this->directus_email=$_ENV['DIRECTUS_EMAIL'];
+        }
+
+        if (isset($_ENV['DIRECTUS_PASSWORD'])) {
+            $this->directus_password=$_ENV['DIRECTUS_PASSWORD'];
+        }
     }
 
     /**
@@ -40,10 +46,18 @@ class MusiqueIncongrueService
 
         $endpoint = "https://data.constructions-incongrues.net/musiques-incongrues/auth/authenticate";
 
+        if (!isset($this->directus_email)) {
+            throw new Exception("no directus_email. check env", 1);
+        }
+
+        if (!isset($this->directus_password)) {
+            throw new Exception("no directus_password. check env", 1);
+        }
+
         // Data to be sent in the POST request
         $data = array(
-            'email' => $this->email,
-            'password' => $this->password
+            'email' => $this->directus_email,
+            'password' => $this->directus_password
         );
         //var_dump($data);exit;
 
@@ -64,7 +78,7 @@ class MusiqueIncongrueService
 
         $data=json_decode($response, true);
         //var_dump($data);exit;
-        if ($data['data']['token']) {
+        if (isset($data['data']['token'])) {
             $this->token=$data['data']['token'];
         }else{
             throw new Exception("Error Retreiving token", 1);

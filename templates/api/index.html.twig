@@ -1,20 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello JobController!{% endblock %}
+{% block title %}API Endpoints{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
+<div class="container">
+    <h1><a href="/">Yazoo</a> API Endpoints</h1>
+    <hr />
     <ul>
-        <li>Your controller at <code><a href="{{ '/var/www/yazoo/src/Controller/JobController.php'|file_link(0) }}">src/Controller/JobController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/var/www/yazoo/templates/job/index.html.twig'|file_link(0) }}">templates/job/index.html.twig</a></code></li>
+        <li><span class="badge bg-success">GET</span> <code><a href="/api/sync">/api/sync</a></code> Call every minute</li>
+        <li><span class="badge bg-success">GET</span> <code><a href="/api/youtube/">/api/youtube</a></code> Crawl Youtube using API</li>
+        <li><span class="badge bg-success">GET</span> <code><a href="/api/images">/api/images</a></code> Crawl images</li>
+        <li><span class="badge bg-success">GET</span> <code><a href="/api/audio">/api/audio</a></code> Crawl audio (bandcamp/soundcloud/mixcloud)</li>
+        <li><span class="badge bg-success">GET</span> <code><a href="/api/status">/api/status</a></code> Yazoo status</li>
     </ul>
 </div>
 {% endblock %}

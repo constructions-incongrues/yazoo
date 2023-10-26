@@ -19,10 +19,10 @@ class YoutubeService
 
     public function __construct()
     {
-        $this->api_key=$_ENV['YOUTUBE_API_KEY'];
-        if(!$this->api_key){
-            throw new Exception("no YOUTUBE_API_KEY -> check .env", 1);
+        if (isset($_ENV['YOUTUBE_API_KEY'])) {
+            $this->api_key=$_ENV['YOUTUBE_API_KEY'];
         }
+
     }
 
 

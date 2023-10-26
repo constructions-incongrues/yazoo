@@ -11,3 +11,7 @@ Link Database et Moteur de recherche
  - Blacklisted domains
  - API
 
+
+## Installation
+
+Configurer le .env

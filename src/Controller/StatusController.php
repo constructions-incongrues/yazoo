@@ -35,7 +35,11 @@ class StatusController extends AbstractController
         $countTotal=$this->statRepository->countLinks();
         $countVisited=$this->statRepository->countVisitedLinks();
         //exit("$countTotal / $countVisited");
-        $pct=$countVisited/$countTotal*100;
+        $pct=0;
+        if ($countVisited>0&&$countTotal>0) {
+            $pct=$countVisited/$countTotal*100;
+        }
+
 
         return $this->render('status/index.html.twig', [
             'last_link_time' => $last_records[0]->getCreatedAt(),

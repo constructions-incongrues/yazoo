@@ -83,8 +83,12 @@ class ExtractService
         //$list[]='any.bandcamp.com';//not sure how to do it ?
 
         $x=parse_url($url);
-
+        //dd($x);
         if (!$x) {
+            return $url;
+        }
+
+        if (!isset($x['scheme'])) {
             return $url;
         }
 

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\DiscussionRepository;
 use App\Repository\LinkRepository;
+use App\Repository\StatRepository;
 use App\Service\CommentService;
 use App\Service\ExtractService;
 use App\Service\MusiqueIncongrueService;
@@ -57,7 +58,7 @@ class ApiController extends AbstractController
         $dat['duration']=$duration;
         return $this->json($dat);
     }
-
+    /*
     #[Route('/api/test', name: 'app_job_test')]
     public function test(MusiqueIncongrueService $MI, DiscussionRepository $discussionRepository): JsonResponse
     {
@@ -68,6 +69,8 @@ class ApiController extends AbstractController
         //dd($dat['discussions']);
         return $this->json($dat);
     }
+    */
+
 
     #[Route('/api/images', name: 'app_job_crawl_images')]
     public function crawlImages(LinkRepository $linkRepository): JsonResponse
@@ -88,6 +91,12 @@ class ApiController extends AbstractController
     {
         //crawl youtube video, USING the youtube API
         $dat=[];
+
+        if (!isset($_ENV['YOUTUBE_API_KEY'])) {
+            $dat['error']='no YOUTUBE_API_KEY';
+            return $this->json($dat);
+        }
+
         $dat['count']=0;
         $dat['found']=0;
         $dat['404']=0;
@@ -136,4 +145,22 @@ class ApiController extends AbstractController
         return $this->json($dat);
     }
 
+    #[Route('/api/status', name: 'app_api_status')]
+    public function status(LinkRepository $linkRepository, StatRepository $statRepository): JsonResponse
+    {
+
+        $dat=[];//payload
+        $dat['last_records']=$linkRepository->findBy([],['created_at' => 'DESC'], 5);
+        $dat['last_crawled']=$linkRepository->findBy([],['visited_at'=> 'DESC'], 5);
+
+        $dat['countTotal']=$statRepository->countLinks();
+        $dat['countVisited']=$statRepository->countVisitedLinks();
+        /*
+        $pct=0;
+        if ($dat['countVisited']>0 && $dat['countTotal']>0) {
+            $pct=$dat['countVisited']/$dat['countTotal']*100;
+        }
+        */
+        return $this->json($dat);
+    }
 }
