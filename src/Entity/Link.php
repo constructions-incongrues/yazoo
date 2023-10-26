@@ -331,7 +331,7 @@ class Link
 
         return $this;
     }
-
+    /*
     public function getDiscussion(): ?discussion
     {
         return $this->discussion;
@@ -343,6 +343,7 @@ class Link
 
         return $this;
     }
+    */
 
     public function getVisitedAt(): ?\DateTimeImmutable
     {

@@ -99,7 +99,7 @@ class ExtractService
         //echo "$url\n";
         //print_r($x);
 
-        if ($x['host']&&in_array($x['host'],$list)) {
+        if (isset($x['host']) && in_array($x['host'],$list)) {
             //exit("$url http->https");
             return str_replace('http://','https://',$url);
         }
