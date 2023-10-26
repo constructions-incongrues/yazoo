@@ -6,6 +6,9 @@
 
 tmp/
 
+#ENV
+.env
+
 # Email spool folder
 /app/spool/*
 
