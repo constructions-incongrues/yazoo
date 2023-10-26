@@ -13,22 +13,20 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class JobController extends AbstractController
+class ApiController extends AbstractController
 {
-    #[Route('/job', name: 'app_job')]
+    #[Route('/api', name: 'app_job')]
     public function index(): Response
     {
-        return $this->render('job/index.html.twig', [
+        return $this->render('api/index.html.twig', [
             'controller_name' => 'JobController',
         ]);
     }
 
-
-    #[Route('/job/sync', name: 'app_job_sync')]
+    #[Route('/api/sync', name: 'app_job_sync')]
     public function sync(LinkRepository $linkRepository, DiscussionRepository $discussionRepository, MusiqueIncongrueService $MI, ExtractService $extractService): JsonResponse
     {
         $start_time=time();
-
 
         $dat=[];//payload
 
@@ -50,7 +48,6 @@ class JobController extends AbstractController
         foreach($discussions['data'] as $discussion){
             //$discussion['Name'] = utf8_encode($discussion['Name']);
             //$discussion['Name'] = mb_convert_encoding($discussion['Name'], 'UTF-8', 'ISO-8859-1');
-
             $discussionRepository->saveDiscussion($discussion['DiscussionID'], $discussion['Name'], $discussion['DateCreated']);
             $dat['new_discussions']++;
         }
@@ -61,7 +58,7 @@ class JobController extends AbstractController
         return $this->json($dat);
     }
 
-    #[Route('/job/test', name: 'app_job_test')]
+    #[Route('/api/test', name: 'app_job_test')]
     public function test(MusiqueIncongrueService $MI, DiscussionRepository $discussionRepository): JsonResponse
     {
         $dat=[];
@@ -72,7 +69,7 @@ class JobController extends AbstractController
         return $this->json($dat);
     }
 
-    #[Route('/job/images', name: 'app_job_crawl_images')]
+    #[Route('/api/images', name: 'app_job_crawl_images')]
     public function crawlImages(LinkRepository $linkRepository): JsonResponse
     {
         $dat=[];
@@ -86,7 +83,7 @@ class JobController extends AbstractController
         return $this->json($dat);
     }
 
-    #[Route('/job/youtube', name: 'app_job_youtube')]
+    #[Route('/api/youtube', name: 'app_job_youtube')]
     public function crawlYoutube(LinkRepository $linkRepository, YoutubeService $youtubeService): JsonResponse
     {
         //crawl youtube video, USING the youtube API
