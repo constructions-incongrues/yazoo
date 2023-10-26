@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Yazoo!{% endblock %}
+
+{% block body %}
+
+
+<div class="container">
+
+    <div class="row">
+        <h1><a href="/">Yazoo</a> Videos
+        </h1>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <form action="" method="get">
+                <input type="search" class="form-control" name="q" id="q" autocomplete=off autofocus value="{{ q }}" placeholder="search...">
+            </form>
+        </div>
+    </div>
+    <hr>
+
+
+        <!--https://getbootstrap.com/docs/5.0/components/card/-->
+
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for r in results %}
+            {% include 'videos/card.html.twig' with {'r': r} %}
+        {% endfor %}
+        </div>
+
+        <hr>
+
+        Count: {{count}}
+
+    </div>
+
+
+<style>
+
+.card-img-top {
+    width: 100%;
+    height: 15vw;
+    object-fit: cover;
+}
+</style>
+
+{% endblock %}
