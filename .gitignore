@@ -9,6 +9,10 @@ tmp/
 #ENV
 .env
 
+#migrations  (just 4 dev)
+/migrations
+
+
 # Email spool folder
 /app/spool/*
 
