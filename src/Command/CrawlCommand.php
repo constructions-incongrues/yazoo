@@ -155,7 +155,7 @@ class CrawlCommand extends Command
                     $meta['provider']=$info->providerName; //The provider name of the page (Youtube, Twitter, Instagram, etc)
                     $link->setProvider($info->providerName);
 
-                    print_r($meta);
+                    //print_r($meta);
 
                     //Fix 301 that are 404
                     //Todo -> make a factory about it

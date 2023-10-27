@@ -32,13 +32,11 @@ class SearchController extends AbstractController
 
         $data=$this->searchRepository->search($q, 1, 30);
 
-
-        //$this->loggerInterface->log('log', $q);//TODO
+        //$this->loggerInterface->log('log', $q);//TODO Log search
 
         return $this->render('search/index.html.twig', [
-            'q' => $q,
-            'results' => $data['results'],
-            'count' => $data['count'],
+            //'q' => $q,
+            'data' => $data,
         ]);
     }
 

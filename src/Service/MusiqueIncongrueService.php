@@ -4,7 +4,6 @@ namespace App\Service;
 
 use App\Repository\DiscussionRepository;
 use App\Repository\LinkRepository;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Exception;
 
 class MusiqueIncongrueService
@@ -144,13 +143,11 @@ class MusiqueIncongrueService
         $this->authenticate();
 
         if (!$this->token) {
-            throw new Exception("no token", 1);
+            throw new Exception("no auth token", 1);
         }
-
 
         $lastDiscussion=$this->discussionRepository->findByHighestId();
         if ($lastDiscussion) {
-
             $lastDiscussionID=$lastDiscussion->getDiscussionId();
             //var_dump($lastDiscussionID);exit;
         }else{
@@ -166,20 +163,32 @@ class MusiqueIncongrueService
         $data= $this->fetch($endpoint);
         //dd($data);exit;
         foreach($data['data'] as $k=>$r){
-            $Name=$r['Name'];
-
-            //latin1_swedish_ci to UTF8 Manual encoding fix
-            $Name=str_replace('Ã ','à',$Name);//a grave
-            $Name=str_replace('Ã©','é',$Name);
-            $Name=str_replace('Ã¨','è',$Name);//e accent grave
-            $Name=str_replace('Ãª','ê',$Name);//e accent circonflexe
-            $Name=str_replace('Ã§','ç',$Name);//cedille
-            $Name=str_replace('Ã¯','ï',$Name);//i trema
-            $Name=str_replace('Ã´','ô',$Name);//
-
-            $data['data'][$k]['Name']=$Name;
+            $data['data'][$k]['Name']=$this->fixLatinGarbageEncoding($r['Name']);
         }
         return $data;
+    }
+
+
+    /**
+     * latin1_swedish_ci garbled to UTF8, Manual but SAFE encoding fix
+     *
+     * @param string $garbage
+     * @return string
+     */
+    private function fixLatinGarbageEncoding(string $garbage): string
+    {
+        $str=$garbage;
+        //latin1_swedish_ci to UTF8 Manual but SAFE encoding fix
+        $str=str_replace('Ã ', 'à', $str);//a grave (TODO marche pas)
+        $str=str_replace('Ã©', 'é', $str);
+        $str=str_replace('Ã¨', 'è', $str);//e accent grave
+        $str=str_replace('Ãª', 'ê', $str);//e accent circonflexe
+        $str=str_replace('Ã§', 'ç', $str);//cedille
+        $str=str_replace('Ã¯', 'ï', $str);//i trema
+        $str=str_replace('Ã´', 'ô', $str);//
+        $str=str_replace('â€™', "'",$str);//apostrophe
+
+        return $str;
     }
 
 }

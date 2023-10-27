@@ -19,7 +19,7 @@
     {% for r in records %}
         <tr>
         <td class="text-muted"><a href="/blacklist/item/{{r.id}}">{{r.id}}</a>
-        <td><a href="{{r.host}}">{{r.host}}</a>
+        <td>{{r.host}} <a href="http://{{r.host}}">link</a>
         <td class="text-muted">{{r.comment}}
         <td class="text-muted">{{r.updated_at}}
         </tr>

@@ -1,5 +1,4 @@
 <?php
-// src/Service/DatabaseService.php
 
 namespace App\Service;
 

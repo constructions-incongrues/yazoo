@@ -28,7 +28,8 @@ class TelocheService
         $this->URL=$_ENV['PEERTUBE_URL'];
         $this->username=$_ENV['PEERTUBE_USERNAME'];
         $this->password=$_ENV['PEERTUBE_PASSWORD'];
-        if (!$this->api_key) {
+
+        if (!$this->URL) {
             throw new Exception("no PEERTUBE_URL -> check .env", 1);
        }
     }

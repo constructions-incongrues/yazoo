@@ -13,6 +13,22 @@
     <hr>
 
     <ul>
+
+        <li>
+        <!--HTTP STATUS -->
+        {% if link.status >=400 %}
+          <span class="badge bg-danger">
+        {% elseif link.status >=300 %}
+          <span class="badge bg-warning">
+        {% elseif link.status >=200 %}
+          <span class="badge bg-success">
+        {% else %}
+          <span class="badge bg-dark">
+        {% endif %}
+        Status : {{ link.status }}</span>
+        </li>
+
+
         <li>URL <code>{{ url }}</code>
         {% if blacklisted %}
             [Blacklisted]
@@ -20,12 +36,15 @@
         </li>
 
         <li>Provider : <code>{{ link.provider }}</code></li>
-        <li>Status : <code>{{ link.status }}</code></li>
-        <li>Canonical <a href="{{ link.canonical }}">{{ link.canonical }}</a></li>
-    <!--
+
+        <li>Canonical : <a href="{{ link.canonical }}">{{ link.canonical }}</a></li>
+        <li>Image : {{ link.image }}</li>
+
+        <!--
         <li>Title : {{ link.title }}</li>
         <li>Description : {{ link.description }}</li>
         -->
+
         {% if link.mimetype %}
           <li>mimetype : {{ link.mimetype }}</li>
         {% endif %}
@@ -50,9 +69,13 @@
         <div id="preview2">please wait</div>
       </div>
     </div>
-
-
 </div>
+
+<style>
+ul {
+  list-style-type: none;
+}
+</style>
 
 <script>
 let el=document.getElementById('preview2');

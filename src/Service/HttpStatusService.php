@@ -15,14 +15,14 @@ class HttpStatusService
         curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($handle, CURLOPT_HEADER, true);//HEADER ONLY
         curl_setopt($handle, CURLOPT_CONNECTTIMEOUT, 5); //number of seconds to wait while trying to connect. Use 0 to wait indefinitely.
-        curl_setopt($handle, CURLOPT_MAXREDIRS, 3);
+        curl_setopt($handle, CURLOPT_MAXREDIRS, 5);
         curl_setopt($handle, CURLOPT_TIMEOUT, 5);
 
         $dat=[];//output
         /* Get the HTML or whatever is linked in $url. */
 
         $response = curl_exec($handle);
-
+        //dd($response);
         $dat['httpStatus'] = curl_getinfo($handle, CURLINFO_HTTP_CODE);
         $dat['info']=$this->codename($dat['httpStatus']);
 

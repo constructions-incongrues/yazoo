@@ -28,33 +28,6 @@ class SearchRepository extends ServiceEntityRepository
    /**
     * @return Link[] Returns an array of Link2 objects
     */
-    /*
-    public function findByStatusField(string $status): array
-   {
-       return $this->createQueryBuilder('l')
-           ->andWhere('l.status = :val')
-           ->setParameter('val', $status)
-           ->orderBy('l.id', 'ASC')
-           ->setMaxResults(10)
-           ->getQuery()
-           ->getResult()
-       ;
-   }
-    */
-
-    /*
-   public function findWhereStatusIsNull(): array
-   {
-       return $this->createQueryBuilder('l')
-           ->andWhere('l.status IS NULL')
-           //->setParameter('val', $value)
-           //->orderBy('l.id', 'ASC')
-           ->setMaxResults(10)
-           ->getQuery()
-           ->getResult()
-       ;
-   }
-    */
 
     public function parseQuery(string $q):array
     {
@@ -163,6 +136,10 @@ class SearchRepository extends ServiceEntityRepository
     public function search(string $q, int $page=1, int $limit=10): array
     {
 
+        if ($page<1) {//fix input mistakes
+            $page=1;
+        }
+
         $Q=$this->parseQuery($q);//extract filters (status:200, provider:youtube)
 
         $queryBuilder = $this->createQueryBuilder('l')
@@ -219,14 +196,21 @@ class SearchRepository extends ServiceEntityRepository
         $countQueryBuilder->select('COUNT(l.id)');
         $count = (int)$countQueryBuilder->getQuery()->getSingleScalarResult();
 
+        // Compute page number
+        $pages=1;
+        if ($count>0 && $limit>0) {
+            $pages=(int)ceil($count/$limit);
+        }
+
         $query=$queryBuilder->getQuery();
-
-        //$sql = $query->getSQL();
-
         $results = $query->getResult();
 
         return [
+            'q' => $q,
             'count' => $count,
+            'limit' => $limit,
+            'pages' => $pages,
+            'page_index' => $page,
             'results' => $results,
         ];
     }

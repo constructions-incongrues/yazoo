@@ -16,7 +16,6 @@ Link Database et Moteur de recherche
 - PHP 8.1
 - php-curl
 - Mysql/MariaDB
-- n8n
 
 
 ## Installation
@@ -28,6 +27,19 @@ composer install
 ./bin/console make:migration
 ./bin/console doctrine:migrations:migrate
 ```
+
+## API endpoints
+| endpoint | description |
+| -------- | -------- |
+| GET /api/sync | Syncronize Forum Links. Call this one regularly |
+| GET /api/status | Get Yazoo status |
+| GET /api/search/{query} | Search links |
+| GET /api/link/{id} | Get link data |
+| GET /api/crawl/youtube | Crawl Youtube using API |
+| GET /api/crawl/images | Crawl images |
+| GET /api/crawl/audio | guess what |
+
+
 
 ## n8n
 

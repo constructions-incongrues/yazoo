@@ -78,6 +78,7 @@ class ExtractService
         // We know those providers use https
         $list[]='www.youtube.com';
         $list[]='www.myspace.com';
+        $list[]='soundcloud.com';
         $list[]='www.dailymotion.com';
         $list[]='i.imgur.com';
         //$list[]='any.bandcamp.com';//not sure how to do it ?
@@ -92,7 +93,7 @@ class ExtractService
             return $url;
         }
 
-        if ($x['scheme']=='https') {//ok
+        if ($x['scheme']=='https') {//https already ok
             return $url;
         }
 

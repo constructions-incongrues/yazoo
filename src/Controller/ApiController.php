@@ -9,7 +9,7 @@ use App\Repository\StatRepository;
 use App\Service\CommentService;
 use App\Service\ExtractService;
 use App\Service\MusiqueIncongrueService;
-use App\Service\YoutubeService;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,11 +33,12 @@ class ApiController extends AbstractController
     #[Route('/api/sync', methods: ['GET'])]
     public function sync(LinkRepository $linkRepository, DiscussionRepository $discussionRepository, MusiqueIncongrueService $MI, ExtractService $extractService): JsonResponse
     {
-        $start_time=time();
+
+
 
         $dat=[];//payload
-
-        //Sync Links
+        $dat['start_time']=time();
+        // 1 - Sync Links
         $dat['new_urls']=0;
         $data=$MI->fetchComments();//Fetch From Directus/MusiqueIncongrues
         foreach($data['data'] as $r){
@@ -48,20 +49,17 @@ class ApiController extends AbstractController
             }
         }
 
-        //Sync Discussions
+        // 2 - Sync Discussions
         $dat['new_discussions']=0;
         $discussions=$MI->fetchDiscussions();//Fetch From Directus/MusiqueIncongrues
-        //$dat['discussions']=$discussions['data'];
         foreach($discussions['data'] as $discussion){
-            //$discussion['Name'] = utf8_encode($discussion['Name']);
-            //$discussion['Name'] = mb_convert_encoding($discussion['Name'], 'UTF-8', 'ISO-8859-1');
             $discussionRepository->saveDiscussion($discussion['DiscussionID'], $discussion['Name'], $discussion['DateCreated']);
             $dat['new_discussions']++;
         }
 
-        $duration=time()-$start_time;
-        $dat['msg']=sprintf("%s url(s) added in %s seconds", $dat['new_urls'], $duration);
-        $dat['duration']=$duration;
+        $dat['exec_time']=time()-$dat['start_time'];
+        $dat['msg']=sprintf("%s url(s) added in %s seconds", $dat['new_urls'], $dat['exec_time']);
+
         return $this->json($dat);
     }
 
@@ -69,83 +67,13 @@ class ApiController extends AbstractController
     #[Route('/api/search/{q}', name: 'app_api_search')]
     public function search(string $q, SearchRepository $searchRepository): JsonResponse
     {
-        $dat=[];
-        $dat['q']=$q;
-        $dat['results']=$searchRepository->search($q);
-        return $this->json($dat);
+        $data=$searchRepository->search($q);
+        return $this->json($data);
     }
 
 
 
-    #[Route('/api/crawl/images', methods: ['GET'])]
-    public function crawlImages(LinkRepository $linkRepository): JsonResponse
-    {
-        $dat=[];
-        $dat['count']=0;
-        $links=$linkRepository->findWaitingImages(5);
-        foreach($links as $link){
-            $link->getUrl();
-            $dat['count']++;
-        }
-        return $this->json($dat);
-    }
 
-    #[Route('/api/crawl/youtube', methods: ['GET'])]
-    public function crawlYoutube(LinkRepository $linkRepository, YoutubeService $youtubeService): JsonResponse
-    {
-        //crawl youtube video, USING the youtube API
-        $dat=[];
-
-        if (!isset($_ENV['YOUTUBE_API_KEY'])) {
-            $dat['error']='no YOUTUBE_API_KEY';
-            return $this->json($dat);
-        }
-
-        $dat['count']=0;
-        $dat['found']=0;
-        $dat['404']=0;
-        $links=$linkRepository->findWaitingProvider('youtube', 5);
-        foreach($links as $link){
-
-            $url=$link->getUrl();
-            //echo "$url";
-
-            $snippet=$youtubeService->fetchSnippet($url);
-            //dd($snippet);
-
-
-            if (count($snippet)) {//Found video
-                //$snippet['description']=str_replace('’',"'",$snippet['description']);//accent pourri, DB pas contente
-                $snippet['description'] = iconv('UTF-8', 'ASCII//TRANSLIT', $snippet['description']);
-
-                //echo $snippet['description']."<br />";
-                // Detect the encoding
-                //$dat['encoding'] = mb_detect_encoding($snippet['description'], mb_detect_order(), true);
-
-                $thumbnail_url=$youtubeService->thumbnailUrl($snippet['thumbnails']);
-                $link->setStatus(200);
-                $link->setTitle($snippet['title']);
-                $link->setDescription($snippet['description']);
-                if ($thumbnail_url) {
-                    $link->setImage($thumbnail_url);
-                }
-                $dat['found']++;
-            }else{
-                $link->setStatus(404);//not found
-                $link->setTitle('not found');
-                $dat[404]++;
-            }
-
-            //dd($snippet);
-            $link->visited();
-
-            $linkRepository->save($link,true);
-            //dd($snippet);
-            $dat['count']++;
-        }
-        $dat['msg']='done';
-        return $this->json($dat);
-    }
 
     #[Route('/api/status', methods: ['GET'])]
     public function status(LinkRepository $linkRepository, StatRepository $statRepository): JsonResponse
@@ -159,7 +87,11 @@ class ApiController extends AbstractController
 
         $dat['last_link_time'] = $last_records[0]->getCreatedAt();
         $dat['last_crawl_time']= $last_crawled[0]->getVisitedAt();
-        $dat['last_crawl_ago']= 'todo';
+        $delta=time()-strtotime($last_records[0]->getCreatedAt()->format("Y-m-d H:i:s"));
+
+        if ($delta>3600) {
+            $dat['warning']= 'Crawler seems to be stuck';
+        }
 
         $dat['countTotal']=$statRepository->countLinks();
         $dat['countVisited']=$statRepository->countVisitedLinks();
@@ -173,8 +105,17 @@ class ApiController extends AbstractController
         return $this->json($dat);
     }
 
+    #[Route('/api/link', methods: ['GET'])]
+    public function link(): JsonResponse
+    {
+        $dat=[];
+        $dat['error']=404;
+        $dat['usage']='/api/link/id';
+        return new JsonResponse($dat, 404);
+    }
+
     #[Route('/api/link/{id}', methods: ['GET'])]
-    public function link(int $id, LinkRepository $linkRepository, SerializerInterface $serializer): JsonResponse
+    public function linkId(int $id, LinkRepository $linkRepository, SerializerInterface $serializer): JsonResponse
     {
         $link=$linkRepository->find($id);
         if (!$link) {
