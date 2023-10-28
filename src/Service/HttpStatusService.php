@@ -30,6 +30,9 @@ class HttpStatusService
         preg_match('/Content-Type: ([^\s]+)/', $response, $matches);
         $dat['mimeType'] = isset($matches[1]) ? $matches[1] : false;
 
+        //Remove ';' at the end
+        $dat['mimeType']=preg_replace("/;$/", '', $dat['mimeType']);
+
         return $dat;
     }
 

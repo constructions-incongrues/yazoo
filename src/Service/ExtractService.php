@@ -75,13 +75,15 @@ class ExtractService
     private function httpsFix(string $url):string
     {
         $list=[];
-        // We know those providers use https
-        $list[]='www.youtube.com';
-        $list[]='www.myspace.com';
+        // We know those host/providers use https
+        // TODO make sure it works
+        $list[]='youtube.com';
+        $list[]='myspace.com';
         $list[]='soundcloud.com';
-        $list[]='www.dailymotion.com';
-        $list[]='i.imgur.com';
-        //$list[]='any.bandcamp.com';//not sure how to do it ?
+        $list[]='dailymotion.com';
+        $list[]='imgur.com';
+        $list[]='photobucket.com';
+        $list[]='bandcamp.com';
 
         $x=parse_url($url);
         //dd($x);
@@ -100,7 +102,7 @@ class ExtractService
         //echo "$url\n";
         //print_r($x);
 
-        if (isset($x['host']) && in_array($x['host'],$list)) {
+        if (isset($x['host']) && in_array($x['host'], $list)) {
             //exit("$url http->https");
             return str_replace('http://','https://',$url);
         }

@@ -10,24 +10,28 @@ use App\Service\HttpStatusService;
 
 use Embed\Embed;
 use Exception;
-
+use Psr\Log\LoggerInterface;
 
 class CrawlService
 {
     private $linkRepository;
     private $blacklistRepository;
     private $httpStatusService;
+    private $logger;
 
-    public function __construct(LinkRepository $linkRepository, BlacklistRepository $blacklistRepository, HttpStatusService $HttpStatusService)
+    public function __construct(LinkRepository $linkRepository, BlacklistRepository $blacklistRepository, HttpStatusService $HttpStatusService, LoggerInterface $logger)
     {
         $this->linkRepository = $linkRepository;
         $this->blacklistRepository = $blacklistRepository;
         $this->httpStatusService = $HttpStatusService;
+        $this->logger = $logger;
     }
 
     public function crawlLink(Link $link)
     {
         $url=$link->getUrl();
+        //dd($url);
+
         //$dat['urls'][]=$url;
 
         // Check against blacklist
@@ -38,15 +42,14 @@ class CrawlService
 
         $status=$this->httpStatusService->get($url);
 
-        //echo "$url";
-        //dd($status);
+        //echo "$url";dd($status);
 
         $link->setStatus($status['httpStatus']);
         $link->setMimetype($status['mimeType']);
 
         if ($status['httpStatus']==0) {// Unreachable
             // TODO Log to DB
-            //$this->logger->warning("Unreachable URL",['channel'=>'crawler', 'url'=>$url]);
+            $this->logger->warning("Unreachable URL",['channel'=>'crawler', 'url'=>$url]);
         }
 
         if ($status['httpStatus']>=200 && $status['httpStatus']<400) {
@@ -57,8 +60,8 @@ class CrawlService
             }
 
             catch(Exception $e){
-                dd($e->getMessage());
-                //$this->logger->warning($e->getMessage(),['channel'=>'crawler', 'url'=>$url]);
+                //dd($e->getMessage());
+                $this->logger->warning($e->getMessage(),['channel'=>'crawler', 'url'=>$url]);
                 return false;
             }
 

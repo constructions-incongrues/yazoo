@@ -94,8 +94,8 @@ class SearchRepository extends ServiceEntityRepository
         if ($Q['status']!==null) {
             $queryBuilder->andWhere("l.status= :status")
             ->setParameter('status', $Q['status']);
-        //}else{//this one mess with the crawler
-        //    $queryBuilder->andWhere('l.status>=200 AND l.status<400');
+        }else{
+        //    $queryBuilder->andWhere('l.status>=200 AND l.status<400');//this one mess with the crawler
         }
 
         if ($Q['provider']>0) {

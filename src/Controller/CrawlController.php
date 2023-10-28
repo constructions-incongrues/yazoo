@@ -63,14 +63,16 @@ class CrawlController extends AbstractController
         $dat['start_time']=time();
         $dat['urls']=[];
         //$dat['count']=0;
-        $data=$searchRepository->search('provider:tumblr orderby:crawler',1,5);//'provider:imgur
+        $data=$searchRepository->search('.gif orderby:crawler',1, 5);//'provider:imgur
         //dd($data);
 
         foreach($data['results'] as $link)
         {
             $link=$this->crawlService->crawlLink($link);
-            //dd($link);
-            $dat['urls'][]=$link->getUrl();
+            if ($link) {
+               $url=$link->getUrl();
+                $dat['urls'][]=$url;
+            }
         }
         $dat['exec_time']=time()-$dat['start_time'];
         return $this->json($dat);
@@ -117,6 +119,7 @@ class CrawlController extends AbstractController
                 }
                 $dat['found']++;
             }else{
+                //Could be deleted ?
                 $link->setStatus(404);//not found
                 $link->setTitle('not found');
                 $dat[404]++;
