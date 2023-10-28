@@ -8,59 +8,89 @@
 
     <h1><a href="/">Yazoo</a> Link #{{ id }}</h1>
 
-    <h3>{{ link.title }}</h3>
-    <pre>{{ link.description }}</pre>
-    <hr>
-
-    <ul>
-
-        <li>
-        <!--HTTP STATUS -->
-        {% if link.status >=400 %}
-          <span class="badge bg-danger">
-        {% elseif link.status >=300 %}
-          <span class="badge bg-warning">
-        {% elseif link.status >=200 %}
-          <span class="badge bg-success">
-        {% else %}
-          <span class="badge bg-dark">
-        {% endif %}
-        Status : {{ link.status }}</span>
-        </li>
-
-
-        <li>URL <code>{{ url }}</code>
-        {% if blacklisted %}
-            [Blacklisted]
-        {% endif %}
-        </li>
-
-        <li>Provider : <code>{{ link.provider }}</code></li>
-
-        <li>Canonical : <a href="{{ link.canonical }}">{{ link.canonical }}</a></li>
-        <li>Image : {{ link.image }}</li>
-
-        <!--
-        <li>Title : {{ link.title }}</li>
-        <li>Description : {{ link.description }}</li>
-        -->
-
-        {% if link.mimetype %}
-          <li>mimetype : {{ link.mimetype }}</li>
-        {% endif %}
-        {% if visited_at %}
-          <li>Last visit : {{ visited_at|ago }}</li>
-        {% else %}
-          <li><b>Not yet crawled!</b></li>
-        {% endif %}
-        <li><a href="/?q=discussion:{{ discussion_id }}">Discussion#{{ discussion_id }}</a> <a href="https://www.musiques-incongrues.net/forum/discussion/{{ discussion_id }}/">{{ discussion }}</a> </li>
-        <li>Comment #{{ comment_id }}</li>
-    </ul>
 
     <hr>
+
+    <div class="row">
+      <div class="col-6">
+
+        <div class="card">
+            <div class="card-header"><b>{{link.title}}</b>
+              <span class="badge bg-success float-end" title="http status">{{link.status}}</span>
+            </div>
+
+            <div class="card-body">
+              <ul>
+
+                <li>
+                <!--HTTP STATUS -->
+                {% if link.status >=400 %}
+                  <span class="badge bg-danger">
+                {% elseif link.status >=300 %}
+                  <span class="badge bg-warning">
+                {% elseif link.status >=200 %}
+                  <span class="badge bg-success">
+                {% else %}
+                  <span class="badge bg-dark">
+                {% endif %}
+                Status : {{ link.status }}</span>
+                </li>
+
+
+                <li>URL <a href="{{ link.url }}">{{ url }}</a>
+                <li>Canonical : <a href="{{ link.canonical }}">{{ link.canonical }}</a></li>
+                {% if blacklisted %}
+                    [Blacklisted]
+                {% endif %}
+                </li>
+
+                <li>Provider : <code>{{ link.provider }}</code></li>
+
+
+                <li>Image : {{ link.image|default('no') }}</li>
+
+                {% if link.mimetype %}
+                  <li>mimetype : {{ link.mimetype|default('no') }}</li>
+                {% endif %}
+
+                <li><a href="/?q=discussion:{{ discussion_id }}">Discussion#{{ discussion_id }}</a> <a href="https://www.musiques-incongrues.net/forum/discussion/{{ discussion_id }}/">{{ discussion }}</a>
+                - Comment #{{ comment_id }}</li>
+
+
+            </ul>
+
+            </div>
+
+            <div class="card-footer"><i class="text-muted">
+                {% if visited_at %}
+                  Last visit : {{ visited_at|ago }}
+                {% else %}
+                  <b>Not yet crawled!</b>
+                {% endif %}
+                </i>
+            </div>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="card">
+            <div class="card-header"><b>Description</b></div>
+            <div class="card-body">
+                <code>{{ link.description|default('no description') }}</code>
+            </div>
+        </div>
+      </div>
+
+    </div>
+
+
+
+    <hr>
+    <!--
     <a href="{{url}}" class='btn btn-primary'>Open</a>
-    <a href="/link/{{id}}/delete" class='btn btn-default'>Delete</a>
+    <a href="/link/{{id}}/delete" class='btn btn-danger float-end'>Delete</a>
     <hr>
+    -->
     <div class="row">
       <div class="col-6">
         {{preview|raw}}

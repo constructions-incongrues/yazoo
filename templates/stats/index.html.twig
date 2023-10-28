@@ -7,67 +7,84 @@
 <div class="example-wrapper">
 <section class="container">
     <div class="row">
-        <h1><a href="/">Yazoo</a> Stats
-        </h1>
-        <hr>
+        <h1><a href="/">Yazoo</a> Stats</h1>
     </div>
 
     <div class="row">
 
     <div class="col-6">
-            <h3>HTTP Status</h3>
-            <table class="table table-sm table-hover">
-                <thead>
-                    <th>n</th>
-                    <th>status</th>
+        <div class="card">
+            <div class="card-header">HTTP Status</div>
+            <div class="card-body p-0">
 
-                </thead>
-                <tbody>
-                {% for r in statuscodes %}
-                    <tr>
-                    <td class="text-muted">{{ r.num }}
-                    <td><span class="badge bg-secondary">{{ r.status }}</span>
-                    {{ r.info|e }}
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                <table class="table table-sm table-hover">
+                    <thead>
+                        <th class="text-end">num</th>
+                        <th>status</th>
+                    </thead>
 
-            <h3>mime types</h3>
-            <table class="table table-sm table-hover">
-                <thead>
-                    <th>n</th>
-                    <th>status</th>
+                    <tbody>
+                    {% for r in statuscodes %}
+                        <tr>
+                        <td class="text-muted text-end">{{ r.num }}
+                        <td><span class="badge bg-secondary">{{ r.status }}</span>
+                        {{ r.info|e }}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-                </thead>
-                <tbody>
-                {% for r in mimetypes %}
-                    <tr>
-                    <td class="text-muted">{{ r.num }}
-                    <td><span class="badge bg-secondary">{{ r.mimetype }}</span>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+    <br />
+
+        <div class="card">
+            <div class="card-header">Mime types</div>
+            <div class="card-body p-0">
+                <table class="table table-sm table-hover">
+                    <thead>
+                        <th class="text-end">num</th>
+                        <th>status</th>
+
+                    </thead>
+                    <tbody>
+                    {% for r in mimetypes %}
+                        <tr>
+                        <td class="text-muted text-end  ">{{ r.num }}
+                        <td><span class="badge bg-secondary">{{ r.mimetype }}</span>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+        <div class="col-6">
+
+        <div class="card">
+            <div class="card-header">Providers</div>
+            <div class="card-body p-0">
+                <table class="table table-sm table-hover">
+                    <thead>
+                        <th class="text-end">num</th>
+                        <th>provider</th>
+                    </thead>
+                    <tbody>
+                    {% for r in providers %}
+                        <tr>
+                        <td class="text-muted text-end">{{ r.num|e }}</td>
+                        <td><a href="/stats/provider/{{ r.provider}}">{{ r.provider}}</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
 
-        <div class="col-6 table-responsive">
-            <h3>Providers</h3>
-            <table class="table table-sm table-hover">
-                <thead>
-                    <th>n</th>
-                    <th>provider</th>
-                </thead>
-                <tbody>
-                {% for r in providers %}
-                    <tr>
-                    <td class="text-muted">{{ r.num|e }}</td>
-                    <td><a href="/stats/provider/{{ r.provider}}">{{ r.provider}}</a></td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+
 
 
         </div>

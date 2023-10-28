@@ -2,7 +2,7 @@
 <div class="col">
     <a href="/link/{{r.id}}">
     <div class="card">
-      <img src="{{r.image}}" class="card-img-top" alt="{{r.title}}">
+      <img src="{{r.image|default('/img/thumbnail_notfound.jpg')}}" class="card-img-top" alt="{{r.title}}">
       <div class="card-body">
         <h5 class="card-title">{{r.title}}</h5>
         <!--<p class="card-text">discussion:{{r.DiscussionId}}</p>-->

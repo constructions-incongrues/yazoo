@@ -28,7 +28,12 @@
         <div class="col-12">
         {% for r in data.results %}
             <div class="result">
-                <h4>[{{r.provider}}] <a href="{{ r.url }}">{{ r.title|default('no title') }}</a></h4>
+                <h4>
+                    {% if r.provider %}
+                        [{{r.provider}}]
+                    {% endif %}
+                    <a href="{{ r.url }}">{{ r.title|default('no title') }}</a>
+                </h4>
         <!--HTTP STATUS -->
         {% if r.status >=400 %}
           <span class="badge bg-danger">
@@ -48,7 +53,7 @@
                     {{ r.mimetype }}
                 {% endif %}
                 <br />
-                <a href="/link/{{ r.id }}">Link#{{ r.id }}</a>
+                <a href="/link/{{ r.id }}">#{{ r.id }}</a>
             </div>
         {% endfor %}
         </div>

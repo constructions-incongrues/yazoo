@@ -7,9 +7,10 @@
 <meta http-equiv="refresh" content="60">
 
 <div class="container">
-    <h1><a href="/">Yazoo</a> Status ✅</h1>
-    <hr/>
 
+    <h1><a href="/">Yazoo</a> Status ✅</h1>
+
+    <hr/>
 
     <div class="row">
 
@@ -27,46 +28,61 @@
 
     </div>
 
-<hr/>
+    <hr />
 
     <div class="row">
-
         <div class="col-6">
-            <table class="table table-sm table-hover">
-                <thead>
-                    <th width=50>#</th>
-                    <th>Last crawled URL</th>
-                    <th class="text-end" width="100">Crawled at</th>
-                </thead>
-                <tbody>
-                {% for r in last_crawled %}
-                    <tr>
-                    <td class="text-muted"><a href="/link/{{ r.id }}">{{ r.id }}</a>
-                    <td class="text-muted">{{ r.url }}
-                    <td class="text-muted text-end"><span class="badge bg-success">{{r.VisitedAt|ago}}</span>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+
+            <div class="card">
+                <div class="card-header">Crawler</div>
+                <div class="card-body p-0">
+                    <table class="table table-sm table-hover">
+                    <thead>
+                        <th width=50>#</th>
+                        <th>Last crawled URL</th>
+                        <th class="text-end" width="100">Crawled at</th>
+                    </thead>
+                    <tbody>
+                    {% for r in last_crawled %}
+                        <tr>
+                        <td class="text-muted"><a href="/link/{{ r.id }}">{{ r.id }}</a>
+                        <td class="text-muted">{{ r.url }}
+                        <td class="text-muted text-end"><span class="badge bg-success">{{r.VisitedAt|ago}}</span>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6">
+        <div class="card">
+
+            <div class="card-header">Database</div>
+
+            <div class="card-body p-0">
+                <table class="table table-sm table-hover">
+                    <thead>
+                        <th width="50">#</th>
+                        <th>Last links URL</th>
+                        <th width="100" class="text-end">Created at</th>
+                    </thead>
+                    <tbody>
+                    {% for r in last_records %}
+                        <tr>
+                        <td class="text-muted"><a href="/link/{{ r.id }}">{{ r.id }}</a>
+                        <td class="text-muted">{{ r.url }}
+                        <td class="text-muted text-end"><span class="badge bg-secondary">{{r.CreatedAt|ago}}</span>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <div class="col-6">
-            <table class="table table-sm table-hover table-responsive">
-                <thead>
-                    <th width="50">#</th>
-                    <th>Last links URL</th>
-                    <th width="100" class="text-end">Created at</th>
-                </thead>
-                <tbody>
-                {% for r in last_records %}
-                    <tr>
-                    <td class="text-muted"><a href="/link/{{ r.id }}">{{ r.id }}</a>
-                    <td class="text-muted">{{ r.url }}
-                    <td class="text-muted text-end"><span class="badge bg-secondary">{{r.CreatedAt|ago}}</span>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+
+
         </div>
 
 
