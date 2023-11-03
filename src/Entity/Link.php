@@ -261,12 +261,14 @@ class Link
         //$htm.=print_r($parsed,true);
 
         // Youtube video //
-        if($parsed['host']=="www.youtube.com"){
+        //dd($parsed['host']);
+        if(preg_match("/\b(youtube\.com|youtu\.be)/",$parsed['host'])){
+        //if($parsed['host']=="www.youtube.com"){
             $youtube_id='';//xKQskYS18vI
-            preg_match("/v=([0-9a-z_-]{11})/i",$url,$o);
+            preg_match("/(v=)?([0-9a-z_-]{11})/i",$url,$o);
             //print_r($o);
-            if ($o[1]) {
-                $youtube_id=$o[1];
+            if ($o[2]) {
+                $youtube_id=$o[2];
             }
             //<!-- YouTube Video Embed -->
             //$htm='<iframe width="560" height="315" src="'.htmlentities($url).'" frameborder="0" allowfullscreen></iframe>';

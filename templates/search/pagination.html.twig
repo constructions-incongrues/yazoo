@@ -2,7 +2,7 @@
 
 
 <nav aria-label="...">
-  <ul class="pagination">
+  <ul class="pagination py-0">
      {% for i in 1..data.pages %}
       {% if i < 15 %}
         {% if i == data.page_index %}
@@ -27,5 +27,5 @@
 
 
 {% if data.count > 0 %}
-  <pre>{{data.count}} result(s)</pre>
+  {# <pre>{{data.count}} result(s)</pre> #}
 {% endif %}

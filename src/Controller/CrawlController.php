@@ -46,7 +46,8 @@ class CrawlController extends AbstractController
     public function audio(SearchRepository $searchRepository): JsonResponse
     {
         $dat=[];
-        $data=$searchRepository->search('provider:soundcloud orderby:crawler',1,10);
+        $searchRepository->searchAudio('orderby:crawler');
+        $data=$searchRepository->getResultPage(1,5);
         foreach($data['results'] as $link)
         {
             $link=$this->crawlService->crawlLink($link);
@@ -63,7 +64,10 @@ class CrawlController extends AbstractController
         $dat['start_time']=time();
         $dat['urls']=[];
         //$dat['count']=0;
-        $data=$searchRepository->search('.gif orderby:crawler',1, 5);//'provider:imgur
+
+        $searchRepository->searchImages('orderby:crawler');
+        $data=$searchRepository->getResultPage(1,5);
+
         //dd($data);
 
         foreach($data['results'] as $link)

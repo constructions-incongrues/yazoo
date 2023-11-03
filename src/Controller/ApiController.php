@@ -67,7 +67,8 @@ class ApiController extends AbstractController
     #[Route('/api/search/{q}', name: 'app_api_search')]
     public function search(string $q, SearchRepository $searchRepository): JsonResponse
     {
-        $data=$searchRepository->search($q);
+        $searchRepository->search($q);
+        $data=$searchRepository->getResultPage(1,10);
         return $this->json($data);
     }
 

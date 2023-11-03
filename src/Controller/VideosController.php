@@ -23,14 +23,20 @@ class VideosController extends AbstractController
     {
         $q='';
 
+        $page=1;
+
         if (@$_GET['q']) {
             $q=$_GET['q'];
         }
 
-        $data=$this->searchRepository->searchVideos($q, 1, 30);
+        if (@$_GET['page']>0) {
+            $page=$_GET['page'];
+        }
+
+        $this->searchRepository->searchVideos($q);
+        $data=$this->searchRepository->getResultPage($page, 30);
 
         return $this->render('videos/index.html.twig', [
-            'q' => $q,
             'data' => $data,
         ]);
     }

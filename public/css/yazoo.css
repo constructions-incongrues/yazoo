@@ -9,3 +9,10 @@ a{
 div.result{
     padding-bottom:2rem;
 }
+
+/* images */
+.card-img-top {
+    width: 100%;
+    height: 15vw;
+    object-fit: cover;
+}

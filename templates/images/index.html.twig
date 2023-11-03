@@ -10,28 +10,28 @@
 
     {% include 'search/search.html.twig' with {'data': data} %}
 
-        <!--https://getbootstrap.com/docs/5.0/components/card/-->
-
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        {% for r in data.results %}
-            {% include 'images/card.html.twig' with {'r': r} %}
-        {% endfor %}
+    <!--https://getbootstrap.com/docs/5.0/components/card/-->
+    <div class="card">
+        <div class="card-header"><b>
+        {% if data.count > 0 %}
+            {{data.count}} result(s)
+        {% else %}
+            no result
+        {% endif %}
+        </b></div>
+        <div class="card-body">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            {% for r in data.results %}
+                {% include 'images/card.html.twig' with {'r': r} %}
+            {% endfor %}
+            </div>
         </div>
-
-        <hr>
-
-
-
+        <div class="card-footer">
+            {% include 'search/pagination.html.twig' with {'data': data} %}
+        </div>
     </div>
 
+</div>
 
-<style>
-
-.card-img-top {
-    width: 100%;
-    height: 15vw;
-    object-fit: cover;
-}
-</style>
 
 {% endblock %}

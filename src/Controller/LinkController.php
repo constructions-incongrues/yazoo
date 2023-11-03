@@ -40,7 +40,6 @@ class LinkController extends AbstractController
         }
 
         return $this->render('link/index.html.twig', [
-            'controller_name' => 'InspectController',
             'id' => $id,
             'link'=>$link,
             'url'=>$link->getUrl(),
@@ -57,6 +56,8 @@ class LinkController extends AbstractController
         ]);
     }
 
+
+    /*
     #[Route('/link/{id}/crawl', name: 'app_link_crawl')]
     public function crawl(int $id):Response
     {
@@ -93,7 +94,9 @@ class LinkController extends AbstractController
             'info' => $info,
         ]);
     }
+    */
 
+    /*
     #[Route('/link/{id}/delete', name: 'app_link_delete')]
     public function delete(int $id):Response
     {
@@ -144,6 +147,5 @@ class LinkController extends AbstractController
         $data['info']=$httpservice->codeName($data['status']);
         return $this->json($data);
     }
-
-
+    */
 }
