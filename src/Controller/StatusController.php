@@ -6,6 +6,7 @@ use App\Repository\LinkRepository;
 use App\Repository\StatRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 class StatusController extends AbstractController
@@ -50,5 +51,37 @@ class StatusController extends AbstractController
             'total_visited' => $countVisited,
             'progress_pct' => round($pct),
         ]);
+    }
+
+    #[Route('/api/status', methods: ['GET'])]
+    public function status(LinkRepository $linkRepository, StatRepository $statRepository): JsonResponse
+    {
+
+        $dat=[];//payload
+        $dat['time']=date('c');
+
+        $last_records=$linkRepository->findBy([],['created_at' => 'DESC'], 1);
+        $last_crawled=$linkRepository->findBy([],['visited_at'=> 'DESC'], 1);
+
+        $dat['last_link_time'] = $last_records[0]->getCreatedAt();
+        $dat['last_crawl_time']= $last_crawled[0]->getVisitedAt();
+        $delta=time()-strtotime($last_crawled[0]->getVisitedAt()->format("Y-m-d H:i:s"));
+
+        if ($delta>3600) {
+            $dat['warning']= 'Crawler seems to be stuck. Delta is '.$delta;
+        }else{
+            $dat['status']= 'ok';
+        }
+
+        $dat['countTotal']=$statRepository->countLinks();
+        $dat['countVisited']=$statRepository->countVisitedLinks();
+
+        $dat['crawled_pct']=0;
+
+        if ($dat['countVisited']>0 && $dat['countTotal']>0) {
+            $dat['crawled_pct']=$dat['countVisited']/$dat['countTotal']*100;
+        }
+
+        return $this->json($dat);
     }
 }

@@ -61,7 +61,7 @@ class CrawlService
 
             catch(Exception $e){
                 //dd($e->getMessage());
-                $this->logger->warning($e->getMessage(),['channel'=>'crawler', 'url'=>$url]);
+                $this->logger->warning($e->getMessage(), ['channel'=>'crawler', 'url'=>$url]);
                 return false;
             }
 

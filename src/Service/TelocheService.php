@@ -34,10 +34,10 @@ class TelocheService
        }
     }
 
-    public function authenticate()
+    public function authenticate(): array
     {
         $dat=$this->getTokens();
-        $this->userToken($dat['client_id'],$dat['client_secret']);
+        return $this->userToken($dat['client_id'], $dat['client_secret']);
     }
 
     public function getTokens()
@@ -62,7 +62,7 @@ class TelocheService
         // API endpoint
         $endpoint = $this->URL."/api/v1/users/token";
 
-        echo "endpoint=$endpoint\n";
+        //echo "endpoint=$endpoint\n";
 
         // Request parameters
         $data = array(
@@ -151,9 +151,6 @@ class TelocheService
         // API endpoint for video import
         $url = $this->URL."/api/v1/videos/imports";
 
-        // Video URL to be imported
-        //$videoUrl = "https://www.youtube.com/embed/UnTAJL1Eack";
-
         // Request parameters
         $data = array(
             "channelId" => $channel_id,//yazoo main channel;
@@ -170,7 +167,6 @@ class TelocheService
         // Access token received after authentication
         $accessToken = $this->access_token;
 
-        // Initialize cURL session
         $ch = curl_init($url);
         echo "$url\n";
 
@@ -184,19 +180,80 @@ class TelocheService
             "Authorization: Bearer " . $accessToken
         ));
 
-        // Execute cURL session and store the API response
         $response = curl_exec($ch);
 
         echo "response:$response\n";
 
-        // Check for cURL errors
         if(curl_error($ch)) {
             echo 'Curl error: ' . curl_error($ch);
         }else{
             echo "No Curl error\n";
         }
 
-        // Close cURL session
+        curl_close($ch);
+
+        // Handle the API response
+        if ($response === FALSE) {
+            echo "Error occurred while importing the video.\n";
+        } else if (!$response){
+            echo "No response\n";
+        } else {
+            $jsonResponse = json_decode($response, true);
+            // Handle the JSON response as needed
+            //print_r($jsonResponse);
+            return $jsonResponse;
+        }
+        return [];
+    }
+
+
+    public function deleteVideo(string $id): array
+    {
+        //https://docs.joinpeertube.org/api-rest-reference.html#tag/Video/operation/delVideo
+        // API endpoint for video import
+        $url = $this->URL."/api/v1/videos/".$id;
+
+        // Request parameters
+        /*
+        $data = array(
+            "channelId" => $channel_id,//yazoo main channel;
+            //"name" => "Test Video Name",
+            "targetUrl" => $videoUrl,
+            "category" => 1,//music
+            "privacy" => 1,//public
+        );
+        */
+
+        if (!$this->access_token) {
+            throw new Exception("no access token. auth first", 1);
+        }
+
+        // Access token received after authentication
+        $accessToken = $this->access_token;
+
+        $ch = curl_init($url);
+        echo "$url\n";
+
+        // Set cURL options for POST request
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+        //curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+
+        // Set Authorization header with Bearer token
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            "Authorization: Bearer " . $accessToken
+        ));
+
+        $response = curl_exec($ch);
+
+        echo "response:$response\n";
+
+        if(curl_error($ch)) {
+            echo 'Curl error: ' . curl_error($ch);
+        }else{
+            echo "No Curl error\n";
+        }
+
         curl_close($ch);
 
         // Handle the API response
@@ -210,6 +267,7 @@ class TelocheService
             print_r($jsonResponse);
             return $jsonResponse;
         }
+
         return [];
     }
 

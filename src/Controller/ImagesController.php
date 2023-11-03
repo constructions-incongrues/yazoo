@@ -29,9 +29,8 @@ class ImagesController extends AbstractController
         $data=$this->searchRepository->searchImages($q, 1, 30);
 
         return $this->render('images/index.html.twig', [
-            'q' => $q,
-            'results' => $data['results'],
-            'count' => $data['count'],
+            //'q' => $q,
+            'data' => $data,
         ]);
     }
 }

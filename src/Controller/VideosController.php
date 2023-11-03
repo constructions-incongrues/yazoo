@@ -31,8 +31,7 @@ class VideosController extends AbstractController
 
         return $this->render('videos/index.html.twig', [
             'q' => $q,
-            'results' => $data['results'],
-            'count' => $data['count'],
+            'data' => $data,
         ]);
     }
 }

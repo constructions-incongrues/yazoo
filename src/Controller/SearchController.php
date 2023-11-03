@@ -25,12 +25,19 @@ class SearchController extends AbstractController
     public function index(): Response
     {
         $q='';
+        $page=1;
 
         if (@$_GET['q']) {
             $q=$_GET['q'];
         }
 
-        $data=$this->searchRepository->search($q, 1, 30);
+        if (@$_GET['page']>0) {
+            $page=$_GET['page'];
+        }
+
+        //dd($_GET);
+
+        $data=$this->searchRepository->search($q, $page, 15);
 
         //$this->loggerInterface->log('log', $q);//TODO Log search
 
@@ -40,4 +47,25 @@ class SearchController extends AbstractController
         ]);
     }
 
+    #[Route('/test')]
+    public function testes(): Response
+    {
+        $page=1;
+        if (@$_GET['page']>0) {
+            $page=$_GET['page'];
+        }
+
+        $paginator=$this->searchRepository->searchTest("test", $page, 10);
+
+        $dat=[];
+        $dat['count']=count($paginator);
+        $dat['test']='yo';
+        $dat['results']=$paginator;
+        /*
+        foreach($paginator as $item){
+            dd($item);
+        }
+        */
+        return $this->json($dat);
+    }
 }

@@ -181,6 +181,7 @@ class MusiqueIncongrueService
         //latin1_swedish_ci to UTF8 Manual but SAFE encoding fix
         $str=str_replace('Ã ', 'à', $str);//a grave (TODO marche pas)
         $str=str_replace('Ã©', 'é', $str);
+        $str=str_replace('Ã‰', 'É', $str);//E aigu Maj
         $str=str_replace('Ã¨', 'è', $str);//e accent grave
         $str=str_replace('Ãª', 'ê', $str);//e accent circonflexe
         $str=str_replace('Ã§', 'ç', $str);//cedille
