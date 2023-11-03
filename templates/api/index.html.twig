@@ -4,37 +4,46 @@
 
 {% block body %}
 
-<div class="container">
-    <h1><a href="/">Yazoo</a> API Endpoints</h1>
-    <hr />
-    <table class="table table-sm">
-        <thead>
-            <th>Endpoint</th>
-            <th>Description</th>
-        </thead>
-        <tbody>
-        <tr>
-            <td><span class="badge bg-success">GET</span> <code><a href="/api/sync">/api/sync</a></code>
-            <td>Syncronize Forum Links. Call this one regularly</tr>
-        <tr>
-            <td><span class="badge bg-success">GET</span> <code><a href="/api/status">/api/status</a></code>
-            <td>Get Yazoo status</tr>
-        <tr>
-            <td><span class="badge bg-success">GET</span> <code><a href="/api/search/q">/api/search/{query}</a></code>
-            <td>Search links</tr>
-        <tr>
-            <td><span class="badge bg-success">GET</span> <code><a href="/api/link/">/api/link/{id}</a></code>
-            <td>Get link data</tr>
-        <tr>
-            <td><span class="badge bg-success">GET</span> <code><a href="/api/crawl/youtube/">/api/crawl/youtube</a></code>
-            <td>Crawl Youtube using API</tr>
-        <tr>
-            <td><span class="badge bg-success">GET</span> <code><a href="/api/crawl/images">/api/crawl/images</a></code>
-            <td>Crawl images</tr>
-        <tr>
-            <td><span class="badge bg-success">GET</span> <code><a href="/api/crawl/audio">/api/crawl/audio</a></code>
-            <td>Crawl audio (bandcamp/soundcloud/mixcloud)</tr>
-        </tbody>
-    </table>
+{% include 'search/navbar.html.twig' %}
+
+<div class="container py-4">
+
+    <div class="card">
+        <div class="card-header">
+            API Endpoints
+        </div>
+        <div class="card-body">
+            <table class="table table-sm">
+                <thead>
+                    <th>Endpoint</th>
+                    <th>Description</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><span class="badge bg-success">GET</span> <code><a href="/api/sync">/api/sync</a></code>
+                    <td>Syncronize Forum Links. Call this one regularly</tr>
+                <tr>
+                    <td><span class="badge bg-success">GET</span> <code><a href="/api/status">/api/status</a></code>
+                    <td>Get Yazoo status</tr>
+                <tr>
+                    <td><span class="badge bg-success">GET</span> <code><a href="/api/search/q">/api/search/{query}</a></code>
+                    <td>Search links</tr>
+                <tr>
+                    <td><span class="badge bg-success">GET</span> <code><a href="/api/link/">/api/link/{id}</a></code>
+                    <td>Get link data</tr>
+                <tr>
+                    <td><span class="badge bg-success">GET</span> <code><a href="/api/crawl/youtube/">/api/crawl/youtube</a></code>
+                    <td>Crawl Youtube using API</tr>
+                <tr>
+                    <td><span class="badge bg-success">GET</span> <code><a href="/api/crawl/images">/api/crawl/images</a></code>
+                    <td>Crawl images</tr>
+                <tr>
+                    <td><span class="badge bg-success">GET</span> <code><a href="/api/crawl/audio">/api/crawl/audio</a></code>
+                    <td>Crawl audio (bandcamp/soundcloud/mixcloud)</tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
 {% endblock %}

@@ -4,15 +4,17 @@
 
 {% block body %}
 
+{% include 'search/navbar.html.twig' %}
+
+
 <div class="container">
 
-    <h1><a href="/">Yazoo</a> Link #{{ id }}</h1>
 
-
-    <hr>
-
-    <div class="row">
-      <div class="col-6">
+    <div class="row py-2">
+    <h1>
+    <small><a class="nav-link" href="/">Link #{{ id }}</a></small>
+  </h1>
+      <div class="col-md-6">
 
         <div class="card">
             <div class="card-header"><b>{{link.title}}</b>
@@ -22,8 +24,10 @@
             <div class="card-body">
               <ul>
 
-                <li>
+
                 <!--HTTP STATUS -->
+                {#
+                <li>
                 {% if link.status >=400 %}
                   <span class="badge bg-danger">
                 {% elseif link.status >=300 %}
@@ -35,7 +39,7 @@
                 {% endif %}
                 Status : {{ link.status }}</span>
                 </li>
-
+                #}
 
                 <li>URL <a href="{{ link.url }}">{{ url }}</a>
                 <li>Canonical : <a href="{{ link.canonical }}">{{ link.canonical }}</a></li>
@@ -46,15 +50,11 @@
 
                 <li>Provider : <code>{{ link.provider }}</code></li>
 
-
                 <li>Image : {{ link.image|default('no') }}</li>
 
                 {% if link.mimetype %}
                   <li>mimetype : {{ link.mimetype|default('no') }}</li>
                 {% endif %}
-
-                <li><a href="/?q=discussion:{{ discussion_id }}">Discussion#{{ discussion_id }}</a> <a href="https://www.musiques-incongrues.net/forum/discussion/{{ discussion_id }}/">{{ discussion }}</a>
-                - Comment #{{ comment_id }}</li>
 
 
             </ul>
@@ -72,17 +72,19 @@
         </div>
       </div>
 
-      <div class="col-6">
+      <div class="col-md-6">
         <div class="card">
             <div class="card-header"><b>Description</b></div>
             <div class="card-body">
                 <code>{{ link.description|default('no description') }}</code>
             </div>
+          <div class="card-footer">
+            <a href="/?q=discussion:{{ discussion_id }}">Discussion#{{ discussion_id }}</a> <a href="https://www.musiques-incongrues.net/forum/discussion/{{ discussion_id }}/">{{ discussion }}</a>
+          </div>
         </div>
       </div>
 
     </div>
-
 
 
     <hr>
@@ -91,13 +93,19 @@
     <a href="/link/{{id}}/delete" class='btn btn-danger float-end'>Delete</a>
     <hr>
     -->
+
     <div class="row">
+
       <div class="col-6">
         {{preview|raw}}
       </div>
+
+
       <div class="col-6">
         <div id="preview2">please wait</div>
       </div>
+
+
     </div>
 </div>
 

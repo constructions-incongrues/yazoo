@@ -4,25 +4,34 @@
 
 {% block body %}
 
-<div class="container">
-    <h1><a href="/">Yazoo</a> Host Blacklist</h1>
-    <hr>
-    <table class="table table-sm table-hover">
-    <thead>
-        <th width="30">#</th>
-        <th>Host</th>
-        <th>Comment</th>
-        <th>Updated</th>
-    </thead>
-    {% for r in records %}
-        <tr>
-        <td class="text-muted"><a href="/blacklist/item/{{r.id}}">{{r.id}}</a>
-        <td>{{r.host}} <a href="http://{{r.host}}">link</a>
-        <td class="text-muted">{{r.comment}}
-        <td class="text-muted">{{r.updated_at}}
-        </tr>
-    {% endfor %}
-    </table>
+{% include 'search/navbar.html.twig' %}
+
+
+<div class="container py-4">
+    <div class="card">
+        <div class="card-header">Blacklist</div>
+        <div class="card-body">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <th>Blacklisted Host</th>
+                    <th>Comment</th>
+                    <th class="text-end">Updated</th>
+                </thead>
+                <tbody>
+                {% for r in records %}
+                    <tr data-id="{{r.id}}">
+                    <!--<td class="text-muted"><a href="/blacklist/item/{{r.id}}">{{r.id}}</a>-->
+                    <td>{{r.host}}
+                    <!--<a href="http://{{r.host}}">link</a>-->
+                    <td class="text-muted">{{r.comment}}
+                    <td class="text-muted text-end">{{r.updated_at}}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 
 
 </div>

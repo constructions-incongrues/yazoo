@@ -4,33 +4,23 @@
 
 {% block body %}
 
+{% include 'search/navbar.html.twig' with {'data': data} %}
 
 <div class="container">
-    <div class="row">
-        <h1><a href="/">Yazoo</a> Images
-        </h1>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <form action="" method="get">
-                <input type="search" class="form-control" name="q" id="q" autocomplete=off autofocus value="{{ q }}" placeholder="search...">
-            </form>
-        </div>
-    </div>
-    <hr>
 
+    {% include 'search/search.html.twig' with {'data': data} %}
 
         <!--https://getbootstrap.com/docs/5.0/components/card/-->
 
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-        {% for r in results %}
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        {% for r in data.results %}
             {% include 'images/card.html.twig' with {'r': r} %}
         {% endfor %}
         </div>
 
         <hr>
 
-        Count: {{count}}
+
 
     </div>
 

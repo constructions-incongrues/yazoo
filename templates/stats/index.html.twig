@@ -4,13 +4,11 @@
 
 {% block body %}
 
-<div class="example-wrapper">
-<section class="container">
-    <div class="row">
-        <h1><a href="/">Yazoo</a> Stats</h1>
-    </div>
+{% include 'search/navbar.html.twig' %}
 
-    <div class="row">
+<section class="container">
+
+    <div class="row py-2">
 
     <div class="col-6">
         <div class="card">
@@ -27,8 +25,17 @@
                     {% for r in statuscodes %}
                         <tr>
                         <td class="text-muted text-end">{{ r.num }}
-                        <td><span class="badge bg-secondary">{{ r.status }}</span>
-                        {{ r.info|e }}
+                        <td>
+                            {% if r.status >= 400 %}
+                                <span class="badge bg-danger">
+                            {% elseif r.status >= 200 %}
+                                <span class="badge bg-success">
+                            {% else %}
+                                <span class="badge bg-secondary">
+                            {% endif %}
+
+                            {{ r.status|default('null') }}</span>
+                        {{ r.info }}
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -93,15 +100,6 @@
 
 
 
+</section>
 
-
-
-    <!--
-    <ul>
-        <li>Your controller at <code><a href="{{ '/var/www/snif2/src/Controller/StatsController.php'|file_link(0) }}">src/Controller/StatsController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/var/www/snif2/templates/stats/index.html.twig'|file_link(0) }}">templates/stats/index.html.twig</a></code></li>
-    </ul>
-    -->
-
-</div>
 {% endblock %}

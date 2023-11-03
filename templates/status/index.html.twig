@@ -4,11 +4,12 @@
 
 {% block body %}
 
+{% include 'search/navbar.html.twig' %}
+
 <meta http-equiv="refresh" content="60">
 
 <div class="container">
 
-    <h1><a href="/">Yazoo</a> Status ✅</h1>
 
     <hr/>
 
@@ -35,8 +36,8 @@
 
             <div class="card">
                 <div class="card-header">Crawler</div>
-                <div class="card-body p-0">
-                    <table class="table table-sm table-hover">
+                <div class="card-body p-0 text-truncate">
+                    <table class="table table-sm table-hover ">
                     <thead>
                         <th width=50>#</th>
                         <th>Last crawled URL</th>
@@ -59,9 +60,9 @@
     <div class="col-6">
         <div class="card">
 
-            <div class="card-header">Database</div>
+            <div class="card-header">Link database</div>
 
-            <div class="card-body p-0">
+            <div class="card-body p-0 text-truncate">
                 <table class="table table-sm table-hover">
                     <thead>
                         <th width="50">#</th>
