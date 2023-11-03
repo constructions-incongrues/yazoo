@@ -32,7 +32,8 @@ class CrawlController extends AbstractController
     public function crawl(SearchRepository $searchRepository): JsonResponse
     {
         $dat['start_time']=time();
-        $data=$searchRepository->search('orderby:crawler',1,5);//'provider:imgur
+        $searchRepository->search('orderby:crawler');
+        $data=$searchRepository->getResultPage(1,5);
         foreach($data['results'] as $link)
         {
             $link=$this->crawlService->crawlLink($link);
