@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Teloche Videos{% endblock %}
+
+
+{% block javascripts %}
+    <script src="/js/teloche/videos.js" type="module"></script>
+{% endblock %}
+
+{% block body %}
+
+<section class="container">
+
+    <h1>
+        <a href="/">Yazoo</a> Teloche videos
+    </h1>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card" id="boxVideos">
+                <div class="card-header">Videos</div>
+                <div class="card-body p-0">{body}</div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

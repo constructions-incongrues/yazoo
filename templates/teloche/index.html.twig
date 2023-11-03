@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Teloche API{% endblock %}
+
+{% block javascripts %}
+    <script src="/js/teloche/main.js" defer></script>
+{% endblock %}
+
+{% block body %}
+
+
+<section class="container">
+
+    <h1>
+        <a href="/">Yazoo</a> Teloche API
+        <small><a href="https://docs.joinpeertube.org/api-rest-reference.html">docs</a></small>
+    </h1>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card" id='boxChannels'>
+                <div class="card-header"><b>Yazoo video channels</b></div>
+                <div class="card-body p-0">{body}</div>
+                <!--
+                <div class="card-footer">{footer}</div>
+                -->
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card" id="boxVideos">
+                <div class="card-header"><b>Yazoo videos</b></div>
+                <div class="card-body p-0">{body}</div>
+                <!--
+                <div class="card-footer">{footer}</div>
+                -->
+            </div>
+        </div>
+    </div>
+
+<!--
+
+    <hr />
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">Runner Jobs</div>
+                <div class="card-body">{body}</div>
+                <div class="card-footer">/api/v1/runners/jobs</div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">Import Video from URL (MODAL)</div>
+                <div class="card-body">{body}</div>
+                <div class="card-footer">/api/v1/accounts/{name}/video-channels</div>
+            </div>
+        </div>
+    </div>
+    -->
+
+    <hr>
+
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Teloche</a>
+            <a  href="/teloche/videos">Videos</a>
+            <a  href="/teloche/notifications">Notifications</a>
+            <a  href="#">Runner jobs</a>
+        </div>
+    </nav>
+
+</section>
+
+{% endblock %}

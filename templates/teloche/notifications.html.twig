@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Teloche API{% endblock %}
+
+
+{% block javascripts %}
+    <script src="/js/teloche/notifications.js" type="module"></script>
+{% endblock %}
+
+{% block body %}
+
+
+<section class="container">
+
+    <h1>
+        <a href="/">Yazoo</a> > Teloche > Notifications
+    </h1>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card" id="boxNotifications">
+                <div class="card-header"><i class="fa-regular fa-bell"></i> Notifications</div>
+                <div class="card-body p-0">{body}</div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}
