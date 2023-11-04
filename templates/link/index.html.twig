@@ -76,7 +76,7 @@
         <div class="card">
             <div class="card-header"><b>Description</b></div>
             <div class="card-body">
-                <code>{{ link.description|default('no description') }}</code>
+                {{ link.description|default('no description') }}
             </div>
           <div class="card-footer">
             <a href="/?q=discussion:{{ discussion_id }}">Discussion#{{ discussion_id }}</a> <a href="https://www.musiques-incongrues.net/forum/discussion/{{ discussion_id }}/">{{ discussion }}</a>

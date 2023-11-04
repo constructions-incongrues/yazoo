@@ -11,3 +11,11 @@
 - http://sphotos.ak.fbcdn.net
 
 
+## Comments Stats
+
+posted comments per year
+```SELECT YEAR(DateCreated) as year, COUNT(*) AS comments FROM `LUM_Comment` WHERE 1 GROUP BY year ORDER BY `year` ASC; ```
+
+posted comments per thread
+
+SELECT DiscussionID as thread, COUNT(*) AS comments FROM `LUM_Comment` WHERE 1 GROUP BY thread ORDER BY `comments` DESC;

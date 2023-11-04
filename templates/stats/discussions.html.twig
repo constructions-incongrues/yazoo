@@ -4,31 +4,35 @@
 
 {% block body %}
 
-<div class="example-wrapper">
-<section class="container">
+{% include 'search/navbar.html.twig' %}
+
+<div class="container">
+    <h1>Stats</h1>
     <div class="row">
-        <h1><a href="/">Yazoo</a> Discussions / Topics</h1>
-        <hr>
-    </div>
+        <div class="col-12 py-2">
+            <div class="card">
+                <div class="card-header"><b>Discussions with links</b></div>
+                <div class="card-body">
+                    <table class="table table-sm table-hover">
+                        <thead>
+                            <th>n</th>
+                            <th>Discussion</th>
+                            <!--<th>AuthUserID</th>-->
+                        </thead>
+                        <tbody>
+                        {% for r in discussions %}
+                            <tr>
+                            <td><i class="text-muted">{{ r.num }}</a>
+                            <td>{{ r.discussion_id }} <a href="https://www.musiques-incongrues.net/forum/discussion/{{ r.discussion_id }}">{{ r.discussion_id }}</a>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer"></div>
+            </div>
 
 
-    <div class="row">
-        <div class="col-12">
-            <table class="table table-sm table-hover">
-                <thead>
-                    <th>n</th>
-                    <th>Discussion</th>
-                    <!--<th>AuthUserID</th>-->
-                </thead>
-                <tbody>
-                {% for r in discussions %}
-                    <tr>
-                    <td><i class="text-muted">{{ r.num }}</a>
-                    <td>{{ r.name }} <a href="https://www.musiques-incongrues.net/forum/discussion/{{ r.discussion_id }}">{{ r.discussion_id }}</a>
-                    </tr>
-                {% endfor %}
-                </tbody>
-                </table>
 
         </div>
     </div>

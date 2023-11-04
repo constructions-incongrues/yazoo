@@ -30,6 +30,8 @@
                                 <span class="badge bg-danger">
                             {% elseif r.status >= 200 %}
                                 <span class="badge bg-success">
+                            {% elseif r.status is same as 0 %}
+                                <span class="badge bg-dark">
                             {% else %}
                                 <span class="badge bg-secondary">
                             {% endif %}

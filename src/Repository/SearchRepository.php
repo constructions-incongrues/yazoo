@@ -233,17 +233,29 @@ class SearchRepository extends ServiceEntityRepository
             ->where('(l.url LIKE :searchTerm OR l.title LIKE :searchTerm)')
             ->setParameter('searchTerm', '%'.trim((string)$Q['q']).'%')
             ->andWhere("l.mimetype LIKE :mimetype")
-            ->setParameter('mimetype', 'image/%');
-            //->setMaxResults($limit)
-            //->setFirstResult(($page - 1) * $limit)
+            ->setParameter('mimetype', 'image/%')
+            ->andWhere("l.url LIKE :jpgExtension")
+            ->setParameter('jpgExtension', '%.jpg')
+            ->orWhere("l.url LIKE :pngExtension")
+            ->setParameter('pngExtension', '%.png')
+            ->orWhere("l.url LIKE :gifExtension")
+            ->setParameter('gifExtension', '%.gif');
 
-        $queryBuilder =$this->applyFilters($queryBuilder, $Q);
-
-        $this->queryBuilder=$queryBuilder;
-
+        $this->queryBuilder=$this->applyFilters($queryBuilder, $Q);
         return $this->queryBuilder;
+    }
 
 
+    /**
+     * Exclude Status code < 1 AND > 400
+     *
+     * @param integer $status_code
+     * @return QueryBuilder
+     */
+    public function filterStatusError():QueryBuilder
+    {
+        $this->queryBuilder->andWhere('l.status > 0')->andWhere('l.status < 400');
+        return $this->queryBuilder;
     }
 
 
@@ -259,8 +271,6 @@ class SearchRepository extends ServiceEntityRepository
             ->andWhere("l.provider LIKE :provider")
             ->setParameter('provider', 'youtube')//99percent of video content
             ->orderBy('l.visited_at', 'DESC');
-            //->setMaxResults($limit)
-            //->setFirstResult(($page - 1) * $limit)
 
         $this->queryBuilder =$this->applyFilters($queryBuilder, $Q);
         return $this->queryBuilder;

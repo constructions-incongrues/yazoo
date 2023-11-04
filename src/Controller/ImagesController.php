@@ -33,6 +33,7 @@ class ImagesController extends AbstractController
         }
 
         $this->searchRepository->searchImages($q);
+        $this->searchRepository->filterStatusError();//exclude 404, etc
         $data=$this->searchRepository->getResultPage($page, 30);
         return $this->render('images/index.html.twig', [
             'data' => $data,

@@ -10,21 +10,31 @@
 
 <div class="container">
 
-
-    <hr/>
+    <h1>Status</h1>
 
     <div class="row">
 
         <div class="col-12">
-            <h3>Crawling progress: {{progress_pct}}% <small class="text-muted">{{total_visited}}/{{total_links}} URLs</small></h3>
-            <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: {{progress_pct}}%" aria-valuenow="{{progress_pct}}" aria-valuemin="0" aria-valuemax="100"></div>
+
+            <div class="card">
+                <div class="card-header">Crawling progress</div>
+                <div class="card-body">
+                    <h3>{{progress_pct}}% <small class="text-muted">{{total_visited}}/{{total_links}} URLs</small></h3>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: {{progress_pct}}%" aria-valuenow="{{progress_pct}}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <li>Last new record: {{last_link_time|ago}}</li>
+                    <li>Last crawl: {{last_crawl_time|ago}}</li>
+                </div>
+                <div class="card-footer"></div>
             </div>
+
+
+
         </div>
 
         <div class="col-12">
-            <li>Last new record: {{last_link_time|ago}}</li>
-            <li>Last crawl: {{last_crawl_time|ago}}</li>
+
         </div>
 
     </div>

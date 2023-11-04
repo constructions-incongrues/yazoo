@@ -71,13 +71,11 @@ class CrawlCommand extends Command
 
         $httpstatusservice=new HttpStatusService();
 
-        //while($links=$this->linkrepo->findWhereStatusIsNull()){
-        //while($links=$this->linkrepo->findWaitingProvider('Myspace',10)){
-        //while($links=$this->linkrepo->findWaitingImages(10)){
-        while($data=$this->searchRepository->search($arg1)){
+        $this->searchRepository->search($arg1);
+        while($data=$this->searchRepository->getResultPage(1,10)){
             $links=$data['results'];
 
-            //print_r($links);exit;
+            //*print_r($links);exit;
 
             foreach($links as $link){
                 //dd($link);
@@ -109,15 +107,17 @@ class CrawlCommand extends Command
                     $parse = parse_url($url);
                     $host=$parse['host'];
                     //$this->blacklistRepository->add($host);//too harsh
+                    //$this->linkrepo->delete($link);//should be done by a dedicated script?
+                    dd("Unreachable !");
                     continue;
                 }
 
-                if ($status['httpStatus']>=200&&$status['httpStatus']<400) {
+                if ($status['httpStatus']>=200 && $status['httpStatus']<400) {
 
                     if (preg_match("/\.imageshack\.us/",$url)) {
-                        //ImageShack Adapter is broken !
-                        //http://img17.imageshack.us/i/monaunvarnishwebimage.jpg
-                        //'http://img37.imageshack.us/i/mpparvous.jpg'
+                        // ImageShack Adapter is broken !
+                        // http://img17.imageshack.us/i/monaunvarnishwebimage.jpg
+                        // http://img37.imageshack.us/i/mpparvous.jpg
                         continue;
                     }
 

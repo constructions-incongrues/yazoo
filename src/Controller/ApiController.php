@@ -87,6 +87,8 @@ class ApiController extends AbstractController
         return new JsonResponse($dat, 404);
     }
 
+
+
     #[Route('/api/link/{id}', methods: ['GET'])]
     public function linkId(int $id, LinkRepository $linkRepository, SerializerInterface $serializer): JsonResponse
     {
@@ -97,6 +99,23 @@ class ApiController extends AbstractController
         $json = $serializer->serialize($link, 'json');
         //dd($json);
         return new JsonResponse($json, 200, [], true);
+    }
+
+    #[Route('/api/link/{id}', methods: ['DELETE'])]
+    public function linkDelete(int $id, LinkRepository $linkRepository): JsonResponse
+    {
+        //TODO
+        $link=$linkRepository->find($id);
+        if (!$link) {
+            return new JsonResponse('{}', 404, [], true);
+        }else{
+            $linkRepository->delete($link);
+            //$linkRepository->
+        }
+
+        $json=[];
+
+        return new JsonResponse($json, 200);
     }
 
 }

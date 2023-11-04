@@ -66,6 +66,19 @@ class ExtractService
 
 
     /**
+     * Filter out Emoji's or unwanted links
+     *
+     * @param array $urls
+     * @return array
+     */
+    public function filterUrls(array $urls):array
+    {
+        //todo
+        return $urls;
+    }
+
+
+    /**
      * Replace http with https for known domains
      * May help to get httpstatus 200 instead of 301
      *
