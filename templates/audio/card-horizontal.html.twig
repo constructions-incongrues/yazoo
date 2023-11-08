@@ -1,0 +1,23 @@
+<div class="card mb-3">
+    <div class="row g-0">
+        <div class="col-md-3">
+            {% if r.image %}
+                <img src="{{r.image}}" class="img-fluid" alt="{{r.title}}">
+            {% else %}
+                <img src="img/thumbnail_notfound.jpg" class="img-fluid" alt="{{r.title}}">
+            {% endif %}
+
+        </div>
+        <div class="col-md-9">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="/link/{{r.id}}">{{r.title}}</a>
+                </h5>
+                <p class="card-text">{{r.description}}</p>
+                <p class="card-text">
+                    <small class="text-muted"><a href="{{r.url}}">{{r.url}}</a></small>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
