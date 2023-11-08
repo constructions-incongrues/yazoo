@@ -187,6 +187,8 @@ class MusiqueIncongrueService
         $str=str_replace('Ã§', 'ç', $str);//cedille
         $str=str_replace('Ã¯', 'ï', $str);//i trema
         $str=str_replace('Ã´', 'ô', $str);//
+        $str=str_replace('Å“', 'œ', $str);//œ
+
         $str=str_replace('â€™', "'",$str);//apostrophe
 
         return $str;

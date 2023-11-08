@@ -30,9 +30,6 @@ class CrawlService
     public function crawlLink(Link $link)
     {
         $url=$link->getUrl();
-        //dd($url);
-
-        //$dat['urls'][]=$url;
 
         // Check against blacklist
         if ($this->blacklistRepository->isBlacklisted($url)) {
@@ -41,8 +38,6 @@ class CrawlService
         }
 
         $status=$this->httpStatusService->get($url);
-
-        //echo "$url";dd($status);
 
         $link->setStatus($status['httpStatus']);
         $link->setMimetype($status['mimeType']);
@@ -67,29 +62,24 @@ class CrawlService
 
             //$meta=[];
 
-            if($info->title){
-                //$meta['title']=$info->title; //The page title
+            if ($info->title) {
                 $link->setTitle((string)$info->title);
-            }else{
+            } else {
                 $link->setTitle(basename($url));
             }
 
-            //$meta['description']=$info->description; //The page description
+
             $link->setDescription((string)$info->description);
-            //$meta['canonical']=(string)$info->url; //The canonical url
+
             $link->setCanonical((string)$info->url);
-            //$meta['keywords']=$info->keywords; //The page keywords
-            //$meta['image']=(string)$info->image;
+
             if ($info->image) {
                 //TODO check URL length and content
-                //$link->setImage($info->image);
+                //dd((string)$info->image);
+                $link->setImage((string)$info->image);
             }
 
-            //$meta['lang']=$info->language; //The language of the page
-            //$meta['provider']=$info->providerName; //The provider name of the page (Youtube, Twitter, Instagram, etc)
             $link->setProvider((string)$info->providerName);
-
-            //print_r($meta);
 
             //Fix 301 that are 404
             //Todo -> make a factory about it
@@ -97,7 +87,6 @@ class CrawlService
                 //$io->warning("404 detected in title : ".$link->getTitle());
                 $link->setStatus(404);
             }
-
         }
 
         $link->visited();

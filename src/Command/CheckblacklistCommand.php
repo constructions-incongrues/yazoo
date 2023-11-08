@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Repository\BlacklistRepository;
+use App\Repository\SearchRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -18,10 +19,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class CheckblacklistCommand extends Command
 {
     private $blacklistRepository;
-    public function __construct(BlacklistRepository $blacklistRepository)
+    private $searchRepository;
+
+    public function __construct(BlacklistRepository $blacklistRepository, SearchRepository $searchRepository)
     {
         parent::__construct();
         $this->blacklistRepository=$blacklistRepository;
+        $this->searchRepository=$searchRepository;
     }
 
     protected function configure(): void
@@ -63,18 +67,27 @@ class CheckblacklistCommand extends Command
         foreach($items as $item){
             $host=$item->getHost();
             echo "$host\n";
+            //Todo count number of links
+            $this->searchRepository->search($host);
+            $links=$this->searchRepository->countResults();
+            $item->setLinkCount($links);
+
             $ips=gethostbynamel($host);
             if (!$ips) {
                 $io->error("No IPv4");
+
                 $item->setComment("No IPv4");
-                $item->setUpdated();
-                $this->blacklistRepository->save($item,true);
+
             }else{
                 print_r($ips);
+                $item->setComment(implode(",",$ips));
             }
+
+            $item->setUpdated();
+            $this->blacklistRepository->save($item,true);
+
             //$dns=checkdnsrr($host);
             //print_r($dns);
-
             //$this->testDNSRecord($url);
         }
 

@@ -8,6 +8,7 @@ use App\Repository\SearchRepository;
 use App\Repository\StatRepository;
 use App\Service\CommentService;
 use App\Service\ExtractService;
+use App\Service\LinkPreviewService;
 use App\Service\MusiqueIncongrueService;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,6 +17,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\SerializerInterface;
+
+use Embed\Embed;
+use Exception;
 
 class ApiController extends AbstractController
 {
@@ -116,6 +120,38 @@ class ApiController extends AbstractController
         $json=[];
 
         return new JsonResponse($json, 200);
+    }
+
+    #[Route('/api/link/{id}/embed', methods: ['GET'])]
+    public function embed(int $id, LinkRepository $linkRepository): JsonResponse
+    {
+        $link=$linkRepository->find($id);
+
+        $dat=[];
+
+        if ($link) {
+            //$preview=new LinkPreviewService($link);
+            //$data=$preview->data();
+            //return $this->json($data);
+            try{
+                $embed = new Embed();
+                $info=$embed->get($link->getUrl());
+                //dd($info);
+                $dat['title']=(string)$info->title;
+                $dat['description']=(string)$info->description;
+                $dat['image']=(string)$info->image;
+                $dat['code']=(string)$info->code;
+            }
+
+            catch(Exception $e){
+                $dat['error']=$e->getMessage();
+                //$this->logger->warning($e->getMessage(), ['channel'=>'crawler', 'url'=>$url]);
+                //return false;
+            }
+            return $this->json($dat);
+        }
+
+        return new JsonResponse('{}', 404, [], true);
     }
 
 }

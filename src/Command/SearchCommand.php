@@ -51,13 +51,27 @@ class SearchCommand extends Command
 
         $io->success('Search: '.$arg1);
 
-        $items=$this->searchRepository->search($arg1, 1, 30);
+        $this->searchRepository->search($arg1);
+        //$this->searchRepository->debug();
+
+        $data=$this->searchRepository->getResultPage(1,10);
+
+        //dd($data['count']);
         //print_r($items);
 
-        foreach($items['results'] as $item){
+        foreach($data['results'] as $item){
+            //dd($item);
             //print_r($item);exit;
-            echo $item['url']."\t";
-            echo "[".$item['status']."]\n";
+            echo '['.$item->getStatus()."]\t";
+            if($item->getVisitedAt()){
+                echo $item->getVisitedAt()->format("Y-m-d")."\t";
+            }else{
+                echo "not visited\t";
+            }
+
+            echo $item->getUrl()."\t";
+            //echo "[".$item->ge."]\n";
+            echo "\n";
         }
 
         return Command::SUCCESS;

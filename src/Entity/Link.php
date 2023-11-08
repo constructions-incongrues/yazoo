@@ -2,8 +2,7 @@
 
 namespace App\Entity;
 
-use App\Entity\Discussion;
-
+//use App\Entity\Discussion;
 use App\Repository\LinkRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,10 +20,10 @@ class Link
 
 
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $discussion_id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $comment_id = null;
 
     #[ORM\Column(nullable: true)]
@@ -92,6 +91,23 @@ class Link
         }
 
         return $this->url;
+    }
+
+    public function getHost(): ?string
+    {
+        $parsed=parse_url($this->getUrl());
+        if (!empty($parsed['host'])) {
+            return $parsed['host'];
+        }
+    }
+
+    public function getFilename(): ?string
+    {
+        $parsed=parse_url($this->getUrl());
+        if (!empty($parsed['path'])) {
+            return basename($parsed['path']);
+        }
+        return '';
     }
 
     public function setUrl(string $url): static
@@ -250,6 +266,7 @@ class Link
      *
      * @return void
      */
+    /*
     public function getPreview():string
     {
         $url=$this->url;
@@ -260,44 +277,15 @@ class Link
         $htm='no preview';
         //$htm.=print_r($parsed,true);
 
-        // Youtube video //
-        //dd($parsed['host']);
-        if(preg_match("/\b(youtube\.com|youtu\.be)/",$parsed['host'])){
-        //if($parsed['host']=="www.youtube.com"){
-            $youtube_id='';//xKQskYS18vI
-            preg_match("/(v=)?([0-9a-z_-]{11})/i",$url,$o);
-            //print_r($o);
-            if ($o[2]) {
-                $youtube_id=$o[2];
-            }
-            //<!-- YouTube Video Embed -->
-            //$htm='<iframe width="560" height="315" src="'.htmlentities($url).'" frameborder="0" allowfullscreen></iframe>';
-            $htm='<iframe width="560" height="315" src="https://www.youtube.com/embed/'.$youtube_id.'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
-            return $htm;
-        }
 
 
-        switch(strtolower($extension)){
-            //Audio Preview
-            case 'mp3':
-            case 'ogg':
-                $htm='<label>' . $filename.'</label><br />';
-                $htm.='<audio controls><source src="'.htmlentities($url).'"></audio>';
-                break;
-
-                case 'jpg':
-            case 'png':
-            case 'gif':
-                $htm='<img src="'.htmlentities($url).'">';
-                break;
-
-        }
         //Image Preview
 
         //Youtube Preview
         //Video Preview
         return $htm;
     }
+    */
 
     public function getCanonical(): ?string
     {

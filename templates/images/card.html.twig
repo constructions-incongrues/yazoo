@@ -2,14 +2,14 @@
 <div class="col">
     <a href="/link/{{r.id}}">
     <div class="card">
-      <div class="card-header">{{r.status}}</div>
+      <div class="card-header"><b>{{r.provider}}</b></div>
 
       <div class="card-body p-0">
         <img src="{{r.url|default('/img/thumbnail_not_found.jpg')}}" class="card-img-top" alt="{{r.title}}">
       </div>
 
       <div class="card-footer">
-        {{r.title}}
+        <i class="text-muted">{{r.title}}</i>
         {# discussion:{{r.DiscussionId}} #}
       </div>
 

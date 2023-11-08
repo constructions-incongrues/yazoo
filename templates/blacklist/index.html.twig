@@ -14,6 +14,7 @@
             <table class="table table-sm table-hover">
                 <thead>
                     <th>Blacklisted Host</th>
+                    <th class="text-end">Link count</th>
                     <th>Comment</th>
                     <th class="text-end">Updated</th>
                 </thead>
@@ -23,6 +24,14 @@
                     <!--<td class="text-muted"><a href="/blacklist/item/{{r.id}}">{{r.id}}</a>-->
                     <td>{{r.host}}
                     <!--<a href="http://{{r.host}}">link</a>-->
+                    <td class="text-end">
+                    {% if r.linkcount > 0 %}
+                        {{r.linkcount}}
+                    {% else %}
+                        <i class="text-muted">-</i>
+                    {% endif %}
+
+
                     <td class="text-muted">{{r.comment}}
                     <td class="text-muted text-end">{{r.updated_at}}
                     </tr>

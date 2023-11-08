@@ -35,7 +35,7 @@ class VideosController extends AbstractController
 
         $this->searchRepository->searchVideos($q);
         $data=$this->searchRepository->getResultPage($page, 30);
-
+        //dd($data);
         return $this->render('videos/index.html.twig', [
             'data' => $data,
         ]);

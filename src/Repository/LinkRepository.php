@@ -63,13 +63,14 @@ class LinkRepository extends ServiceEntityRepository
      * @param integer $contributor_id
      * @return void
      */
-    public function saveUrl(string $url, int $comment_id, int $discussion_id, int $contributor_id)
+    public function saveUrl(string $url, int $comment_id=0, int $discussion_id=0, int $contributor_id=0): Link
     {
 
         // No http ?
         if (preg_match("/^www/", $url)) {
             $url='http://'.$url;
         }
+
         if (preg_match("/^http:[\/]{1}\w/", $url)) {
             $url=str_replace('http:/','http://',$url);
         }
@@ -79,9 +80,19 @@ class LinkRepository extends ServiceEntityRepository
         //$url=$this->httpsFix($url);
 
         $link=new Link();
-        $link->setContributorId($contributor_id);
-        $link->setCommentId($comment_id);
-        $link->setDiscussionId($discussion_id);
+
+        if ($contributor_id > 0) {
+            $link->setContributorId($contributor_id);
+        }
+
+        if ($comment_id > 0) {
+            $link->setCommentId($comment_id);
+        }
+
+        if ($discussion_id > 0) {
+            $link->setDiscussionId($discussion_id);
+        }
+
         $link->setUrl(trim($url));
 
         //temporary name
@@ -94,6 +105,7 @@ class LinkRepository extends ServiceEntityRepository
             $link->setProvider($provider);
         }
         $this->save($link, true);
+        return $link;
     }
 
 
@@ -216,7 +228,6 @@ class LinkRepository extends ServiceEntityRepository
    {
        return $this->createQueryBuilder('l')
            ->andWhere('l.status IS NULL')
-           //->setParameter('val', $value)
            ->orderBy('l.id', 'DESC')
            ->setMaxResults(30)
            ->getQuery()
@@ -230,7 +241,6 @@ class LinkRepository extends ServiceEntityRepository
            ->andWhere('l.status > 0')
            ->andWhere('l.provider LIKE :provider')
            ->setParameter('provider', 'youtube')
-           //->orderBy('l.id', 'DESC')
            ->setMaxResults(30)
            ->getQuery()
            ->getResult();

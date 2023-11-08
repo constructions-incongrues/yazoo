@@ -7,6 +7,10 @@ class HttpStatusService
 {
 
 
+    public function isInternetAvailable() {
+        $headers = @get_headers("https://www.example.com");
+        return $headers && strpos($headers[0], "200 OK") !== false;
+    }
 
     public function get(string $url): array
     {

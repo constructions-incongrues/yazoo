@@ -107,22 +107,16 @@ class StatRepository extends ServiceEntityRepository
 
     public function discussions()
     {
-        /*
-        return $this->createQueryBuilder('l')
-           ->select('COUNT(l.id) AS num','l.discussion_id')
-           ->groupBy('l.discussion_id')
-           ->orderBy('num', 'DESC')
-           ->getQuery()
-           ->getResult();
-        */
-        return $this->createQueryBuilder('l')
+        $querybuilder=$this->createQueryBuilder('l')
             ->select('COUNT(l.id) AS num', 'l.discussion_id') // Selects the count of records, discussion_id, and discussion_name
             //->leftJoin('l.discussion', 'd') // Joins the discussion entity (assuming 'discussion' is the relationship)
             ->groupBy('l.discussion_id') // Groups the results by discussion_id and discussion_name
             ->having('num > 30') // LIMIT to topics of interest
-            ->orderBy('num', 'DESC') // Orders the results by count in descending order
-            ->getQuery()
-            ->getResult();
+            ->orderBy('num', 'DESC');
+
+        $query=$querybuilder->getQuery();
+        $data=$query->getResult();
+        return $data;
     }
 
     public function providers()

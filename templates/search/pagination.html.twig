@@ -3,8 +3,9 @@
 
 <nav aria-label="...">
   <ul class="pagination py-0">
+     {% if data.count > 0 %}
      {% for i in 1..data.pages %}
-      {% if i < 15 %}
+      {% if i <= 10 %}
         {% if i == data.page_index %}
           <li class="page-item active">
         {% else %}
@@ -15,6 +16,7 @@
         </li>
       {% endif %}
      {% endfor %}
+    {% endif %}
 
     {# Commented Code in Twig
     <li class="page-item">

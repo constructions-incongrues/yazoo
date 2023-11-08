@@ -74,7 +74,10 @@ class DiscussionRepository extends ServiceEntityRepository
    public function getName(int $discussion_id):string
    {
         $discussion=$this->findOneById($discussion_id);
-        return $discussion->getName();
+        if ($discussion) {
+            return $discussion->getName();
+        }
+        return '';
    }
 
    public function saveDiscussion(int $discussion_id, string $name, string $dateCreated): Discussion

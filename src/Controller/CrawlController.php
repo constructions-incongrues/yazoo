@@ -49,9 +49,14 @@ class CrawlController extends AbstractController
         $dat=[];
         $searchRepository->searchAudio('orderby:crawler');
         $data=$searchRepository->getResultPage(1,5);
+        //$dat['count']=$searchRepository->countResults();
+
         foreach($data['results'] as $link)
         {
             $link=$this->crawlService->crawlLink($link);
+            if (!$link) {
+                throw new \Exception("No link", 1);
+            }
             $dat['urls'][]=$link->getUrl();
         }
         return $this->json($dat);
@@ -75,11 +80,29 @@ class CrawlController extends AbstractController
         {
             $link=$this->crawlService->crawlLink($link);
             if ($link) {
-               $url=$link->getUrl();
+                $url=$link->getUrl();
                 $dat['urls'][]=$url;
             }
         }
         $dat['exec_time']=time()-$dat['start_time'];
+        return $this->json($dat);
+    }
+
+    #[Route('/api/crawl/video', methods: ['GET'])]
+    public function crawlVideo(LinkRepository $linkRepository, SearchRepository $searchRepository): JsonResponse
+    {
+        //crawl video links, excluding youtube
+        $searchRepository->search("provider:vimeo");
+        $data=$searchRepository->getResultPage(1,5);
+        $links=$data['results'];
+        $dat=[];
+        $dat['count']=$searchRepository->countResults();
+        $dat['urls']=[];
+        foreach($links as $link){
+            $data=$this->crawlService->crawlLink($link);
+            //dd($data);
+            $dat['urls'][]=$link->getUrl();
+        }
         return $this->json($dat);
     }
 
@@ -97,7 +120,9 @@ class CrawlController extends AbstractController
         $dat['count']=0;
         $dat['found']=0;
         $dat['404']=0;
-        $links=$linkRepository->findWaitingProvider('youtube', 5);
+        $dat['visited']=[];
+        $links=$linkRepository->findWaitingProvider('youtube', 10);
+
         foreach($links as $link){
 
             $url=$link->getUrl();
@@ -131,8 +156,15 @@ class CrawlController extends AbstractController
             }
 
             //dd($snippet);
-            $link->visited();
 
+            $visit=[];
+            $visit['id']=$link->getId();
+            $visit['url']=$link->getUrl();
+            $visit['status']=$link->getStatus();
+            $visit['visited_at']=$link->getVisitedAt();
+            $dat['visited'][]=$visit;
+
+            $link->visited();
             $linkRepository->save($link,true);
             //dd($snippet);
             $dat['count']++;

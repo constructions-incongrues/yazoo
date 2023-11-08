@@ -25,7 +25,7 @@ class Discussion
     private ?\DateTimeImmutable $CreatedAt = null;
 
     //#[ORM\OneToMany(mappedBy: 'discussion', targetEntity: Link::class)]
-    private Collection $links;
+    //private Collection $links;
 
     public function __construct()
     {
@@ -99,7 +99,6 @@ class Discussion
     //             $link->setDiscussion(null);
     //         }
     //     }
-
     //     return $this;
     // }
 

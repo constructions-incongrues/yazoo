@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use App\Repository\DiscussionRepository;
 use App\Repository\StatRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -40,11 +41,15 @@ class StatsController extends AbstractController
 
 
     #[Route('/stats/discussions', name: 'app_discussions')]
-    public function discussions(StatRepository $statRepository): Response
+    public function discussions(StatRepository $statRepository, DiscussionRepository $discussionRepository): Response
     {
-        //dd($statRepository->discussions());
+        $stats=$statRepository->discussions();
+        foreach($stats as &$stat){
+            $stat['name']=$discussionRepository->getName($stat['discussion_id']);
+        }
+
         return $this->render('stats/discussions.html.twig', [
-            'discussions' => $statRepository->discussions(),
+            'discussions' => $stats,
         ]);
     }
 

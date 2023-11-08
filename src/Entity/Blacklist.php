@@ -17,6 +17,9 @@ class Blacklist
     #[ORM\Column(length: 255, unique: true)]
     private ?string $host = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $link_count = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $comment = null;
 
@@ -25,6 +28,8 @@ class Blacklist
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
+
+
 
 
     public function __construct()
@@ -96,6 +101,18 @@ class Blacklist
     public function setUpdated(): static
     {
         $this->updated_at = new \DateTimeImmutable();
+        return $this;
+    }
+
+    public function getLinkCount(): ?int
+    {
+        return $this->link_count;
+    }
+
+    public function setLinkCount(?int $link_count): static
+    {
+        $this->link_count = $link_count;
+
         return $this;
     }
 

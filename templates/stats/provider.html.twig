@@ -8,6 +8,7 @@
 
 <section class="container">
 
+    <h1>Provider: {{provider}}</h1>
     <!--
     <li>Total links where provider is Youtube
     <li>Links Waiting
@@ -16,51 +17,67 @@
     <li>Links That are dead
     -->
 
-    <div class="row">
-        <div class="col-6">
-            <h3>HTTP Status</h3>
-            <table class="table table-sm table-hover">
-                <thead>
-                    <th>n</th>
-                    <th>statuses</th>
-                </thead>
-                <tbody>
-                {% for r in statuscodes %}
-                    <tr>
-                    <td class="text-muted">{{ r.num|e }}
-                    <td>
-                        {% if r.status >= 400 %}
-                            <span class="badge bg-danger">
-                        {% elseif r.status >= 200 %}
-                            <span class="badge bg-success">
-                        {% else %}
-                            <span class="badge bg-secondary">
-                        {% endif %}
-                        {{ r.status|default('null') }}</span>
-                    {{ r.info|e }}
-                    </tr>
-                {% endfor %}
-                </tbody>
-                </table>
+    <div class="row py-2">
+
+        <div class="col-md-6">
+
+            <div class="card">
+                <div class="card-header">HTTP Status</div>
+                <div class="card-body p-0">
+                    <table class="table table-sm table-hover">
+                        <thead>
+                            <th>n</th>
+                            <th>statuses</th>
+                        </thead>
+                        <tbody>
+                        {% for r in statuscodes %}
+                            <tr>
+                            <td class="text-muted">{{ r.num|e }}
+                            <td>
+                                {% if r.status >= 400 %}
+                                    <span class="badge bg-danger">
+                                {% elseif r.status >= 200 %}
+                                    <span class="badge bg-success">
+                                {% else %}
+                                    <span class="badge bg-secondary">
+                                {% endif %}
+                                {{ r.status|default('null') }}</span>
+                            {{ r.info|e }}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">Mime types</div>
+            </div>
+
+
 
         </div>
 
-        <div class="col-6">
-            <h3>Mime types</h3>
-            <table class="table table-sm table-hover">
-                <thead>
-                    <th>n</th>
-                    <th>statuses</th>
-                </thead>
-                <tbody>
-                {% for r in mimetypes %}
-                    <tr>
-                    <td class="text-muted">{{ r.num|e }}
-                    <td><span class="badge bg-secondary">{{ r.mimetype|e }}</span>
-                    </tr>
-                {% endfor %}
-                </tbody>
-                </table>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Mime types</div>
+                <div class="card-body p-0">
+                    <table class="table table-sm table-hover">
+                        <thead>
+                            <th>n</th>
+                            <th>statuses</th>
+                        </thead>
+                        <tbody>
+                        {% for r in mimetypes %}
+                            <tr>
+                            <td class="text-muted">{{ r.num|e }}
+                            <td><span class="badge bg-secondary">{{ r.mimetype|e }}</span>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">footer</div>
+            </div>
+
+
 
         </div>
     </div>

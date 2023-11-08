@@ -6,14 +6,16 @@
 
 {% include 'search/navbar.html.twig' %}
 
+<input type=hidden id="id" value="{{ id }}">
 
 <div class="container">
 
-
     <div class="row py-2">
-    <h1>
-    <small><a class="nav-link" href="/">Link #{{ id }}</a></small>
-  </h1>
+
+      <h1>
+        <a class="nav-link" href="?">Link #{{ id }}</a>
+      </h1>
+
       <div class="col-md-6">
 
         <div class="card">
@@ -22,8 +24,13 @@
             </div>
 
             <div class="card-body">
-              <ul>
+              <ul style="padding:0">
 
+                {% if link.image %}
+                  <img src="{{ link.image}}" width=100%>
+                {% endif %}
+
+                <li>Provider : <code>{{ link.provider }}</code></li>
 
                 <!--HTTP STATUS -->
                 {#
@@ -42,15 +49,18 @@
                 #}
 
                 <li>URL <a href="{{ link.url }}">{{ url }}</a>
-                <li>Canonical : <a href="{{ link.canonical }}">{{ link.canonical }}</a></li>
+
+                {% if link.canonical %}
+                  <li>Canonical : <a href="{{ link.canonical }}">{{ link.canonical }}</a></li>
+                {% endif %}
+
                 {% if blacklisted %}
                     [Blacklisted]
                 {% endif %}
                 </li>
 
-                <li>Provider : <code>{{ link.provider }}</code></li>
 
-                <li>Image : {{ link.image|default('no') }}</li>
+
 
                 {% if link.mimetype %}
                   <li>mimetype : {{ link.mimetype|default('no') }}</li>
@@ -73,37 +83,30 @@
       </div>
 
       <div class="col-md-6">
-        <div class="card">
-            <div class="card-header"><b>Description</b></div>
-            <div class="card-body">
-                {{ link.description|default('no description') }}
-            </div>
-          <div class="card-footer">
-            <a href="/?q=discussion:{{ discussion_id }}">Discussion#{{ discussion_id }}</a> <a href="https://www.musiques-incongrues.net/forum/discussion/{{ discussion_id }}/">{{ discussion }}</a>
-          </div>
-        </div>
+          {% include 'link/card-description.html.twig' %}
+          {% include 'link/card-code.html.twig' %}
+
+          <!--<div id="preview2">please wait</div>-->
       </div>
 
     </div>
 
 
     <hr>
-    <!--
-    <a href="{{url}}" class='btn btn-primary'>Open</a>
-    <a href="/link/{{id}}/delete" class='btn btn-danger float-end'>Delete</a>
-    <hr>
-    -->
 
     <div class="row">
 
-      <div class="col-6">
-        {{preview|raw}}
+      <!-- Yazoo preview -->
+      {% if preview.status < 400 %}
+      <div class="col-md-6">
+        <div class="card" id="boxPreview">
+          <div class="card-header"><b>{{preview.provider}}</b></div>
+          <div class="card-body p-0">{{preview.html|raw}}</div>
+        </div>
       </div>
+      {% endif %}
 
 
-      <div class="col-6">
-        <div id="preview2">please wait</div>
-      </div>
 
 
     </div>
@@ -113,36 +116,11 @@
 ul {
   list-style-type: none;
 }
+#boxPreview>.card-body>img{
+  width:100%;
+}
 </style>
 
-<script>
-let el=document.getElementById('preview2');
-el.innerHTML="<i>fetching preview...</i>";
-console.log('fetching preview...');
-fetch('/link/{{id}}/embed')
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    // Work with the JSON data
-    console.log(data); // Output the JSON data to the console
-    if(data.html){
-      el.innerHTML=data.html;
-    }
-
-
-  })
-  .catch(error => {
-    console.error('There has been a problem with your fetch operation:', error);
-    el.innerHTML=error;
-  });
-
-//let htm='<iframe src="https://bandcamp.com/EmbeddedPlayer/v=2/album=660645427/size=large/tracklist=false/artwork=small/" frameborder="0" width="350" height="467" allowTransparency="true"></iframe>';
-//let el=document.getElementById('preview');
-//el.innerHTML=htm;
-</script>
+<script src="/js/link/main.js"></script>
 
 {% endblock %}

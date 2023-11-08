@@ -83,6 +83,11 @@ class SearchRepository extends ServiceEntityRepository
             $dat['orderby']=$o[1];
         }
 
+        if(preg_match("/\bvisited_at:([a-z\/]+)/i",$q,$o)){
+            $q=str_replace($o[0],"",$q);
+            $dat['visited_at']=$o[1];
+        }
+
         $dat['include']=[];
         $dat['exclude']=[];
 
@@ -121,8 +126,6 @@ class SearchRepository extends ServiceEntityRepository
         if ($Q['status']!==null) {
             $queryBuilder->andWhere("l.status= :status")
             ->setParameter('status', $Q['status']);
-        }else{
-            //$queryBuilder->andWhere('l.status>=200 AND l.status<400');//this one mess with the crawler
         }
 
         if ($Q['provider']>0) {
@@ -150,6 +153,11 @@ class SearchRepository extends ServiceEntityRepository
         }else{
             $queryBuilder->addOrderBy('l.visited_at','DESC');//
         }
+        /*
+        if ($Q['visited_at']) {
+            $queryBuilder->andWhere("l.visited_at IS NULL");
+        }
+        */
 
         // Include/Exclude words
         foreach ($Q['include'] as $word) {
@@ -175,7 +183,7 @@ class SearchRepository extends ServiceEntityRepository
 
         $queryBuilder = $this->createQueryBuilder('l');
         $queryBuilder =$this->applyFilters($queryBuilder, $Q);//Apply Filters
-        $queryBuilder->andWhere('l.status>0');//Avoid 'Unavailable or not yet crawled'
+        //$queryBuilder->andWhere('l.status>0');//Avoid 'Unavailable or not yet crawled'
 
         //$queryBuilder->andWhere('l.status<400');//Avoid Link errors
         $this->queryBuilder=$queryBuilder;
@@ -183,18 +191,18 @@ class SearchRepository extends ServiceEntityRepository
 
     }
 
+    public function debug()
+    {
+        $paginator = new Paginator($this->queryBuilder->getQuery());
+        dd($paginator->getQuery()->getSQL());
+    }
 
 
 
-
-    public function getResultPage(int $page, int $pagesize=30)
+    public function getResultPage(int $page, int $pagesize=30): array
     {
         // Generate the Paginator
 		$paginator = new Paginator($this->queryBuilder->getQuery());
-        $paginator->getQuery()
-            ->setFirstResult($pagesize * ($page-1)) // set the offset
-            ->setMaxResults($pagesize); // set the limit
-
         $count=count($paginator);
 
         // Compute page number
@@ -202,6 +210,20 @@ class SearchRepository extends ServiceEntityRepository
         if ($count>0 && $pagesize>0) {
             $pages=(int)ceil($count/$pagesize);
         }
+
+        if ($page>$pages) {
+            //Requested page cannot be higher than the max page
+            $page=$pages;
+        }
+
+        // Get data
+        $paginator->getQuery()
+            ->setFirstResult($pagesize * ($page-1)) // set the offset
+            ->setMaxResults($pagesize); // set the limit
+
+
+
+
 
         return [
             'q' => $this->q,
@@ -212,6 +234,12 @@ class SearchRepository extends ServiceEntityRepository
             'page_index' => $page,
             'results' => $paginator,
         ];
+    }
+
+    public function countResults()
+    {
+        $paginator = new Paginator($this->queryBuilder->getQuery());
+        return count($paginator);
     }
 
 
@@ -268,8 +296,8 @@ class SearchRepository extends ServiceEntityRepository
             ->where('(l.url LIKE :searchTerm OR l.title LIKE :searchTerm)')
             ->setParameter('searchTerm', '%'.trim((string)$Q['q']).'%')
             ->andWhere("l.status < 400")
-            ->andWhere("l.provider LIKE :provider")
-            ->setParameter('provider', 'youtube')//99percent of video content
+            ->andWhere("l.provider IN (:providers)")
+            ->setParameter('providers', ['dailymotion','youtube','vimeo'])
             ->orderBy('l.visited_at', 'DESC');
 
         $this->queryBuilder =$this->applyFilters($queryBuilder, $Q);
@@ -284,10 +312,10 @@ class SearchRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('l')
             ->where('(l.url LIKE :searchTerm OR l.title LIKE :searchTerm)')
             ->setParameter('searchTerm', '%'.trim((string)$Q['q']).'%')
-            ->andWhere("l.provider IN ('bandcamp','soundcloud','mixcloud','lastfm','myspace')")
+            ->andWhere("l.provider IN ('bandcamp','soundcloud','mixcloud','lastfm','MusiqueApproximative')")
             ->orWhere('l.url LIKE :extension ')
-            ->setParameter('extension', '%.mp3')
-            ->orderBy('l.visited_at', 'DESC');
+            ->setParameter('extension', '%.mp3');
+            //->orderBy('l.visited_at', 'DESC');
 
         $this->queryBuilder =$this->applyFilters($queryBuilder, $Q);
 

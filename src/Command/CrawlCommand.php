@@ -9,7 +9,9 @@ namespace App\Command;
 use App\Repository\BlacklistRepository;
 use App\Repository\LinkRepository;
 use App\Repository\SearchRepository;
+use App\Service\CrawlService;
 use App\Service\HttpStatusService;
+
 use Embed\Embed;
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -28,22 +30,18 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class CrawlCommand extends Command
 {
 
-    private $linkrepo;
     private $searchRepository;
+    private $crawlService;
 
-    private $blacklistRepository;
 
-    private $logger;
-
-    private $extractService;
-
-    public function __construct(LinkRepository $linkrepo, LoggerInterface $logger, SearchRepository $searchRepository, BlacklistRepository $blacklistRepository)
+    public function __construct(SearchRepository $searchRepository, CrawlService $crawlService)
     {
         parent::__construct();
-        $this->linkrepo=$linkrepo;
+
         $this->searchRepository=$searchRepository;
-        $this->blacklistRepository=$blacklistRepository;
-        $this->logger=$logger;
+
+        $this->crawlService=$crawlService;
+
     }
 
     protected function configure(): void
@@ -61,112 +59,42 @@ class CrawlCommand extends Command
         $arg1 = $input->getArgument('arg1');
 
         if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
+            //$io->note(sprintf('You passed an argument: %s', $arg1));
+        }else{
+            $io->error('You must passed an argument: {search}');
+            return Command::FAILURE;
         }
 
         if ($input->getOption('option1')) {
-            // ...
+            $io->note(sprintf('OPTION: %s', $arg1));
         }
 
 
         $httpstatusservice=new HttpStatusService();
 
+
         $this->searchRepository->search($arg1);
-        while($data=$this->searchRepository->getResultPage(1,10)){
+        while($data=$this->searchRepository->getResultPage(1,30)){
             $links=$data['results'];
 
-            //*print_r($links);exit;
+            $internet=$httpstatusservice->isInternetAvailable();
 
+            if (!$internet) {
+                $io->error("No internet");
+                return Command::FAILURE;
+            }
+            //print_r($links);exit;
+
+            //TODO:: Use CrawlService in the loop
             foreach($links as $link){
-                //dd($link);
-                $url=$link->getUrl();
-
-                //Youtube Got a dedicated Crawler
-                if (preg_match("/(youtube\.com|youtu\.be)/",$url)) {
-                    continue;
-                }
-
-                //Check against blacklist
-                if ($this->blacklistRepository->isBlacklisted($url)) {
-                    $io->error("$url is blacklisted");
-                    $this->linkrepo->delete($link);
-                    continue;
-                }
-
-                echo "getHttpCode($url)\n";
-
-                $status=$httpstatusservice->get($url);
-                //print_r($status);exit;
-                echo "$url\t [".$status['httpStatus']."] ".$status['info']."\n";
-                $link->setStatus($status['httpStatus']);
-                $link->setMimetype($status['mimeType']);
-
-                if ($status['httpStatus']==0) {//Unreachable
-                    $this->logger->warning("Unreachable URL",['channel'=>'crawler', 'url'=>$url]);//
-                    //$this->logger->notice("Unreachable URL",['url'=>$url]);
-                    $parse = parse_url($url);
-                    $host=$parse['host'];
-                    //$this->blacklistRepository->add($host);//too harsh
-                    //$this->linkrepo->delete($link);//should be done by a dedicated script?
-                    dd("Unreachable !");
-                    continue;
-                }
-
-                if ($status['httpStatus']>=200 && $status['httpStatus']<400) {
-
-                    if (preg_match("/\.imageshack\.us/",$url)) {
-                        // ImageShack Adapter is broken !
-                        // http://img17.imageshack.us/i/monaunvarnishwebimage.jpg
-                        // http://img37.imageshack.us/i/mpparvous.jpg
-                        continue;
-                    }
-
-                    try{
-                        $embed = new Embed();
-                        $info=$embed->get($url);
-                    }
-
-                    catch(Exception $e){
-                        $io->error($e->getMessage());
-                        continue;
-                    }
-
-
-                    $meta=[];
-                    if($info->title){
-                        $meta['title']=$info->title; //The page title
-                        $link->setTitle($info->title);
-                    }else{
-                        $link->setTitle(basename($url));
-                    }
-
-                    $meta['description']=$info->description; //The page description
-                    $link->setDescription($info->description);
-                    $meta['canonical']=(string)$info->url; //The canonical url
-                    $link->setCanonical($info->url);
-                    //$meta['keywords']=$info->keywords; //The page keywords
-                    //$meta['image']=(string)$info->image;
-                    if ($info->image) {
-                        //TODO check URL length and content
-                        //$link->setImage($info->image);
-                    }
-
-                    //$meta['lang']=$info->language; //The language of the page
-                    $meta['provider']=$info->providerName; //The provider name of the page (Youtube, Twitter, Instagram, etc)
-                    $link->setProvider($info->providerName);
-
-                    //print_r($meta);
-
-                    //Fix 301 that are 404
-                    //Todo -> make a factory about it
-                    if (preg_match("/\b(404|page not found)\b/i",$link->getTitle())) {
-                        $io->warning("404 detected in title : ".$link->getTitle());
-                        $link->setStatus(404);
-                    }
-
-                }
-                $link->visited();
-                $this->linkrepo->save($link,true);
+                //echo $link->getUrl()."\n";
+                $crawled=$this->crawlService->crawlLink($link);
+                echo "#".$crawled->getId();
+                echo "\t";
+                echo $crawled->getStatus();
+                echo "\t";
+                echo $crawled->getUrl();
+                echo "\n";
             }
         }
 
