@@ -312,7 +312,7 @@ class SearchRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('l')
             ->where('(l.url LIKE :searchTerm OR l.title LIKE :searchTerm)')
             ->setParameter('searchTerm', '%'.trim((string)$Q['q']).'%')
-            ->andWhere("l.provider IN ('bandcamp','soundcloud','mixcloud','lastfm','MusiqueApproximative')")
+            ->andWhere("l.provider IN ('bandcamp','soundcloud','Mixcloud','lastfm','MusiqueApproximative')")
             ->orWhere('l.url LIKE :extension ')
             ->setParameter('extension', '%.mp3');
             //->orderBy('l.visited_at', 'DESC');

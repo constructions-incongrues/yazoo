@@ -136,15 +136,19 @@ class ApiController extends AbstractController
             try{
                 $embed = new Embed();
                 $info=$embed->get($link->getUrl());
+                //$info->getResponse()
                 //dd($info);
                 $dat['title']=(string)$info->title;
                 $dat['description']=(string)$info->description;
                 $dat['image']=(string)$info->image;
                 $dat['code']=(string)$info->code;
+                $dat['statusCode']=$info->getResponse()->getStatusCode();
+                //$dat['httpcode']=(string)$info->HttpCode;
             }
 
             catch(Exception $e){
                 $dat['error']=$e->getMessage();
+                $dat['errorCode']=$e->getCode();
                 //$this->logger->warning($e->getMessage(), ['channel'=>'crawler', 'url'=>$url]);
                 //return false;
             }

@@ -38,13 +38,13 @@ class CrawlService
         }
 
         $status=$this->httpStatusService->get($url);
-
+        $link->visited();
         $link->setStatus($status['httpStatus']);
         $link->setMimetype($status['mimeType']);
+        $this->linkRepository->save($link,true);//Save once
 
         if ($status['httpStatus']==0) {// Unreachable
-            // TODO Log to DB
-            $this->logger->warning("Unreachable URL",['channel'=>'crawler', 'url'=>$url]);
+            $this->logger->info("Unreachable URL", ['channel'=>'crawler', 'url'=>$url]);
         }
 
         if ($status['httpStatus']>=200 && $status['httpStatus']<400) {
@@ -60,7 +60,11 @@ class CrawlService
                 return false;
             }
 
-            //$meta=[];
+            $statusCode=$info->getResponse()->getStatusCode();
+
+            if ($statusCode) {
+                $link->setStatus($statusCode);
+            }
 
             if ($info->title) {
                 $link->setTitle((string)$info->title);
@@ -68,18 +72,16 @@ class CrawlService
                 $link->setTitle(basename($url));
             }
 
-
             $link->setDescription((string)$info->description);
 
             $link->setCanonical((string)$info->url);
 
             if ($info->image) {
-                //TODO check URL length and content
-                //dd((string)$info->image);
                 $link->setImage((string)$info->image);
             }
 
             $link->setProvider((string)$info->providerName);
+
 
             //Fix 301 that are 404
             //Todo -> make a factory about it
@@ -89,7 +91,7 @@ class CrawlService
             }
         }
 
-        $link->visited();
+
         $this->linkRepository->save($link,true);
         return $link;
     }

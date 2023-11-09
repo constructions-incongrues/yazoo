@@ -52,8 +52,10 @@ class LinkPreviewService
     public function dailymotion(): string
     {
         //$url='https://www.dailymotion.com/video/x5zrci';
-        $url=$link->getCanonical();
+        //$url=$this->link->getCanonical();
+
         $id='';
+
         if (preg_match("/\/([a-z0-9]{6,7})/i", $this->link->getUrl(), $o)) {
             $id=$o[1];
         }
@@ -143,6 +145,12 @@ class LinkPreviewService
                 $dat['html']=$this->dailymotion();
                 break;
 
+                /*
+            case "www.mixcloud.com":
+                $dat['html']="image:".$dat['image'];
+                break;
+            */
+
             default:
                 //dd($HOST);
                 break;
@@ -161,7 +169,7 @@ class LinkPreviewService
                 break;
         }
 
-        if (!$dat['html']&&$dat['image']) {
+        if (!$dat['html'] && $dat['image']) {
             $dat['html']=sprintf('<img src="%s" alt="%s">',$dat['image'],$dat['title']);
         }
 

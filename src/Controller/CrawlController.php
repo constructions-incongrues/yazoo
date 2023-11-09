@@ -68,20 +68,23 @@ class CrawlController extends AbstractController
     {
         $dat=[];
         $dat['start_time']=time();
-        $dat['urls']=[];
+        //$dat['urls']=[];
         //$dat['count']=0;
 
         $searchRepository->searchImages('orderby:crawler');
         $data=$searchRepository->getResultPage(1,5);
 
         //dd($data);
+        $dat['crawled']=[];
 
         foreach($data['results'] as $link)
         {
-            $link=$this->crawlService->crawlLink($link);
-            if ($link) {
-                $url=$link->getUrl();
-                $dat['urls'][]=$url;
+            $crawled=$this->crawlService->crawlLink($link);
+            if ($crawled) {
+                $msg=[];
+                $msg['url']=$crawled->getUrl();
+                $msg['status']=$crawled->getStatus();
+                $dat['crawled'][]=$msg;
             }
         }
         $dat['exec_time']=time()-$dat['start_time'];
@@ -92,6 +95,7 @@ class CrawlController extends AbstractController
     public function crawlVideo(LinkRepository $linkRepository, SearchRepository $searchRepository): JsonResponse
     {
         //crawl video links, excluding youtube
+        //todo: add dailymotion
         $searchRepository->search("provider:vimeo");
         $data=$searchRepository->getResultPage(1,5);
         $links=$data['results'];
@@ -107,7 +111,7 @@ class CrawlController extends AbstractController
     }
 
     #[Route('/api/crawl/youtube', methods: ['GET'])]
-    public function crawlYoutube(LinkRepository $linkRepository, YoutubeService $youtubeService): JsonResponse
+    public function crawlYoutube(LinkRepository $linkRepository, YoutubeService $youtubeService, SearchRepository $searchRepository): JsonResponse
     {
         //crawl youtube video, USING the youtube API
         $dat=[];
@@ -121,7 +125,12 @@ class CrawlController extends AbstractController
         $dat['found']=0;
         $dat['404']=0;
         $dat['visited']=[];
-        $links=$linkRepository->findWaitingProvider('youtube', 10);
+
+        //TODO: use search instead
+        //$links=$linkRepository->findWaitingProvider('youtube', 10);
+        $searchRepository->search("provider:youtube orderby:crawler");
+        $data=$searchRepository->getResultPage(1,10);
+        $links=$data['results'];
 
         foreach($links as $link){
 
@@ -130,7 +139,6 @@ class CrawlController extends AbstractController
 
             $snippet=$youtubeService->fetchSnippet($url);
             //dd($snippet);
-
 
             if (count($snippet)) {//Found video
                 //$snippet['description']=str_replace('’',"'",$snippet['description']);//accent pourri, DB pas contente
@@ -148,8 +156,8 @@ class CrawlController extends AbstractController
                     $link->setImage($thumbnail_url);
                 }
                 $dat['found']++;
-            }else{
-                //Could be deleted ?
+            } else {
+                // Could be deleted, but better do it separately
                 $link->setStatus(404);//not found
                 $link->setTitle('not found');
                 $dat[404]++;

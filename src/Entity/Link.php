@@ -29,8 +29,6 @@ class Link
     #[ORM\Column(nullable: true)]
     private ?int $contributor_id = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $created_at;
 
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
     private ?int $status = null;
@@ -57,13 +55,14 @@ class Link
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $created_at;
+
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $visited_at = null;
 
     //#[ORM\ManyToOne(inversedBy: 'links')]
     //private ?discussion $discussion = null;
-
-
 
 
     public function __construct()
@@ -305,6 +304,10 @@ class Link
 
     public function setImage(string $image): static
     {
+        if (strlen($image)>255) {
+            $image='';//fuck it
+        }
+
         $this->image = $image;
 
         return $this;

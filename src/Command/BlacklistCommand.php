@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Repository\BlacklistRepository;
+use App\Repository\SearchRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -18,10 +19,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class BlacklistCommand extends Command
 {
     private $blacklistRepository;
-    public function __construct(BlacklistRepository $blacklistRepository)
+    private $searchRepository;
+    public function __construct(BlacklistRepository $blacklistRepository, SearchRepository $searchRepository)
     {
         parent::__construct();
         $this->blacklistRepository = $blacklistRepository;
+        $this->searchRepository = $searchRepository;
     }
 
     protected function configure(): void
@@ -45,11 +48,23 @@ class BlacklistCommand extends Command
             // ...
         }
 
+        $this->searchRepository->search("iticon.gif");//SPAM
+
+        $data=$this->searchRepository->getResultPage(1,100);
+        foreach($data['results'] as $result){
+            //dd($result->getHost());
+            $host=$result->getHost();
+            echo "host:$host\n";
+            $this->blacklistRepository->add($host);
+        }
+
+        /*
         $records=$this->blacklistRepository->findAll();
         foreach($records as $record){
             //dd($record->host);
             echo $record->getHost()."\n";
         }
+        */
 
         //$io->success('You have a new command! Now make it your own! Pass --help to see your options.');
         return Command::SUCCESS;

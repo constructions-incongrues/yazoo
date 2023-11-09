@@ -61,8 +61,9 @@ class CrawlCommand extends Command
         if ($arg1) {
             //$io->note(sprintf('You passed an argument: %s', $arg1));
         }else{
-            $io->error('You must passed an argument: {search}');
-            return Command::FAILURE;
+            $io->info('You must passed an argument: {search}');
+            //return Command::FAILURE;
+            $arg1="orderby:crawler";
         }
 
         if ($input->getOption('option1')) {
@@ -73,8 +74,10 @@ class CrawlCommand extends Command
         $httpstatusservice=new HttpStatusService();
 
 
-        $this->searchRepository->search($arg1);
-        while($data=$this->searchRepository->getResultPage(1,30)){
+        while($this->searchRepository->search($arg1)){
+
+            $data=$this->searchRepository->getResultPage(1,10);
+
             $links=$data['results'];
 
             $internet=$httpstatusservice->isInternetAvailable();
@@ -87,8 +90,16 @@ class CrawlCommand extends Command
 
             //TODO:: Use CrawlService in the loop
             foreach($links as $link){
+                //echo $link->getId()."\t";
                 //echo $link->getUrl()."\n";
+
                 $crawled=$this->crawlService->crawlLink($link);
+
+                if (!$crawled) {
+                    echo "?\n";
+                    continue;
+                }
+
                 echo "#".$crawled->getId();
                 echo "\t";
                 echo $crawled->getStatus();

@@ -34,6 +34,7 @@ class AudioController extends AbstractController
         }
 
         $this->searchRepository->searchAudio($q);
+        $this->searchRepository->filterStatusError();
         $data=$this->searchRepository->getResultPage($page, 30);
         //dd($data);
         return $this->render('audio/index.html.twig', [

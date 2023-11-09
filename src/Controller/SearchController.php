@@ -38,6 +38,7 @@ class SearchController extends AbstractController
         //dd($_GET);
 
         $this->searchRepository->search($q);
+        $this->searchRepository->filterStatusError();
         $data=$this->searchRepository->getResultPage($page, 10);
         //$this->loggerInterface->log('log', $q);//TODO Log search
 
