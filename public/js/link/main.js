@@ -18,13 +18,13 @@ fetch(url)
   })
   .then(data => {
     // Work with the JSON data
+    el.innerHTML='';
     console.log(data); // Output the JSON data to the console
     if(data.code){
         console.log(data.code);
         el.innerHTML=data.code;
     }else{
-      let el=document.getElementById('boxCode')
-      el.remove()
+        console.log("No preview html code")
     }
 
   })
