@@ -16,18 +16,27 @@
         <a class="nav-link" href="?">Link #{{ id }}</a>
       </h1>
 
+      {% if link.status == null %}
+        {% include 'link/alert-info.html.twig' %}
+      {% endif %}
+
       <div class="col-md-6">
 
         <div class="card">
             <div class="card-header"><b>{{link.title}}</b>
-              <span class="badge bg-success float-end" title="http status">{{link.status}}</span>
+              {% if link.status >=400 %}
+                <span class="badge bg-danger float-end" title="http status">
+              {% else %}
+                <span class="badge bg-success float-end" title="http status">
+              {% endif %}
+              {{link.status}}</span>
             </div>
 
             <div class="card-body">
               <ul style="padding:0">
 
                 {% if link.image %}
-                  <img src="{{ link.image}}" width=100%>
+                  {# <img src="{{ link.image}}" width=100%> #}
                 {% endif %}
 
                 <li>Provider : <code>{{ link.provider }}</code></li>
@@ -50,7 +59,7 @@
 
                 <li>URL <a href="{{ link.url }}">{{ url }}</a>
 
-                {% if link.canonical %}
+                {% if link.canonical != link.url %}
                   <li>Canonical : <a href="{{ link.canonical }}">{{ link.canonical }}</a></li>
                 {% endif %}
 
@@ -97,7 +106,7 @@
     <div class="row">
 
       <!-- Yazoo preview -->
-      {% if preview.status < 400 %}
+      {% if preview.status > 0 and preview.status < 400 %}
       <div class="col-md-6">
         <div class="card" id="boxPreview">
           <div class="card-header"><b>{{preview.provider}}</b></div>
@@ -105,10 +114,6 @@
         </div>
       </div>
       {% endif %}
-
-
-
-
     </div>
 </div>
 
