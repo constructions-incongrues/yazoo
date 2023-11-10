@@ -2,7 +2,7 @@ version: "3.4"
 
 services:
   php:
-    image: ${IMAGES_PREFIX:-}yazoo
+    image: ${IMAGE_NAME:-yazoo}
     restart: unless-stopped
     environment:
       SERVER_NAME: ${SERVER_NAME:-localhost}, php:80

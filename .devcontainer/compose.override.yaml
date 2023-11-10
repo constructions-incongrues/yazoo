@@ -5,12 +5,10 @@ services:
     build:
       context: .
       target: frankenphp_dev
-    environment:
-      HTTP_PORT: 8000
-      HTTPS_PORT: 4430
-      HTTP3_PORT: 4430
     volumes:
       - ../../:/workspaces
+    depends_on:
+      - db
 
   db:
     image: mariadb:10.3.38

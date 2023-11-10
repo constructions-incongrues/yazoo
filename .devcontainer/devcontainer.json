@@ -4,12 +4,12 @@
 	"name": "PHP & MariaDB",
 	"dockerComposeFile": ["../compose.yaml", "../compose.override.yaml", "compose.override.yaml"],
 	"service": "php",
-	"workspaceFolder": "/app",
+	"workspaceFolder": "/app"
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 
-	"forwardPorts": [443]
+	// "forwardPorts": [443]
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "sudo chmod a+x \"$(pwd)\" && sudo rm -rf /var/www/html && sudo ln -s \"$(pwd)\" /var/www/html"
