@@ -6,8 +6,8 @@
 
 tmp/
 
-#ENV
-.env
+.env.local
+.env.*.local
 
 #migrations  (just 4 dev)
 /migrations
