@@ -3,8 +3,8 @@
         <div class="col-md-3">
             {% if r.image %}
                 <img src="{{r.image}}" class="img-fluid rounded-start" alt="{{r.title}}">
-            {% else %}
-                <img src="img/icon-256.png" class="img-fluid" alt="{{r.title}}">
+            {% elseif r.extension == "mp3" %}
+                <img src="img/icon-mp3.png" class="img-fluid" alt="{{r.title}}">
             {% endif %}
 
         </div>

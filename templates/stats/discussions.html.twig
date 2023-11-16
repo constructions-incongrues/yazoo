@@ -15,14 +15,14 @@
                 <div class="card-body">
                     <table class="table table-sm table-hover">
                         <thead>
-                            <th>n</th>
+                            <th class="text-end">n</th>
                             <th>Discussion</th>
                             <th>Forum link</th>
                         </thead>
                         <tbody>
                         {% for r in discussions %}
                             <tr>
-                            <td><i class="text-muted">{{ r.num }}</a>
+                            <td class="text-end"><i class="text-muted">{{ r.num }}</a>
                             <td><a href="/?q=discussion:{{ r.discussion_id }}">{{ r.name }}</a>
 
                             <td>

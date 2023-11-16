@@ -26,6 +26,8 @@
             <div class="card-header"><b>{{link.title}}</b>
               {% if link.status >=400 %}
                 <span class="badge bg-danger float-end" title="http status">
+              {% elseif link.status == 0 %}
+                <span class="badge bg-dark float-end" title="http status">?
               {% else %}
                 <span class="badge bg-success float-end" title="http status">
               {% endif %}

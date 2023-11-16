@@ -48,7 +48,6 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="card-footer">Mime types</div>
             </div>
 
 
@@ -67,14 +66,13 @@
                         <tbody>
                         {% for r in mimetypes %}
                             <tr>
-                            <td class="text-muted">{{ r.num|e }}
-                            <td><span class="badge bg-secondary">{{ r.mimetype|e }}</span>
+                            <td class="text-muted">{{ r.num }}
+                            <td><span class="badge bg-secondary">{{ r.mimetype }}</span>
                             </tr>
                         {% endfor %}
                         </tbody>
                     </table>
                 </div>
-                <div class="card-footer">footer</div>
             </div>
 
 
