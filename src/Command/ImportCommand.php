@@ -56,7 +56,10 @@ class ImportCommand extends Command
             if(!preg_match("/^http/",$row))continue;
             $url=trim($row);
             $link=$this->linkRepository->saveUrl($url);
-            echo "$url";
+            echo $link->getId();
+            echo "\t";
+            echo $link->getUrl();
+            echo "\n";
             //$io->success($url);
             //dd($link);
         }

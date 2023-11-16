@@ -286,6 +286,17 @@ class SearchRepository extends ServiceEntityRepository
         return $this->queryBuilder;
     }
 
+    /**
+     * Filter only unreachable (status==0)
+     *
+     * @return QueryBuilder
+     */
+    public function filterUnreachable():QueryBuilder
+    {
+        $this->queryBuilder->andWhere('l.status = 0');
+        return $this->queryBuilder;
+    }
+
 
     public function searchVideos(string $q, int $page=1, int $limit=10):QueryBuilder
     {
@@ -312,7 +323,7 @@ class SearchRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('l')
             ->where('(l.url LIKE :searchTerm OR l.title LIKE :searchTerm)')
             ->setParameter('searchTerm', '%'.trim((string)$Q['q']).'%')
-            ->andWhere("l.provider IN ('bandcamp','soundcloud','Mixcloud','lastfm','MusiqueApproximative')")
+            ->andWhere("l.provider IN ('bandcamp','soundcloud','Mixcloud','lastfm','MusiqueApproximative','ouiedire')")
             ->orWhere('l.url LIKE :extension ')
             ->setParameter('extension', '%.mp3');
             //->orderBy('l.visited_at', 'DESC');

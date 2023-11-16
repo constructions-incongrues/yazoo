@@ -75,7 +75,7 @@ class CrawlCommand extends Command
 
 
         while($this->searchRepository->search($arg1)){
-
+            //$this->searchRepository->filterUnreachable();//unreachable ONly
             $data=$this->searchRepository->getResultPage(1,10);
 
             $links=$data['results'];

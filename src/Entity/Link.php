@@ -109,6 +109,18 @@ class Link
         return '';
     }
 
+
+    public function getExtension(): ?string
+    {
+        $parsed=parse_url($this->getUrl());
+        if(!empty($parsed['path'])){
+            $x=explode('.',$parsed['path']);
+            return end($x);
+        }
+
+        return '';
+    }
+
     public function setUrl(string $url): static
     {
         if (preg_match("/^www/",$url)) {

@@ -49,7 +49,7 @@ class StatusController extends AbstractController
             'last_crawled' => $last_crawled,
             'total_links' => $countTotal,
             'total_visited' => $countVisited,
-            'progress_pct' => round($pct),
+            'progress_pct' => round($pct,2),
         ]);
     }
 

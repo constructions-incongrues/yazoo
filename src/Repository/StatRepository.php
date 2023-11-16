@@ -109,8 +109,10 @@ class StatRepository extends ServiceEntityRepository
     {
         $querybuilder=$this->createQueryBuilder('l')
             ->select('COUNT(l.id) AS num', 'l.discussion_id') // Selects the count of records, discussion_id, and discussion_name
+            ->where('l.discussion_id > 0') // Exclude link with no forum relation
             //->leftJoin('l.discussion', 'd') // Joins the discussion entity (assuming 'discussion' is the relationship)
             ->groupBy('l.discussion_id') // Groups the results by discussion_id and discussion_name
+
             ->having('num > 30') // LIMIT to topics of interest
             ->orderBy('num', 'DESC');
 

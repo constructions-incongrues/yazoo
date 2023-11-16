@@ -158,4 +158,31 @@ class ApiController extends AbstractController
         return new JsonResponse('{}', 404, [], true);
     }
 
+
+    #[Route('/api/urlinfo/{url}', methods: ['POST'])]
+    public function info(string $url): JsonResponse
+    {
+        $dat=[];
+
+        try{
+            $embed = new Embed();
+            $info=$embed->get($url);
+            //$info->getResponse()
+            //dd($info);
+            $dat['title']=(string)$info->title;
+            $dat['description']=(string)$info->description;
+            $dat['image']=(string)$info->image;
+            $dat['code']=(string)$info->code;
+            $dat['statusCode']=$info->getResponse()->getStatusCode();
+        }
+
+        catch(Exception $e){
+            $dat['error']=$e->getMessage();
+            $dat['errorCode']=$e->getCode();
+        }
+
+        return $this->json($dat);
+        //return new JsonResponse('{}', 404, [], true);
+    }
+
 }

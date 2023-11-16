@@ -45,7 +45,12 @@ class StatsController extends AbstractController
     {
         $stats=$statRepository->discussions();
         foreach($stats as &$stat){
-            $stat['name']=$discussionRepository->getName($stat['discussion_id']);
+            if ($stat['discussion_id']) {
+                $stat['name']=$discussionRepository->getName($stat['discussion_id']);
+            }else{
+                $stat['name']='';
+            }
+
         }
 
         return $this->render('stats/discussions.html.twig', [
