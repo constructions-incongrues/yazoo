@@ -1,0 +1,36 @@
+
+<div class="card py-2 my-2">
+    
+    <h3>{{ r.title|default('no title') }}
+    {% if r.provider %}
+            <small style="color:#999">{{r.provider}}</small>
+        {% endif %}
+    </h3>
+        
+    <small><a href="/link/{{ r.id }}">#{{ r.id }}</a></small>
+    
+    {#
+    <!--HTTP STATUS -->
+    {% if r.status >=400 %}
+    <span class="badge bg-danger">
+    {% elseif r.status >=300 %}
+    <span class="badge bg-success">
+    {% elseif r.status >=200 %}
+    <span class="badge bg-success">
+    {% else %}
+    <span class="badge bg-dark">
+    {% endif %}
+    {{ r.status }}</span>
+    #}
+
+    {% if r.description %}
+        {{ r.description }}
+    {% else %}
+        {{ r.mimetype }}
+    {% endif %}
+    
+    <footer>
+        <a href="{{ r.url }}" class="py-2">{{ r.url }}</a>
+    </footer>
+
+</div>

@@ -2,7 +2,17 @@
     <div class="col-12">
         <form action="" method="get">
             <div class="form-group">
-                <label for="q">Search:</label>
+                
+                {% if app.request.get('_route') == 'app_audio' %}
+                    <label for="q">Search audio:</label>
+                {% elseif app.request.get('_route') == 'app_images' %}
+                    <label for="q">Search images:</label>
+                {% elseif app.request.get('_route') == 'app_video' %}
+                    <label for="q">Search videos:</label>
+                {% else %}
+                    <label for="q">Search:</label>
+                {% endif %}
+                
                 <input type="search" class="form-control" name="q" id="q" autocomplete=off autofocus value="{{ data.q }}" placeholder="Search...">
             </div>
         </form>

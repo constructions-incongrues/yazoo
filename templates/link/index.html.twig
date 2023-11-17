@@ -43,22 +43,6 @@
 
                 <li>Provider : <code>{{ link.provider }}</code></li>
 
-                <!--HTTP STATUS -->
-                {#
-                <li>
-                {% if link.status >=400 %}
-                  <span class="badge bg-danger">
-                {% elseif link.status >=300 %}
-                  <span class="badge bg-warning">
-                {% elseif link.status >=200 %}
-                  <span class="badge bg-success">
-                {% else %}
-                  <span class="badge bg-dark">
-                {% endif %}
-                Status : {{ link.status }}</span>
-                </li>
-                #}
-
                 <li>URL <a href="{{ link.url }}">{{ url }}</a>
 
                 {% if link.canonical != link.url %}
@@ -70,64 +54,53 @@
                 {% endif %}
                 </li>
 
-
-
-
                 {% if link.mimetype %}
                   <li>mimetype : {{ link.mimetype|default('no') }}</li>
                 {% endif %}
 
-
             </ul>
-
             </div>
 
             <div class="card-footer"><i class="text-muted">
                 {% if visited_at %}
-                  Last visit : {{ visited_at|ago }}
+                  Last visited : {{ visited_at|ago }}
                 {% else %}
                   <b>Not yet crawled!</b>
                 {% endif %}
                 </i>
             </div>
         </div>
+
+        {% include 'link/card-description.html.twig' %}
+
       </div>
 
       <div class="col-md-6">
-          {% include 'link/card-description.html.twig' %}
+          
+          <!-- Yazoo preview -->
+          {% if preview.status > 0 and preview.status < 400 %}
+            <div class="card" id="boxPreview">
+              <div class="card-header"><b>{{preview.provider}}</b></div>
+              <div class="card-body p-0" style="background-color:black">{{preview.html|raw}}</div>
+            </div>        
+            <!--<div id="preview2">please wait</div>-->
+          {% endif %}
+
+
           {% include 'link/card-code.html.twig' %}
-
-          <!--<div id="preview2">please wait</div>-->
+          
+          
       </div>
 
     </div>
 
-
-    <hr>
-
-    <div class="row">
-
-      <!-- Yazoo preview -->
-      {% if preview.status > 0 and preview.status < 400 %}
-      <div class="col-md-6">
-        <div class="card" id="boxPreview">
-          <div class="card-header"><b>{{preview.provider}}</b></div>
-          <div class="card-body p-0">{{preview.html|raw}}</div>
-        </div>
-      </div>
-      {% endif %}
-    </div>
 </div>
 
-<style>
-ul {
-  list-style-type: none;
-}
-#boxPreview>.card-body>img{
-  width:100%;
-}
-</style>
-
 <script src="/js/link/main.js"></script>
+
+<style>
+ul {  list-style-type: none;}
+#boxPreview>.card-body>img{  width:100%;}
+</style>
 
 {% endblock %}

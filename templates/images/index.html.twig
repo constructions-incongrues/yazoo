@@ -6,29 +6,28 @@
 
 {% include 'search/navbar.html.twig' with {'data': data} %}
 
-<div class="container-fluid">
+<div class="container">
 
     {% include 'search/search.html.twig' with {'data': data} %}
 
-    <!--https://getbootstrap.com/docs/5.0/components/card/-->
-    <div class="card">
-        <div class="card-header"><b>
+    
+    <b>
         {% if data.count > 0 %}
             {{data.count}} result(s)
         {% else %}
             no result
         {% endif %}
-        </b></div>
-        <div class="card-body">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-            {% for r in data.results %}
-                {% include 'images/card.html.twig' with {'r': r} %}
-            {% endfor %}
-            </div>
-        </div>
-        <div class="card-footer">
-            {% include 'search/pagination.html.twig' with {'data': data} %}
-        </div>
+    </b>
+
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    {% for r in data.results %}
+        {% include 'images/card.html.twig' with {'r': r} %}
+    {% endfor %}
+    </div>
+
+    <div class="row py-2">
+        {% include 'search/pagination.html.twig' with {'data': data} %}
     </div>
 
 </div>

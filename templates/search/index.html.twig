@@ -8,61 +8,27 @@
 
 <div class="container">
 
-    {% include 'search/search.html.twig' with {'data': data} %}
+        {% include 'search/search.html.twig' with {'data': data} %}
 
-    <div class="row py-2">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    {% if data.count > 0 %}
-                        {{data.count}} result(s)
-                    {% else %}
-                        no result
-                    {% endif %}
-                </div>
+        <b>
+        {% if data.count > 0 %}
+            {{data.count}} result(s)
+        {% else %}
+            no result
+        {% endif %}
+        </b>
 
-                <div class="card-body">
-                    {% for r in data.results %}
-                        <div class="result">
-                            <h4>
-                                {% if r.provider %}
-                                    [{{r.provider}}]
-                                {% endif %}
-                                <a href="{{ r.url }}">{{ r.title|default('no title') }}</a>
-                                <small><a href="/link/{{ r.id }}">#{{ r.id }}</a></small>
-                            </h4>
+        <div class="row">
 
-                            <!--HTTP STATUS -->
-                            {% if r.status >=400 %}
-                            <span class="badge bg-danger">
-                            {% elseif r.status >=300 %}
-                            <span class="badge bg-success">
-                            {% elseif r.status >=200 %}
-                            <span class="badge bg-success">
-                            {% else %}
-                            <span class="badge bg-dark">
-                            {% endif %}
-                            {{ r.status }}</span>
-
-                            <i class="text-muted">{{ r.url }}</i> <br />
-
-                            {% if r.description %}
-                                {{ r.description }}
-                            {% else %}
-                                {{ r.mimetype }}
-                            {% endif %}
-
-                        </div>
-                    {% endfor %}
-                </div>
-
-            <div class="card-footer">
-                {% include 'search/pagination.html.twig' with {'data': data} %}
-            </div>
-
+        {% for r in data.results %}
+            {% include 'search/card-result.html.twig' with {'r': r} %}
+        {% endfor %}
+        
         </div>
+        
+        {% include 'search/pagination.html.twig' with {'data': data} %}
 
-    </div>
+    
 
 </div>
 {% endblock %}

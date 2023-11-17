@@ -26,8 +26,10 @@
             {% endfor %}
         </div>
     </div>
-
-    {% include 'search/pagination.html.twig' with {'data': data} %}
+    
+    <div class="row py-2">
+        {% include 'search/pagination.html.twig' with {'data': data} %}
+    </div>
 
 </div>
 
