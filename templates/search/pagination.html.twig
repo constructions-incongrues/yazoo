@@ -4,6 +4,13 @@
 
 <nav aria-label="...">
   <ul class="pagination py-0">
+     
+    {% if data.page_prev > 0 %}
+      <li class="page-item">
+        <a class="page-link" href="?q={{data.q}}&page={{data.page_prev}}">&lt;&lt;</a>
+      </li>
+    {% endif %}
+     
      {% if data.count > 0 %}
      {% for i in 1..data.pages %}
       {% if i <= 10 %}
@@ -19,11 +26,11 @@
      {% endfor %}
     {% endif %}
 
-    {# Commented Code in Twig
+    {% if data.page_next > 0 %}
     <li class="page-item">
-      <a class="page-link" href="?q={{data.q}}&page={{data.page_index}}">Next</a>
+      <a class="page-link" href="?q={{data.q}}&page={{data.page_next}}">&gt;&gt;</a>
     </li>
-    #}
+    {% endif %}
 
   </ul>
 </nav>

@@ -184,7 +184,6 @@ class SearchRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('l');
         $queryBuilder =$this->applyFilters($queryBuilder, $Q);//Apply Filters
         //$queryBuilder->andWhere('l.status>0');//Avoid 'Unavailable or not yet crawled'
-
         //$queryBuilder->andWhere('l.status<400');//Avoid Link errors
         $this->queryBuilder=$queryBuilder;
         return $queryBuilder;
@@ -232,6 +231,8 @@ class SearchRepository extends ServiceEntityRepository
             'limit' => $pagesize,
             'pages' => $pages,
             'page_index' => $page,
+            'page_next' => $page+1,
+            'page_prev' => $page-1,
             'results' => $paginator,
         ];
     }
@@ -258,7 +259,7 @@ class SearchRepository extends ServiceEntityRepository
         $Q=$this->parseQuery($this->q);//extract filters (status:200, provider:youtube)
 
         $queryBuilder = $this->createQueryBuilder('l')
-            ->where('(l.url LIKE :searchTerm OR l.title LIKE :searchTerm)')
+            ->where('(l.url LIKE :searchTerm OR l.title LIKE :searchTerm OR l.description LIKE :searchTerm)')
             ->setParameter('searchTerm', '%'.trim((string)$Q['q']).'%')
             ->andWhere("l.mimetype LIKE :mimetype")
             ->setParameter('mimetype', 'image/%')
