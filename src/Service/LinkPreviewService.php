@@ -20,6 +20,7 @@ class LinkPreviewService
         $this->link=$link;
 
         $parsed=parse_url($this->link->getUrl());
+        
         //dd($parsed);
         /*
         if (!empty($parsed['path'])) {
@@ -128,10 +129,13 @@ class LinkPreviewService
 
         //dd($this->url, $this->host, $this->extension);
         $HOST=$this->link->getHost();
+        
         switch($HOST){
+            
             case "fr.youtube.com":
+            case "m.youtube.com":
             case "www.youtube.com":
-            case "youtu.be":
+            case "youtu.be":            
                 $dat['html']=$this->youtubePreview();
                 break;
 
