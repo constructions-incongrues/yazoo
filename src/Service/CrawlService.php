@@ -89,6 +89,11 @@ class CrawlService
                 //$io->warning("404 detected in title : ".$link->getTitle());
                 $link->setStatus(404);
             }
+            
+            if (preg_match("/^Se connecter à Facebook$/i", $link->getTitle())) {
+                $link->setStatus(404);
+            }
+            
         }
 
 
