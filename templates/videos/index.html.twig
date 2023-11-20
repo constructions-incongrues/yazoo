@@ -8,8 +8,7 @@
 
 <div class="container">
 
-  {% include 'search/search.html.twig' with {'data': data} %}
-
+    {% include 'search/search.html.twig' with {'data': data} %}
 
     <b>
         {% if data.count > 0 %}
@@ -20,19 +19,15 @@
     </b>
 
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-      {% for r in data.results %}
-          {% include 'videos/card.html.twig' with {'r': r} %}
-      {% endfor %}
+        {% for r in data.results %}
+            {% include 'videos/card.html.twig' with {'r': r} %}
+        {% endfor %}
     </div>
 
     <div class="row d-flex justify-content-center">
-      {% include 'search/pagination.html.twig' %}
+        {% include 'search/pagination.html.twig' %}
     </div>
 
-
-  </div>
-
-
-
+</div>
 
 {% endblock %}

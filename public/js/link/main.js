@@ -1,6 +1,8 @@
 // Link Preview using oembed
-let id=+document.getElementById("id").value;
 
+// It would be nice to avoid fetching preview for links with a `Yazoo preview`
+
+let id=+document.getElementById("id").value;
 let el=document.getElementById('preview2');
 el.innerHTML="<i>fetching preview...</i>";
 

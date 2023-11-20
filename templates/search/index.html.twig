@@ -18,13 +18,12 @@
         {% endif %}
         </b>
 
-        <div class="row">
-
+        
         {% for r in data.results %}
             {% include 'search/card-result.html.twig' with {'r': r} %}
         {% endfor %}
         
-        </div>
+        
         
         {% include 'search/pagination.html.twig' with {'data': data} %}
 

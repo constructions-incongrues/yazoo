@@ -1,20 +1,12 @@
-
+// Images - Replace images that do not load, with a thumbnail
 
 let images=document.querySelectorAll("img")
 
-images.forEach(el => {
-    //console.log("el",el);
-    
-    el.onabort=function(e){
-        console.log("abort",e);
-    }
-    
+images.forEach(el => {           
     el.onerror=function(e){
-        console.error(e);
+        //console.error(e);
         el.src="/img/thumbnail_no_image.jpg"
-    }
-    
+    } 
 });
 
-
-console.log('app.js?', images);
+//console.log('app.js');
