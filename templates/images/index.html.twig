@@ -2,6 +2,10 @@
 
 {% block title %}Yazoo!{% endblock %}
 
+{% block javascripts %}
+    <script src="/js/images/app.js" defer></script>
+{% endblock %}
+
 {% block body %}
 
 {% include 'search/navbar.html.twig' with {'data': data} %}
@@ -11,13 +15,13 @@
     {% include 'search/search.html.twig' with {'data': data} %}
 
     
-    <b>
-        {% if data.count > 0 %}
-            {{data.count}} result(s)
-        {% else %}
-            no result
-        {% endif %}
-    </b>
+    
+    {% if data.count > 0 %}
+        {{data.count}} result(s)
+    {% else %}
+        {% include 'search/noresult.html.twig' %}
+    {% endif %}
+
 
 
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">

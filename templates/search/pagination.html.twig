@@ -1,6 +1,7 @@
 
-
-<b>{{data.count}} result(s)</b>
+{% if data.count > 0 %}
+  <b>{{data.count}} result(s)</b>
+{% endif %}
 
 <nav aria-label="...">
   <ul class="pagination py-0">
@@ -27,9 +28,9 @@
     {% endif %}
 
     {% if data.page_next > 0 %}
-    <li class="page-item">
-      <a class="page-link" href="?q={{data.q}}&page={{data.page_next}}">&gt;&gt;</a>
-    </li>
+      <li class="page-item">
+        <a class="page-link" href="?q={{data.q}}&page={{data.page_next}}">&gt;&gt;</a>
+      </li>
     {% endif %}
 
   </ul>

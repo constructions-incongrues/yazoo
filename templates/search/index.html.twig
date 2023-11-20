@@ -14,7 +14,7 @@
         {% if data.count > 0 %}
             {{data.count}} result(s)
         {% else %}
-            no result
+            {% include 'search/noresult.html.twig' %}
         {% endif %}
         </b>
 

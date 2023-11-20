@@ -2,7 +2,13 @@
 
   <div class="container">
 
-    <a class="navbar-brand mb-0 h1" href="/">Yazoo!</a>
+    <a class="navbar-brand mb-0 h1" href="/">
+      Yazoo!
+      {% if get_env("APP_ENV") == 'dev' %}
+      [DEV]
+      {% endif %}
+
+    </a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -24,12 +30,14 @@
           <a class="nav-link {% if app.request.attributes.get('_route') == 'app_video' %}active{% endif %}" href="{{ path('app_video', app.request.query.all) }}">Videos</a>
         </li>
 
+
         <li class="nav-item">
           <a class="nav-link {% if app.request.attributes.get('_route') == 'app_audio' %}active{% endif %}" href="{{ path('app_audio', app.request.query.all) }}">Audio</a>
         </li>
 
         </ul>
-
+        
+        {% if get_env("APP_ENV") == 'dev' %}
         <ul class="navbar-nav">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -42,8 +50,11 @@
             <li><a class="dropdown-item" href="/blacklist">Blacklist</a></li>
             <li><a class="dropdown-item" href="/teloche">Teloche</a></li>
           </ul>
-        </li>
-      </ul>
+          </li>
+        </ul>
+        {% endif %}
+
+        
 
     </div>
   </div>
