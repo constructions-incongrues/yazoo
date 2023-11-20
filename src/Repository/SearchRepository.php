@@ -220,9 +220,18 @@ class SearchRepository extends ServiceEntityRepository
             ->setFirstResult($pagesize * ($page-1)) // set the offset
             ->setMaxResults($pagesize); // set the limit
 
-
-
-
+        $page_next=0;
+        $page_prev=0;
+        if ($count>0) {
+            
+            if ($page<$pages) {
+                $page_next=$page+1;
+            }            
+            
+            if ($page>0) {
+                $page_prev=$page-1;
+            }            
+        }
 
         return [
             'q' => $this->q,
@@ -231,8 +240,8 @@ class SearchRepository extends ServiceEntityRepository
             'limit' => $pagesize,
             'pages' => $pages,
             'page_index' => $page,
-            'page_next' => $page+1,
-            'page_prev' => $page-1,
+            'page_next' => $page_next,
+            'page_prev' => $page_prev,
             'results' => $paginator,
         ];
     }
