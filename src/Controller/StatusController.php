@@ -62,9 +62,11 @@ class StatusController extends AbstractController
 
         $last_records=$linkRepository->findBy([],['created_at' => 'DESC'], 1);
         $last_crawled=$linkRepository->findBy([],['visited_at'=> 'DESC'], 1);
+        $oldest_crawled=$linkRepository->findBy([],['visited_at'=> 'ASC'], 1);
 
         $dat['last_link_time'] = $last_records[0]->getCreatedAt();
         $dat['last_crawl_time']= $last_crawled[0]->getVisitedAt();
+        $dat['oldest_crawl_time']= $oldest_crawled[0]->getVisitedAt();
         $delta=time()-strtotime($last_crawled[0]->getVisitedAt()->format("Y-m-d H:i:s"));
 
         if ($delta>3600) {
