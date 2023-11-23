@@ -26,9 +26,6 @@ class ApiController extends AbstractController
     #[Route('/api', name: 'app_job')]
     public function index(RouterInterface $routerInterface): Response
     {
-        //$routes = $routerInterface->getRouteCollection();
-        //dd($routes);
-
         return $this->render('api/index.html.twig', [
             'controller_name' => 'JobController',
         ]);
@@ -38,10 +35,9 @@ class ApiController extends AbstractController
     public function sync(LinkRepository $linkRepository, DiscussionRepository $discussionRepository, MusiqueIncongrueService $MI, ExtractService $extractService): JsonResponse
     {
 
-
-
         $dat=[];//payload
         $dat['start_time']=time();
+
         // 1 - Sync Links
         $dat['new_urls']=0;
         $data=$MI->fetchComments();//Fetch From Directus/MusiqueIncongrues
@@ -122,6 +118,31 @@ class ApiController extends AbstractController
         return new JsonResponse($json, 200);
     }
 
+    // Random Link    
+    #[Route('/api/random/image', methods: ['GET'])]
+    public function randomImage(LinkRepository $linkRepository): JsonResponse
+    {
+        $link=$linkRepository->findRandomImage();
+        return $this->json($link);
+    }
+
+    #[Route('/api/random/youtube', methods: ['GET'])]
+    public function randomYt(LinkRepository $linkRepository): JsonResponse
+    {
+        $link=$linkRepository->findRandomYoutube();
+        return $this->json($link);
+    }
+
+    #[Route('/api/random/gif', methods: ['GET'])]
+    public function randomGif(LinkRepository $linkRepository): JsonResponse
+    {
+        $link=$linkRepository->findRandomGif();
+        return $this->json($link);
+    }
+
+
+
+
     #[Route('/api/link/{id}/embed', methods: ['GET'])]
     public function embed(int $id, LinkRepository $linkRepository): JsonResponse
     {
@@ -157,6 +178,8 @@ class ApiController extends AbstractController
 
         return new JsonResponse('{}', 404, [], true);
     }
+
+    
 
 
     #[Route('/api/urlinfo/{url}', methods: ['POST'])]
