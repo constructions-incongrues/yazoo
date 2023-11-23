@@ -14,7 +14,7 @@ class ExtractService
      * @param string $text
      * @return array
      */
-    public function extractUrls(string $text)
+    public function extractUrls(string $text): array
     {
         //echo $text;
         //$pattern = '/\bhttps?:\/\/\S+\b/';
@@ -29,7 +29,6 @@ class ExtractService
         for($i=0;$i<count($o[0]);$i++){
             $match=$o[0][$i];
             $url=$o[2][$i];
-            //echo "<li>match=$match";
             $text=str_replace($match,'', $text);//remove matches
             $urls[]=$url;
         }
@@ -57,8 +56,8 @@ class ExtractService
 
         //Make some cleaning
         foreach($urls as $k=>$url){
-            $urls[$k]=$this->httpsFix($url);
-            $urls[$k]=$this->sanitize($url);
+            $urls[$k]=$this->httpsFix($url);//add https for known providers
+            $urls[$k]=$this->sanitize($url);//clear url string
         }
 
         return array_unique($urls);
@@ -99,7 +98,7 @@ class ExtractService
         $list[]='bandcamp.com';
 
         $x=parse_url($url);
-        //dd($x);
+        
         if (!$x) {
             return $url;
         }
@@ -111,9 +110,6 @@ class ExtractService
         if ($x['scheme']=='https') {//https already ok
             return $url;
         }
-
-        //echo "$url\n";
-        //print_r($x);
 
         if (isset($x['host']) && in_array($x['host'], $list)) {
             //exit("$url http->https");
@@ -136,20 +132,16 @@ class ExtractService
             $url=preg_replace("/\[.*/", '', $url);
         }
 
-        // - http://*
-        //this is invalid
 
-        // - AND
+        // url is too short to be valid
         if(strlen($url)<5)$url='';
 
-        //remove trailing slashe ( http://benetbene.net/ -> http://benetbene.net )
+        //remove trailing slash : http://benetbene.net/ -> http://benetbene.net
         $url=preg_replace("/\/$/",'', $url);
 
-        //Extra long URL's
-        if(strlen($url)>1020){
-            echo "Suspiciously long URL:\n$url\n";
+        //Skip Suspiciously long URL's
+        if (strlen($url)>1020) {
             $url='';
-            //exit($url);
         }
 
         return trim($url);
@@ -161,7 +153,7 @@ class ExtractService
      *
      * @return array
      */
-
+    /*
      public function parseComments(array $records)
     {
         //We should extract bbcode tags first
@@ -182,5 +174,5 @@ class ExtractService
         }
         return $links;
     }
-
+    */
 }
