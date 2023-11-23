@@ -16,7 +16,7 @@ use Exception;
 
 #[AsCommand(
     name: 'urlinfo',
-    description: 'Add a short description for your command',
+    description: 'Return Info about given URL, using embed/embed',
 )]
 class UrlinfoCommand extends Command
 {

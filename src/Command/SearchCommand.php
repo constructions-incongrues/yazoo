@@ -13,7 +13,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'search',
-    description: 'Add a short description for your command',
+    description: 'Perform a Yazoo search on the command line',
 )]
 class SearchCommand extends Command
 {
@@ -41,8 +41,12 @@ class SearchCommand extends Command
         $arg1 = $input->getArgument('arg1');
 
         if ($arg1) {
-            //$io->note(sprintf('You passed an argument: %s', $arg1));
-            $io->note($arg1);
+            //ok
+        }else{
+            $io->error("You must pass a search query");
+            $io->comment('Example : $./bin/console search status:200');
+            $io->comment('     or : $./bin/console search "tintin et milou"');
+            return Command::SUCCESS;
         }
 
         if ($input->getOption('option1')) {

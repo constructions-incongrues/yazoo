@@ -14,7 +14,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'truncate',
-    description: 'Add a short description for your command',
+    description: 'TRUNCATE TABLE link',
 )]
 class TruncateCommand extends Command
 {

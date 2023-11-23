@@ -16,7 +16,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'thebrain',
-    description: 'Add a short description for your command',
+    description: 'Extract Thebrainradio URLs (Episodes or Videos)',
 )]
 class ThebrainCommand extends Command
 {
