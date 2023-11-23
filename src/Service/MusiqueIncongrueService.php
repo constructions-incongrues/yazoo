@@ -36,13 +36,12 @@ class MusiqueIncongrueService
     }
 
     /**
-     * Authenticate and return TOKEN
+     * Authenticate and return Directus API TOKEN
      *
      * @return string TOKEN
      */
     public function authenticate():string
     {
-
         $endpoint = "https://data.constructions-incongrues.net/musiques-incongrues/auth/authenticate";
 
         if (!isset($this->directus_email)) {
@@ -58,40 +57,36 @@ class MusiqueIncongrueService
             'email' => $this->directus_email,
             'password' => $this->directus_password
         );
-        //var_dump($data);exit;
 
         $ch = curl_init($endpoint);
-
         // Set cURL options for authentication and request
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-        ));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         //TODO add a max exec time here
 
-
         $response = curl_exec($ch);
         curl_close($ch);
 
         $data=json_decode($response, true);
-        //var_dump($data);exit;
+        
         if (isset($data['data']['token'])) {
             $this->token=$data['data']['token'];
         }else{
-            throw new Exception("Error Retreiving token", 1);
+            throw new Exception("Error Retrieving token", 1);
         }
-
         return $this->token;
     }
 
-    public function fetch(string $endpoint)
+    /**
+     * Request endpoint, return content as Associative array
+     */
+    private function fetch(string $endpoint): array
     {
 
         if (!$this->token) {
             $this->authenticate();
-            //throw new Exception("no token", 1);
         }
 
         $ch = curl_init($endpoint);
@@ -108,6 +103,7 @@ class MusiqueIncongrueService
         return json_decode($response, true);
     }
 
+    
     /**
      * Return new MI comments since Yazoo last inserted link.
      * note: As a consequence, if new comments do not contain links, the lastCommentId wont be updated.
@@ -147,21 +143,18 @@ class MusiqueIncongrueService
         }
 
         $lastDiscussion=$this->discussionRepository->findByHighestId();
+        $lastDiscussionID=0;
         if ($lastDiscussion) {
-            $lastDiscussionID=$lastDiscussion->getDiscussionId();
-            //var_dump($lastDiscussionID);exit;
-        }else{
-            $lastDiscussionID=0;
+            $lastDiscussionID=$lastDiscussion->getDiscussionId();            
         }
-        //var_dump($lastDiscussionID);exit;
 
-        $endpoint = "https://data.constructions-incongrues.net/musiques-incongrues/items/LUM_Discussion?";
+        $endpoint ="https://data.constructions-incongrues.net/musiques-incongrues/items/LUM_Discussion?";
         $endpoint.="&fields=DiscussionID,Name,DateCreated";
         $endpoint.="&limit=$limit";
         $endpoint.="&sort=" . urlencode("DiscussionID");
         $endpoint.="&filter[DiscussionID][gt]=$lastDiscussionID";
         $data= $this->fetch($endpoint);
-        //dd($data);exit;
+
         foreach($data['data'] as $k=>$r){
             $data['data'][$k]['Name']=$this->fixLatinGarbageEncoding($r['Name']);
         }
