@@ -95,10 +95,27 @@ class Link
     public function getHost(): ?string
     {
         $parsed=parse_url($this->getUrl());
+
+        //dd($parsed);
         if (!empty($parsed['host'])) {
             return $parsed['host'];
         }
     }
+
+    public function getDomain(): ?string
+    {
+        $parsed=parse_url($this->getUrl());
+
+        //dd($parsed);
+        if (empty($parsed['host'])) return null;
+        
+        $host_parts = explode('.', $parsed['host']);
+        $domain = $host_parts[count($host_parts) - 2] . '.' . $host_parts[count($host_parts) - 1];
+        return $domain;
+        
+    }
+
+
 
     public function getFilename(): ?string
     {
@@ -112,10 +129,13 @@ class Link
 
     public function getExtension(): ?string
     {
-        $parsed=parse_url($this->getUrl());
-        if(!empty($parsed['path'])){
-            $x=explode('.',$parsed['path']);
-            return end($x);
+        $fn=$this->getFilename();
+        if ($fn) {
+            $x=explode('.', $fn);
+            if (count($x)>1) {
+                return end($x);
+            }
+            
         }
 
         return '';
