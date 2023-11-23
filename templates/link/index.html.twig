@@ -84,10 +84,14 @@
               <div class="card-body p-0" style="background-color:black">{{preview.html|raw}}</div>
             </div>        
             <!--<div id="preview2">please wait</div>-->
+          {% else %}
+
+            {% include 'link/card-code.html.twig' %}
+          
           {% endif %}
 
 
-          {% include 'link/card-code.html.twig' %}
+          
           
           
       </div>
