@@ -235,43 +235,62 @@ class LinkRepository extends ServiceEntityRepository
    }
 
 
-   public function findVideos(): array
+   
+   public function findRandomImage(): array
    {
-        return $this->createQueryBuilder('l')
-           ->andWhere('l.status > 0')
-           ->andWhere('l.provider LIKE :provider')
-           ->setParameter('provider', 'youtube')
-           ->setMaxResults(30)
-           ->getQuery()
-           ->getResult();
+    
+        $q=$this->createQueryBuilder('l')
+            ->andWhere('l.status = 200')    
+            ->andWhere('l.mimetype LIKE :mimetype')    
+            ->setParameter('mimetype', 'image%')
+            ->orderBy('RAND()')
+            ->setMaxResults(1)
+            ->getQuery();
+        
+           return $q->getResult();
    }
 
+
+   public function findRandomGif(): array
+   {
+    
+        $q=$this->createQueryBuilder('l')
+            ->andWhere('l.status = 200')    
+            ->andWhere('l.url LIKE :extension')    
+            ->setParameter('extension', '%.gif')
+            ->orderBy('RAND()')
+            ->setMaxResults(1)
+            ->getQuery();
+        
+           return $q->getResult();
+   }
+
+   public function findRandomYoutube(): array
+   {
+        $q=$this->createQueryBuilder('l')
+            ->andWhere('l.status = 200')    
+            ->andWhere('l.url LIKE :youtube')    
+            ->setParameter('youtube', '%youtube.com%')
+            ->orderBy('RAND()')
+            ->setMaxResults(1)
+            ->getQuery();
+        
+           return $q->getResult();
+   }
+   
+   
    public function findImages():array
    {
+        //this is limited to true image links
         return $this->createQueryBuilder('l')
            ->andWhere('l.status > 0')
            ->andWhere('l.mimetype LIKE :mimetype')
            ->setParameter('mimetype', 'image%')
-           //->orderBy('l.id', 'DESC')
-           //->setMaxResults(30)
            ->getQuery()
            ->getResult();
    }
 
-   /*
-   //this is crap
-   public function findExtension(string $ext):array
-   {
-    return $this->createQueryBuilder('l')
-           ->andWhere('l.status < 1')
-           ->andWhere('l.url LIKE :ext')
-           ->setParameter('ext', '%'.$ext)
-           //->orderBy('l.id', 'DESC')
-           ->setMaxResults(30)
-           ->getQuery()
-           ->getResult();
-   }
-   */
+   
 
     /**
      * Return the highest Comment_id in the links table, so we know where to search;
