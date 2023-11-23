@@ -73,15 +73,5 @@ class LinkController extends AbstractController
             'visited_at'=>$last_visit,
         ]);
     }
-
-    #[Route('/link/{id}/embed', name: 'app_link_embed')]
-    public function embed(int $id): Response
-    {
-        //$url='test';
-        $link=$this->linkRepository->find($id);
-        $embed=new Embed();
-        $dat=$embed->get($link->getUrl());
-        //dd($dat);
-        return $this->json($dat);
-    }
+    
 }
