@@ -72,6 +72,9 @@ class LinkPreviewService
 
         $URL=$this->link->getUrl();
         $youtube_id='';//xKQskYS18vI
+        
+        //dd('youtubePreview()');
+        
         if (preg_match("/youtu\.be\/([0-9a-z_-]{11})/i", $URL, $o)) {
             //print_r($o);
             $youtube_id=$o[1];
@@ -111,10 +114,14 @@ class LinkPreviewService
 
     public function imagePreview(): string
     {
-        $htm='<img src="'.htmlentities($this->link->getUrl()).'">';
+        $htm='<img src="' . htmlentities($this->link->getUrl()) . '">';
         return $htm;
     }
 
+    
+    /**
+     * It's not great, but it does something
+     */
     public function data()
     {
         $dat=[];
@@ -129,27 +136,23 @@ class LinkPreviewService
 
         //dd($this->url, $this->host, $this->extension);
         $HOST=$this->link->getHost();
-        
-        switch($HOST){
-            
-            case "fr.youtube.com":
-            case "m.youtube.com":
-            case "www.youtube.com":
+        $domain=$this->link->getDomain();
+        //dd($domain);
+        switch($domain){            
+            case "youtube.com":
             case "youtu.be":            
                 $dat['html']=$this->youtubePreview();
                 break;
 
-            case "www.vimeo.com":
             case "vimeo.com":
                 $dat['html']=$this->vimeoPreview();
                 break;
 
-            case "www.dailymotion.com":
             case "dailymotion.com":
                 $dat['html']=$this->dailymotion();
                 break;
 
-                /*
+            /*
             case "www.mixcloud.com":
                 $dat['html']="image:".$dat['image'];
                 break;
