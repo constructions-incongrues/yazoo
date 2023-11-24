@@ -1,5 +1,9 @@
 {
+    "editor.indentSize": 4,
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
     "github-actions.workflows.pinned.workflows": [
-        ".github/workflows/ci.yml"
+        ".github/workflows/docker-image.yml"
     ]
 }

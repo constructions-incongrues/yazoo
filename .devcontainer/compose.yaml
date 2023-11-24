@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  php:
+    build:
+      context: ..
+      target: frankenphp_dev
+    volumes:
+      - ../:/app
+      - ../frankenphp/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ../frankenphp/conf.d/app.dev.ini:/usr/local/etc/php/conf.d/app.dev.ini:ro
+      - ../:/workspaces
+    network_mode: service:adminer
+    depends_on:
+      - db
+    env_file: ../.env
+
+  db:
+    image: mariadb:${MARIADB_VERSION:-10.3.38}
+    restart: unless-stopped
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    env_file: ../.env
+
+  adminer:
+    image: adminer:latest
+    restart: unless-stopped
+    depends_on:
+      - db
+    env_file: ../.env
+
+volumes:
+  mariadb-data: {}
