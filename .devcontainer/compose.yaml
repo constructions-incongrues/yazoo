@@ -13,6 +13,9 @@ services:
     network_mode: service:adminer
     depends_on:
       - db
+    environment:
+      CADDY_GLOBAL_OPTIONS: auto_https off
+      SERVER_NAME: http://localhost
     env_file: ../.env
 
   db:

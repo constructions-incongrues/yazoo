@@ -1,16 +1,14 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/php-mariadb
 {
-	"name": "PHP/MariaDB",
+	"name": "Yazoo! DEV",
 	"dockerComposeFile": ["compose.yaml"],
 	"service": "php",
+	"forwardPorts": [80, 8080],
 	"workspaceFolder": "/app",
-	"forwardPorts": [443, 8080],
 	"portsAttributes": {
-		"443": {
-			"label": "Application",
-			"onAutoForward": "notify",
-			"protocol": "https"
+		"80": {
+			"label": "Yazoo!"
 		},
 		"8080": {
 			"label": "Adminer"
