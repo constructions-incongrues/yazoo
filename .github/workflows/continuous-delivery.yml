@@ -72,5 +72,5 @@ jobs:
           username: ${{ secrets.PORTAINER_USERNAME }}
           password: ${{ secrets.PORTAINER_PASSWORD }}
           stack-name: yazoo
-          stack-definition: compose.prod.yaml
+          stack-definition: etc/compose.portainer.yaml
           image: ghcr.io/${{ github.repository }}:${{ steps.meta.outputs.version }}

@@ -7,7 +7,7 @@ networks:
 
 services:
   php:
-    image: ghcr.io/trivoallan/yazoo:latest
+    image: ghcr.io/constructions-incongrues/yazoo:latest
     networks:
       - default
       - public
