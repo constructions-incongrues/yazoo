@@ -31,5 +31,4 @@ jobs:
           password: ${{ secrets.PORTAINER_PASSWORD }}
           stack-name: yazoo
           stack-definition: compose.prod.yaml
-          template-variables: '{"IMAGE_NAME": "${{ github.event.inputs.image_name }}"}'
           image: ${{ github.event.inputs.image_name }}
