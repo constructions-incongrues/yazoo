@@ -20,5 +20,8 @@
 				"GitHub.vscode-pull-request-github",
 				"github.vscode-github-actions"			]
 		}
+	},
+	"features": {
+		"ghcr.io/cirolosapio/devcontainers-features/alpine-node:0": {}
 	}
 }
