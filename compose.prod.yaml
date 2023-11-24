@@ -7,7 +7,7 @@ networks:
 
 services:
   php:
-    image: ghcr.io/trivoallan/yazoo:portainer
+    image: ${IMAGE_NAME:-ghcr.io/trivoallan/yazoo:latest}
     networks:
       - default
       - public

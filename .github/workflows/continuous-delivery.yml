@@ -65,13 +65,13 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Deploy
-        uses: carlrygart/portainer-stack-deploy@v1
+        uses: datntdev0/action-deploy-to-portainer@v0.1.0
         # if a tag, deploy to portainer
         if: startsWith(github.ref, 'refs/tags/v')
         with:
-          portainer-host: ${{ secrets.PORTAINER_HOST }}
-          username: ${{ secrets.PORTAINER_USERNAME }}
-          password: ${{ secrets.PORTAINER_PASSWORD }}
-          stack-name: yazoo
-          stack-definition: compose.prod.yaml
-          image: ${{ steps.meta.outputs.tags }}
+          portainerHost: ${{ secrets.PORTAINER_HOST }}
+          portainerApiKey: ${{ secrets.PORTAINER_API_KEY }}
+          portainerEnvId: ${{ secrets.PORTAINER_ENV_ID }}
+          portainerStackName: yazoo
+          portainerFilePath: compose.prod.yaml
+          portainerEnvVars: '[{"name": "IMAGE_NAME", "value": "${{ steps.meta.outputs.tags }}"}]'
