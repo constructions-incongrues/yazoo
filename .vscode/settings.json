@@ -4,6 +4,7 @@
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
     "github-actions.workflows.pinned.workflows": [
-        ".github/workflows/docker-image.yml"
+        ".github/workflows/continuous-delivery.yml",
+        ".github/workflows/deploy.yml"
     ]
 }
