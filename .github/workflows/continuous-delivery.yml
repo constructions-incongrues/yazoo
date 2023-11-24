@@ -73,4 +73,4 @@ jobs:
           password: ${{ secrets.PORTAINER_PASSWORD }}
           stack-name: yazoo
           stack-definition: compose.prod.yaml
-          image: ${{ steps.meta.outputs.tags }}
+          image: ${{ steps.meta.outputs.version }}
