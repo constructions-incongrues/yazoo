@@ -1,0 +1,34 @@
+name: Deploy
+
+# Configures this workflow to run every time a change is pushed to the branch called `release`.
+on:
+  workflow_dispatch:
+    inputs:
+      # trunk-ignore(checkov/CKV_GHA_7)
+      image_name:
+        description: Image Name
+        required: true
+        default: ghcr.io/constructions-incongrues/yazoo:latest
+
+# There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # trunk-ignore(checkov/CKV2_GHA_1)
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy stack to Portainer
+        uses: carlrygart/portainer-stack-deploy@v1
+        with:
+          portainer-host: ${{ secrets.PORTAINER_HOST }}
+          username: ${{ secrets.PORTAINER_USERNAME }}
+          password: ${{ secrets.PORTAINER_PASSWORD }}
+          stack-name: yazoo
+          stack-definition: compose.prod.yaml
+          image: ${{ github.event.inputs.image_name }}

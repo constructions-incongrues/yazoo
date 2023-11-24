@@ -1,10 +1,12 @@
 doctrine:
     dbal:
-        url: '%env(resolve:DATABASE_URL)%'
-
-        # IMPORTANT: You MUST configure your server version,
-        # either here or in the DATABASE_URL env var (see .env file)
-        #server_version: '15'
+        dbname:               '%env(MARIADB_DATABASE)%'
+        host:                 '%env(MARIADB_HOST)%'
+        port:                 '%env(MARIADB_PORT)%'
+        user:                 '%env(MARIADB_USER)%'
+        password:             '%env(MARIADB_PASSWORD)%'
+        server_version:       '%env(MARIADB_VERSION)%'
+        charset:              '%env(MARIADB_CHARSET)%'
 
         profiling_collect_backtrace: '%kernel.debug%'
     orm:

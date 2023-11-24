@@ -2,7 +2,7 @@
 
 # Versions
 FROM dunglas/frankenphp:latest-alpine AS frankenphp_upstream
-FROM composer/composer:2-bin AS composer_upstream
+FROM composer/composer:2.5.8-bin AS composer_upstream
 
 
 # The different stages of this Dockerfile are meant to be built into separate images
@@ -15,6 +15,11 @@ FROM frankenphp_upstream AS frankenphp_base
 
 WORKDIR /app
 
+# trunk-ignore(checkov/CKV_DOCKER_8)
+USER root
+
+EXPOSE 80 443
+
 # persistent / runtime deps
 # hadolint ignore=DL3018
 RUN apk add --no-cache \
@@ -22,6 +27,7 @@ RUN apk add --no-cache \
 		file \
 		gettext \
 		git \
+		nss-tools \
 	;
 
 RUN set -eux; \
@@ -58,10 +64,6 @@ ENV APP_ENV=dev XDEBUG_MODE=off
 VOLUME /app/var/
 
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
-
-RUN apk add --no-cache \
-		gnupg \
-	;
 
 RUN set -eux; \
 	install-php-extensions \
