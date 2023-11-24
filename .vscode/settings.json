@@ -5,6 +5,7 @@
     "files.trimTrailingWhitespace": true,
     "github-actions.workflows.pinned.workflows": [
         ".github/workflows/continuous-delivery.yml",
-        ".github/workflows/deploy.yml"
+        ".github/workflows/deploy.yml",
+        ".github/workflows/release.yaml"
     ]
 }
