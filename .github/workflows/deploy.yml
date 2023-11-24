@@ -23,12 +23,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Deploy
-        uses: datntdev0/action-deploy-to-portainer@v0.1.0
+      - name: Deploy stack to Portainer
+        uses: carlrygart/portainer-stack-deploy@v1
         with:
-          portainerHost: ${{ secrets.PORTAINER_HOST }}
-          portainerApiKey: ${{ secrets.PORTAINER_API_KEY }}
-          portainerEnvId: ${{ secrets.PORTAINER_ENV_ID }}
-          portainerStackName: yazoo
-          portainerFilePath: compose.prod.yaml
-          portainerEnvVars: '[{"name": "IMAGE_NAME", "value": "${{ inputs.image_name }}"}]'
+          portainer-host: ${{ secrets.PORTAINER_HOST }}
+          username: ${{ secrets.PORTAINER_USERNAME }}
+          password: ${{ secrets.PORTAINER_PASSWORD }}
+          stack-name: yazoo
+          stack-definition: compose.prod.yaml
+          template-variables: '{"IMAGE_NAME": "${{ github.event.inputs.image_name }}"}'
