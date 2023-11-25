@@ -69,19 +69,10 @@ jobs:
           target: frankenphp_prod
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache
-          cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache,mode=max
+          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:${{ github.ref_name }}
+          cache-to: type=inline
 
-  deploy:
-    needs: build-push
-    runs-on: ubuntu-latest
-    # trunk-ignore(checkov/CKV2_GHA_1)
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - name: Deploy to Portainer
+      - name: Deploy
         uses: carlrygart/portainer-stack-deploy@v1.3.0
         if: startsWith(github.ref, 'refs/tags/v')
         with:
