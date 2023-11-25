@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy Any Image
 
 # Configures this workflow to run every time a change is pushed to the branch called `release`.
 on:
