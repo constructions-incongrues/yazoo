@@ -17,6 +17,7 @@ services:
       CADDY_GLOBAL_OPTIONS: auto_https off
       SERVER_NAME: http://localhost
     env_file: ../.env
+    restart: unless-stopped
 
   db:
     image: mariadb:${MARIADB_VERSION:-10.3.38}
