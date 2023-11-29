@@ -23,6 +23,7 @@ services:
     image: mariadb:${MARIADB_VERSION:-10.3.38}
     restart: unless-stopped
     volumes:
+      - ../etc/yazoo.sql.gz:/docker-entrypoint-initdb.d/00_yazoo.sql.gz
       - mariadb-data:/var/lib/mysql
     env_file: ../.env
 
