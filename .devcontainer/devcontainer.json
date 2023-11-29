@@ -4,7 +4,7 @@
 	"name": "Yazoo! DEV",
 	"dockerComposeFile": ["compose.yaml"],
 	"service": "php",
-	"forwardPorts": [80, 8080],
+	"forwardPorts": [80, 8080, 2019],
 	"workspaceFolder": "/app",
 	"portsAttributes": {
 		"80": {
@@ -12,6 +12,9 @@
 		},
 		"8080": {
 			"label": "Adminer"
+		},
+		"2019": {
+			"label": "FrankenPHP Metrics"
 		}
 	},
 	"customizations": {
