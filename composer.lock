@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "007326992fe83fba8323a434a802e185",
+    "content-hash": "a1b485131fc08d74662c060eb1c6c9b4",
     "packages": [
         {
             "name": "beberlei/doctrineextensions",
@@ -1952,6 +1952,71 @@
                 "source": "https://github.com/KnpLabs/KnpTimeBundle/tree/v2.2.0"
             },
             "time": "2023-11-13T19:38:34+00:00"
+        },
+        {
+            "name": "macpaw/symfony-health-check-bundle",
+            "version": "v1.4.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:MacPaw/symfony-health-check-bundle.git",
+                "reference": "4dbb634e0d1b81a83a80650f0cfe70f2f5a26014"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/MacPaw/symfony-health-check-bundle/zipball/4dbb634e0d1b81a83a80650f0cfe70f2f5a26014",
+                "reference": "4dbb634e0d1b81a83a80650f0cfe70f2f5a26014",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4",
+                "symfony/framework-bundle": "^3.4 || ^4.1.12 || ^5.0 || ^6.0"
+            },
+            "require-dev": {
+                "ext-json": "*",
+                "phpstan/phpstan": "1.9.*",
+                "phpunit/phpunit": "^8.5 || ^9.0",
+                "squizlabs/php_codesniffer": "3.7.*",
+                "symfony/browser-kit": "^3.4 || ^4.4 || ^5.0 || ^6.0",
+                "symfony/phpunit-bridge": "^3.4 || ^4.1.12 || ^5.0 || ^6.0",
+                "symfony/yaml": "^3.4 || ^4.0 || ^5.0 || ^6.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "SymfonyHealthCheckBundle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Yozhef Hisem",
+                    "email": "hisemjo@gmail.com",
+                    "homepage": "https://macpaw.com/",
+                    "role": "Software Engineer"
+                },
+                {
+                    "name": "Ivan Hisem",
+                    "email": "2yonchi@gmail.com",
+                    "homepage": "https://macpaw.com/",
+                    "role": "Software Engineer"
+                }
+            ],
+            "description": "Symfony health check bundle",
+            "homepage": "https://github.com/MacPaw/symfony-health-check-bundle",
+            "keywords": [
+                "MacPaw",
+                "Symfony-Health-Check",
+                "Symfony-Health-Check-Bundle",
+                "Symfony-Health-Check-Doctrine",
+                "doctrine",
+                "healthcheck",
+                "monitoring",
+                "symfony"
+            ],
+            "time": "2023-10-03T14:09:20+00:00"
         },
         {
             "name": "ml/iri",
