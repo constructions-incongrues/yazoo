@@ -38,6 +38,11 @@ class ApiController extends AbstractController
         $dat=[];//payload
         $dat['start_time']=time();
 
+        if (!isset($_ENV['DIRECTUS_EMAIL'])) {
+            $dat['error']='no DIRECTUS_EMAIL';
+            return $this->json($dat);
+        }
+
         // 1 - Sync Links
         $dat['new_urls']=0;
         $data=$MI->fetchComments();//Fetch From Directus/MusiqueIncongrues
