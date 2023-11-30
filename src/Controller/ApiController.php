@@ -31,7 +31,7 @@ class ApiController extends AbstractController
         ]);
     }
 
-    #[Route('/api/sync', methods: ['GET'])]
+    #[Route('/api/sync', methods: ['POST'])]
     public function sync(LinkRepository $linkRepository, DiscussionRepository $discussionRepository, MusiqueIncongrueService $MI, ExtractService $extractService): JsonResponse
     {
 
