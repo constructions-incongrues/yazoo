@@ -21,7 +21,7 @@ class SearchController extends AbstractController
         $this->loggerInterface=$loggerInterface;
     }
 
-    #[Route('/', name: 'homepage')]
+    #[Route('/', name: 'app_landing')]
     public function index(): Response
     {
         $q='';
