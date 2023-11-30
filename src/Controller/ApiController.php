@@ -31,12 +31,17 @@ class ApiController extends AbstractController
         ]);
     }
 
-    #[Route('/api/sync', methods: ['GET'])]
+    #[Route('/api/sync', methods: ['POST'])]
     public function sync(LinkRepository $linkRepository, DiscussionRepository $discussionRepository, MusiqueIncongrueService $MI, ExtractService $extractService): JsonResponse
     {
 
         $dat=[];//payload
         $dat['start_time']=time();
+
+        if (!isset($_ENV['DIRECTUS_EMAIL'])) {
+            $dat['error']='no DIRECTUS_EMAIL';
+            return $this->json($dat);
+        }
 
         // 1 - Sync Links
         $dat['new_urls']=0;

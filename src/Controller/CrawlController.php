@@ -28,7 +28,7 @@ class CrawlController extends AbstractController
         $this->crawlService = $crawlService;
     }
 
-    #[Route('/api/crawl/', name: 'app_crawl')]
+    #[Route('/api/crawl/', methods: ['POST'])]
     public function crawl(SearchRepository $searchRepository): JsonResponse
     {
         $dat['start_time']=time();
@@ -43,7 +43,7 @@ class CrawlController extends AbstractController
         return $this->json($dat);
     }
 
-    #[Route('/api/crawl/audio', name: 'app_crawl_audio')]
+    #[Route('/api/crawl/audio', methods: ['POST'])]
     public function audio(SearchRepository $searchRepository): JsonResponse
     {
         $dat=[];
@@ -63,7 +63,7 @@ class CrawlController extends AbstractController
     }
 
 
-    #[Route('/api/crawl/images', methods: ['GET'])]
+    #[Route('/api/crawl/images', methods: ['POST'])]
     public function crawlImages(SearchRepository $searchRepository): JsonResponse
     {
         $dat=[];
@@ -91,7 +91,7 @@ class CrawlController extends AbstractController
         return $this->json($dat);
     }
 
-    #[Route('/api/crawl/video', methods: ['GET'])]
+    #[Route('/api/crawl/video', methods: ['POST'])]
     public function crawlVideo(LinkRepository $linkRepository, SearchRepository $searchRepository): JsonResponse
     {
         //crawl video links, excluding youtube
@@ -110,7 +110,7 @@ class CrawlController extends AbstractController
         return $this->json($dat);
     }
 
-    #[Route('/api/crawl/youtube', methods: ['GET'])]
+    #[Route('/api/crawl/youtube', methods: ['POST'])]
     public function crawlYoutube(LinkRepository $linkRepository, YoutubeService $youtubeService, SearchRepository $searchRepository): JsonResponse
     {
         //crawl youtube video, USING the youtube API
