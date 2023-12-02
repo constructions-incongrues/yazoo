@@ -80,5 +80,9 @@ jobs:
           username: ${{ secrets.PORTAINER_USERNAME }}
           password: ${{ secrets.PORTAINER_PASSWORD }}
           stack-name: yazoo
-          stack-definition: etc/compose.portainer.yaml
+          stack-definition: etc/stack.yaml
           image: ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+          template-variables:
+            DIRECTUS_EMAIL=${{ secrets.DIRECTUS_EMAIL }}
+            DIRECTUS_PASSWORD=${{ secrets.DIRECTUS_PASSWORD }}
+            YOUTUBE_API_KEY=${{ secrets.YOUTUBE_API_KEY }}
