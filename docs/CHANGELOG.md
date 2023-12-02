@@ -1,3 +1,10 @@
+# [0.4.0](https://github.com/constructions-incongrues/yazoo/compare/v0.3.2...v0.4.0) (2023-12-02)
+
+
+### Features
+
+* Multiple deployment stacks ([#39](https://github.com/constructions-incongrues/yazoo/issues/39)) ([5bbdba1](https://github.com/constructions-incongrues/yazoo/commit/5bbdba1447c7c40a83d13b06c9abf09cd01626ac))
+
 # [0.4.0-next.3](https://github.com/constructions-incongrues/yazoo/compare/v0.4.0-next.2...v0.4.0-next.3) (2023-12-02)
 
 
