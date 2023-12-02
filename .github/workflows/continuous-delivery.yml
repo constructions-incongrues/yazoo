@@ -1,6 +1,5 @@
 name: Continuous Delivery
 
-# Configures this workflow to run every time a change is pushed to the branch called `release`.
 on:
   push:
     branches:
@@ -11,6 +10,7 @@ on:
     branches:
       - main
       - next
+  workflow_dispatch: {}
 
 env:
   REGISTRY: ghcr.io
