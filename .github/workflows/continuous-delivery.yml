@@ -83,7 +83,7 @@ jobs:
           stack-name: yazoo-next
           stack-definition: etc/stack.yaml
           image: ghcr.io/${{ github.repository }}:${{ github.ref_name }}
-          template-variables: ${{ secrets.YAZOO_NEXT_VARS }}
+          template-variables: ${{ secrets.YAZOO_NEXT_VARS }}
 
       - name: Deploy (yazoo-main)
         uses: carlrygart/portainer-stack-deploy@v1.3.0
