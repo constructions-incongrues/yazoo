@@ -13,18 +13,15 @@ services:
     network_mode: service:adminer
     depends_on:
       - db
-    environment:
-      CADDY_GLOBAL_OPTIONS: auto_https off
-      SERVER_NAME: http://localhost
     env_file: ../.env
     restart: unless-stopped
 
   db:
-    image: mariadb:${MARIADB_VERSION:-10.3.38}
+    image: mariadb:10.3.38
     restart: unless-stopped
     volumes:
       - ../etc/yazoo.sql.gz:/docker-entrypoint-initdb.d/00_yazoo.sql.gz
-      - mariadb-data:/var/lib/mysql
+      - db_data:/var/lib/mysql
     env_file: ../.env
 
   adminer:
@@ -35,4 +32,4 @@ services:
     env_file: ../.env
 
 volumes:
-  mariadb-data: {}
+  db_data: {}

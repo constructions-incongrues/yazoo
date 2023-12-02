@@ -3,9 +3,11 @@ on:
   push:
     branches:
       - main
+      - next
+  workflow_dispatch: {}
 
 permissions:
-  contents: read # for checkout
+  contents: read
 
 jobs:
   release:
@@ -26,7 +28,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "lts/*"
-      - name: Release
+      - name: Install dependencies
+        run: npm ci
+      - name: Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
+          SEMANTIC_RELEASE_PACKAGE: ${{ github.event.repository.name }}
         run: npx semantic-release
