@@ -79,12 +79,7 @@ jobs:
           portainer-host: ${{ secrets.PORTAINER_HOST }}
           username: ${{ secrets.PORTAINER_USERNAME }}
           password: ${{ secrets.PORTAINER_PASSWORD }}
-          stack-name: yazoo
+          stack-name: yazoo-main
           stack-definition: etc/stack.yaml
           image: ghcr.io/${{ github.repository }}:${{ github.ref_name }}
-          template-variables: |
-            {
-              "DIRECTUS_EMAIL": "${{ secrets.DIRECTUS_EMAIL }}",
-              "DIRECTUS_PASSWORD": "${{ secrets.DIRECTUS_PASSWORD }}",
-              "YOUTUBE_API_KEY": "${{ secrets.YOUTUBE_API_KEY }}"
-            }
+          template-variables: ${{ secrets.YAZOO_PROD_VARS }}

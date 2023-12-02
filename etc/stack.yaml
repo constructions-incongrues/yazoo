@@ -15,30 +15,43 @@ services:
       - traefik.docker.network=net-pastis-hosting-docker_public
       - traefik.enable=true
       - traefik.http.routers.yazoo-php.entrypoints=http
-      - traefik.http.routers.yazoo-php.rule=Host(`yazoo.constructions-incongrues.net`)
+      - traefik.http.routers.yazoo-php.rule=Host(`{{ APP_HOSTNAME }}`)
       - traefik.http.services.yazoo-php.loadbalancer.server.port=80
     environment:
-      APP_ENV: prod
-      APP_HOSTNAME: yazoo.constructions-incongrues.net
-      CADDY_GLOBAL_OPTIONS: auto_https off
+      APP_ENV: {{ APP_ENV }}
+      APP_HOSTNAME: {{ APP_HOSTNAME }}
+      APP_SECRET: {{ APP_SECRET }}
+      CADDY_EMAIL: {{ CADDY_EMAIL }}
+      CADDY_EXTRA_CONFIG: {{ CADDY_EXTRA_CONFIG }}
+      CADDY_GLOBAL_OPTIONS: {{ CADDY_GLOBAL_OPTIONS }}
       DIRECTUS_EMAIL: {{ DIRECTUS_EMAIL }}
       DIRECTUS_PASSWORD: {{ DIRECTUS_PASSWORD }}
-      MARIADB_HOST: yazoo-db
-      SERVER_NAME: http://yazoo.constructions-incongrues.net
+      MARIADB_CHARSET: {{ MARIADB_CHARSET }}
+      MARIADB_DATABASE: {{ MARIADB_DATABASE }}
+      MARIADB_HOST: {{ MARIADB_HOST }}
+      MARIADB_PASSWORD: {{ MARIADB_PASSWORD }}
+      MARIADB_PORT: {{ MARIADB_PORT }}
+      MARIADB_RANDOM_ROOT_PASSWORD: true
+      MARIADB_USER: {{ MARIADB_USER }}
+      MARIADB_VERSION: {{ MARIADB_VERSION }}
+      SERVER_NAME: http://{{ APP_HOSTNAME }}
       YOUTUBE_API_KEY: {{ YOUTUBE_API_KEY }}
-    env_file:
-      - .env
-      - stack.env
     restart: unless-stopped
 
   db:
-    container_name: yazoo-db
-    image: mariadb:${MARIADB_VERSION:-10.8.38}
+    container_name: {{ MARIADB_HOST }}
+    image: mariadb:{{ MARIADB_VERSION }}
     volumes:
       - db_data:/var/lib/mysql
-    env_file:
-      - .env
-      - stack.env
+    environment:
+      MARIADB_CHARSET: {{ MARIADB_CHARSET }}
+      MARIADB_DATABASE: {{ MARIADB_DATABASE }}
+      MARIADB_HOST: {{ MARIADB_HOST }}
+      MARIADB_PASSWORD: {{ MARIADB_PASSWORD }}
+      MARIADB_PORT: {{ MARIADB_PORT }}
+      MARIADB_RANDOM_ROOT_PASSWORD: true
+      MARIADB_USER: {{ MARIADB_USER }}
+      MARIADB_VERSION: {{ MARIADB_VERSION }}
     restart: unless-stopped
 
 volumes:
