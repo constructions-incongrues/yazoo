@@ -10,7 +10,6 @@ on:
         required: true
         default: ghcr.io/constructions-incongrues/yazoo:latest
 
-# There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -30,5 +29,9 @@ jobs:
           username: ${{ secrets.PORTAINER_USERNAME }}
           password: ${{ secrets.PORTAINER_PASSWORD }}
           stack-name: yazoo
-          stack-definition: etc/compose.portainer.yaml
+          stack-definition: etc/stack.yaml
           image: ${{ github.event.inputs.image_name }}
+          template-variables:
+            DIRECTUS_EMAIL=${{ secrets.DIRECTUS_EMAIL }}
+            DIRECTUS_PASSWORD=${{ secrets.DIRECTUS_PASSWORD }}
+            YOUTUBE_API_KEY=${{ secrets.YOUTUBE_API_KEY }}
