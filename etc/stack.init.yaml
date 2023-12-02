@@ -1,0 +1,10 @@
+version: '3.8'
+
+networks:
+  public:
+    external: true
+    name: net-pastis-hosting-docker_public
+
+services:
+  php:
+    image: ghcr.io/constructions-incongrues/yazoo:latest

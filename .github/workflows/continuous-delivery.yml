@@ -10,6 +10,7 @@ on:
   pull_request:
     branches:
       - main
+      - next
 
 env:
   REGISTRY: ghcr.io
@@ -62,7 +63,7 @@ jobs:
 
       - name: Push
         uses: docker/build-push-action@v5.1.0
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref_name, 'next')
         with:
           context: .
           push: true
@@ -72,19 +73,26 @@ jobs:
           cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:${{ github.ref_name }}
           cache-to: type=inline
 
-      - name: Deploy
+      - name: Deploy (yazoo-next)
+        uses: carlrygart/portainer-stack-deploy@v1.3.0
+        if: github.ref == 'refs/heads/next'
+        with:
+          portainer-host: ${{ secrets.PORTAINER_HOST }}
+          username: ${{ secrets.PORTAINER_USERNAME }}
+          password: ${{ secrets.PORTAINER_PASSWORD }}
+          stack-name: yazoo-next
+          stack-definition: etc/stack.yaml
+          image: ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+          template-variables: ${{ secrets.YAZOO_NEXT_VARS }}
+
+      - name: Deploy (yazoo-main)
         uses: carlrygart/portainer-stack-deploy@v1.3.0
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           portainer-host: ${{ secrets.PORTAINER_HOST }}
           username: ${{ secrets.PORTAINER_USERNAME }}
           password: ${{ secrets.PORTAINER_PASSWORD }}
-          stack-name: yazoo
+          stack-name: yazoo-main
           stack-definition: etc/stack.yaml
           image: ghcr.io/${{ github.repository }}:${{ github.ref_name }}
-          template-variables: |
-            {
-              "DIRECTUS_EMAIL": "${{ secrets.DIRECTUS_EMAIL }}",
-              "DIRECTUS_PASSWORD": "${{ secrets.DIRECTUS_PASSWORD }}",
-              "YOUTUBE_API_KEY": "${{ secrets.YOUTUBE_API_KEY }}"
-            }
+          template-variables: ${{ secrets.YAZOO_PROD_VARS }}
