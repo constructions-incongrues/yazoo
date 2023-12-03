@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.2](https://github.com/constructions-incongrues/yazoo/compare/v0.5.1...v0.5.2) (2023-12-03)
+
+
+### Bug Fixes
+
+* deploy workflow permissions ([#53](https://github.com/constructions-incongrues/yazoo/issues/53)) ([4c03a9a](https://github.com/constructions-incongrues/yazoo/commit/4c03a9a545073459919060826d02e7026ac75292))
+
 ## [0.5.1](https://github.com/constructions-incongrues/yazoo/compare/v0.5.0...v0.5.1) (2023-12-03)
 
 
