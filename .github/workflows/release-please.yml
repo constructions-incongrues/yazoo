@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - main
+      - '*'
 
 permissions:
   contents: write
@@ -10,24 +11,24 @@ permissions:
 name: release-please
 
 jobs:
-  release-please:
+  release:
     runs-on: ubuntu-latest
     outputs:
-      release_created: ${{ steps.release.outputs.release_created }}
-      tag_name: ${{ steps.release.outputs.tag_name }}
+      releases_created: ${{ steps.please.outputs.releases_created }}
+      prs_created: ${{ steps.please.outputs.prs_created }}
+      tag_name: ${{ steps.please.outputs.tag_name }}
     steps:
       - uses: google-github-actions/release-please-action@v4
-        id: release
+        id: please
         with:
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           release-type: php
 
   build:
-    needs: release-please
+    needs: release
     runs-on: ubuntu-latest
     outputs:
       tags: ${{ steps.meta.outputs.tags }}
-      pushed: ${{ needs.release-please.outputs.tag_name }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4.1.1
@@ -52,22 +53,35 @@ jobs:
         uses: docker/setup-buildx-action@v3.0.0
 
       - name: Build and Push
-        id: build-push
         uses: docker/build-push-action@v5.1.0
         with:
           context: .
-          push: ${{ needs.release-please.outputs.release_created }}
+          push: ${{ needs.release.outputs.releases_created }}
           target: frankenphp_prod
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy:
-    needs: build
+    needs: [release, build]
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4.1.1
+    - name: yazoo-next
+      uses: carlrygart/portainer-stack-deploy@v1.3.0
+      if: ${{ needs.release.outputs.prs_created }}
+      with:
+        portainer-host: ${{ secrets.PORTAINER_HOST }}
+        username: ${{ secrets.PORTAINER_USERNAME }}
+        password: ${{ secrets.PORTAINER_PASSWORD }}
+        stack-name: yazoo-next
+        stack-definition: etc/stack.yaml
+        image: ghcr.io/${{ github.repository }}:latest
+        template-variables: ${{ secrets.YAZOO_NEXT_VARS }}
+
     - name: yazoo-main
       uses: carlrygart/portainer-stack-deploy@v1.3.0
-      if: ${{ needs.build.outputs.pushed }}
+      if: ${{ needs.release.outputs.releases_created }}
       with:
         portainer-host: ${{ secrets.PORTAINER_HOST }}
         username: ${{ secrets.PORTAINER_USERNAME }}
