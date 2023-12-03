@@ -61,18 +61,18 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      deploy:
-        needs: build
-        runs-on: ubuntu-latest
-        steps:
-        - name: yazoo-main
-          uses: carlrygart/portainer-stack-deploy@v1.3.0
-          if: ${{ needs.build.outputs.pushed }}
-          with:
-            portainer-host: ${{ secrets.PORTAINER_HOST }}
-            username: ${{ secrets.PORTAINER_USERNAME }}
-            password: ${{ secrets.PORTAINER_PASSWORD }}
-            stack-name: yazoo-main
-            stack-definition: etc/stack.yaml
-            image: ghcr.io/${{ github.repository }}:
-            template-variables: ${{ secrets.YAZOO_PROD_VARS }}
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: yazoo-main
+      uses: carlrygart/portainer-stack-deploy@v1.3.0
+      if: ${{ needs.build.outputs.pushed }}
+      with:
+        portainer-host: ${{ secrets.PORTAINER_HOST }}
+        username: ${{ secrets.PORTAINER_USERNAME }}
+        password: ${{ secrets.PORTAINER_PASSWORD }}
+        stack-name: yazoo-main
+        stack-definition: etc/stack.yaml
+        image: ghcr.io/${{ github.repository }}:latest
+        template-variables: ${{ secrets.YAZOO_PROD_VARS }}
