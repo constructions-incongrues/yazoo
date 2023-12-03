@@ -53,7 +53,6 @@ jobs:
         uses: docker/setup-buildx-action@v3.0.0
 
       - name: Build and Push
-        id: build-push
         uses: docker/build-push-action@v5.1.0
         with:
           context: .
