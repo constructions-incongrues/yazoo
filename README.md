@@ -28,18 +28,9 @@ composer install
 ./bin/console doctrine:migrations:migrate
 ```
 
-## API endpoints
-| endpoint | description |
-| -------- | -------- |
-| GET /api/sync | Syncronize Forum Links. Call this one regularly |
-| GET /api/status | Get Yazoo status |
-| GET /api/search/{query} | Search links |
-| GET /api/link/{id} | Get link data |
-| GET /api/crawl/youtube | Crawl Youtube using API |
-| GET /api/crawl/images | Crawl images |
-| GET /api/crawl/audio | guess what |
+## API documentation
 
-
+https://yazoo.constructions-incongrues.net/api/doc
 
 ## n8n
 

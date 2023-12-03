@@ -1,0 +1,66 @@
+{
+  "createdAt": "2023-12-03T09:12:50.227Z",
+  "updatedAt": "2023-12-03T09:54:08.000Z",
+  "id": "elZjJF8LJpv1FWwk",
+  "name": "/api/sync",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "bfdc85f0-c2db-4afb-b40c-799a006dbc89",
+      "name": "When clicking \"Execute Workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        620,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost/api/sync",
+        "options": {}
+      },
+      "id": "7fd10860-5212-406e-ba36-5077a1e9006f",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        840,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking \"Execute Workflow\"": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "40d91ab3-4806-4928-aa92-dc3d58516817",
+  "triggerCount": 0,
+  "tags": [
+    {
+      "createdAt": "2023-12-03T09:53:14.785Z",
+      "updatedAt": "2023-12-03T09:53:14.785Z",
+      "id": "eFqrrbh1nWJvXwqp",
+      "name": "yazoo"
+    }
+  ]
+}

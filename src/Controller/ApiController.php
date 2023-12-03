@@ -69,7 +69,7 @@ class ApiController extends AbstractController
     }
 
 
-    #[Route('/api/search/{q}', name: 'app_api_search')]
+    #[Route('/api/search/{q}', name: 'app_api_search', methods: ['GET'])]
     public function search(string $q, SearchRepository $searchRepository): JsonResponse
     {
         $searchRepository->search($q);
@@ -123,7 +123,7 @@ class ApiController extends AbstractController
         return new JsonResponse($json, 200);
     }
 
-    // Random Link    
+    // Random Link
     #[Route('/api/random/image', methods: ['GET'])]
     public function randomImage(LinkRepository $linkRepository): JsonResponse
     {
@@ -184,7 +184,7 @@ class ApiController extends AbstractController
         return new JsonResponse('{}', 404, [], true);
     }
 
-    
+
 
 
     #[Route('/api/urlinfo/{url}', methods: ['POST'])]

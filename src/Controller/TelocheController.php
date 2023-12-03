@@ -37,7 +37,7 @@ class TelocheController extends AbstractController
 
 
 
-    #[Route('/api/teloche/authenticate', name: 'api_teloche_auth')]
+    #[Route('/api/teloche/authenticate', name: 'api_teloche_auth', methods: ['POST'])]
     public function getToken(TelocheService $telocheService): Response
     {
         $dat=$telocheService->authenticate();

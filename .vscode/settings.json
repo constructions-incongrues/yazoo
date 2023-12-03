@@ -4,6 +4,8 @@
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
     "github-actions.workflows.pinned.workflows": [
-        ".github/workflows/continuous-delivery.yml"
+        ".github/workflows/deploy.yml",
+        ".github/workflows/release.yml",
+        ".github/workflows/test.yml"
     ]
 }

@@ -65,3 +65,5 @@ tmp/
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+
+/node_modules
