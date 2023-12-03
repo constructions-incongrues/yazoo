@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.5](https://github.com/constructions-incongrues/yazoo/compare/v0.5.4...v0.5.5) (2023-12-03)
+
+
+### Bug Fixes
+
+* add deployment environment ([#58](https://github.com/constructions-incongrues/yazoo/issues/58)) ([b2585ef](https://github.com/constructions-incongrues/yazoo/commit/b2585efd4ce20e260901c47005f323d15df502cb))
+
 ## [0.5.4](https://github.com/constructions-incongrues/yazoo/compare/v0.5.3...v0.5.4) (2023-12-03)
 
 
