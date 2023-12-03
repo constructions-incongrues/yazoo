@@ -1,0 +1,16 @@
+on:
+  push:
+    branches:
+      - '*'
+
+name: Test
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: docker/build-push-action@v5.1.0
+      with:
+        context: .
+        push: false
+        target: frankenphp_prod
