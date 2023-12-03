@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.4](https://github.com/constructions-incongrues/yazoo/compare/v0.6.3...v0.6.4) (2023-12-03)
+
+
+### Bug Fixes
+
+* preview vars ! ([#69](https://github.com/constructions-incongrues/yazoo/issues/69)) ([2dfa968](https://github.com/constructions-incongrues/yazoo/commit/2dfa968348644f50638539a3c35c3ad2713278a5))
+
 ## [0.6.3](https://github.com/constructions-incongrues/yazoo/compare/v0.6.2...v0.6.3) (2023-12-03)
 
 
