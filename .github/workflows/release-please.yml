@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       releases_created: ${{ steps.please.outputs.releases_created }}
+      prs_created: ${{ steps.please.outputs.prs_created }}
       tag_name: ${{ steps.please.outputs.tag_name }}
     steps:
       - uses: google-github-actions/release-please-action@v4
@@ -28,7 +29,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       tags: ${{ steps.meta.outputs.tags }}
-      pushed: ${{ needs.release.outputs.tag_name }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4.1.1
@@ -63,12 +63,24 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy:
-    needs: build
+    needs: [release, build]
     runs-on: ubuntu-latest
     steps:
+    - name: yazoo-next
+      uses: carlrygart/portainer-stack-deploy@v1.3.0
+      if: ${{ needs.release.outputs.prs_created }}
+      with:
+        portainer-host: ${{ secrets.PORTAINER_HOST }}
+        username: ${{ secrets.PORTAINER_USERNAME }}
+        password: ${{ secrets.PORTAINER_PASSWORD }}
+        stack-name: yazoo-next
+        stack-definition: etc/stack.yaml
+        image: ghcr.io/${{ github.repository }}:latest
+        template-variables: ${{ secrets.YAZOO_NEXT_VARS }}
+
     - name: yazoo-main
       uses: carlrygart/portainer-stack-deploy@v1.3.0
-      if: ${{ needs.build.outputs.pushed }}
+      if: ${{ needs.release.outputs.releases_created }}
       with:
         portainer-host: ${{ secrets.PORTAINER_HOST }}
         username: ${{ secrets.PORTAINER_USERNAME }}
