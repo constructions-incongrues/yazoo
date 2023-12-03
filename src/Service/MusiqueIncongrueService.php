@@ -5,6 +5,8 @@ namespace App\Service;
 use App\Repository\DiscussionRepository;
 use App\Repository\LinkRepository;
 use Exception;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class MusiqueIncongrueService
 {
@@ -21,10 +23,13 @@ class MusiqueIncongrueService
     private $linkRepository;
     private $discussionRepository;
 
-    public function __construct(LinkRepository $linkRepository, DiscussionRepository $discussionRepository)
+    public function __construct(LinkRepository $linkRepository, DiscussionRepository $discussionRepository, private HttpClientInterface $httpClient)
     {
         $this->linkRepository=$linkRepository;
         $this->discussionRepository=$discussionRepository;
+        $this->httpClient = $httpClient->withOptions([
+            "verify_peer" => false
+        ]);
 
         if (isset($_ENV['DIRECTUS_EMAIL'])) {
             $this->directus_email=$_ENV['DIRECTUS_EMAIL'];
@@ -52,30 +57,22 @@ class MusiqueIncongrueService
             throw new Exception("no directus_password. check env", 1);
         }
 
-        // Data to be sent in the POST request
-        $data = array(
-            'email' => $this->directus_email,
-            'password' => $this->directus_password
+        $response = $this->httpClient->request(
+            'POST',
+            $endpoint,
+            [
+                'json' => [
+                    'email'    => $this->directus_email,
+                    'password' => $this->directus_password
+            ]]
         );
 
-        $ch = curl_init($endpoint);
-        // Set cURL options for authentication and request
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        //TODO add a max exec time here
-
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        $data=json_decode($response, true);
-        
-        if (isset($data['data']['token'])) {
-            $this->token=$data['data']['token'];
-        }else{
-            throw new Exception("Error Retrieving token", 1);
+        if (isset($response->toArray()['data']['token'])) {
+            $this->token = $response->toArray()['data']['token'];
+        } else {
+            throw new HttpException($response->getStatusCode(), $response->getContent());
         }
+
         return $this->token;
     }
 
@@ -89,21 +86,17 @@ class MusiqueIncongrueService
             $this->authenticate();
         }
 
-        $ch = curl_init($endpoint);
-        // Set cURL options for GET request with Authorization header
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Authorization: Bearer ' . $this->token
-        ));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = $this->httpClient->request('GET', $endpoint, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => sprintf("Bearer %s", $this->token)
+            ]
+        ]);
 
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        return json_decode($response, true);
+        return $response->toArray();
     }
 
-    
+
     /**
      * Return new MI comments since Yazoo last inserted link.
      * note: As a consequence, if new comments do not contain links, the lastCommentId wont be updated.
@@ -145,7 +138,7 @@ class MusiqueIncongrueService
         $lastDiscussion=$this->discussionRepository->findByHighestId();
         $lastDiscussionID=0;
         if ($lastDiscussion) {
-            $lastDiscussionID=$lastDiscussion->getDiscussionId();            
+            $lastDiscussionID=$lastDiscussion->getDiscussionId();
         }
 
         $endpoint ="https://data.constructions-incongrues.net/musiques-incongrues/items/LUM_Discussion?";
