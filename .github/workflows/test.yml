@@ -16,5 +16,5 @@ jobs:
         context: .
         push: false
         target: frankenphp_prod
-        cache-from: type=registry,ref=${{ github.repository }}:${{ github.ref_name }}
-        cache-to: type=inline
+        cache-from: type=registry,ref=${{ github.repository }}:buildcache
+        cache-to: type=registry,ref=${{ github.repository }}:buildcache,mode=max
