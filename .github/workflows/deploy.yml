@@ -43,7 +43,6 @@ jobs:
   preview:
     needs: [image]
     runs-on: ubuntu-latest
-    if: ${{ github.event.release.prerelease }}
     environment:
       name: yazoo-preview
       url: https://yazoo-preview.constructions-incongrues.net
@@ -64,7 +63,6 @@ jobs:
   main:
     needs: [image]
     runs-on: ubuntu-latest
-    if: ${{ ! github.event.release.prerelease }}
     environment:
       name: yazoo-main
       url: https://yazoo.constructions-incongrues.net
