@@ -58,7 +58,7 @@ jobs:
         stack-name: yazoo-preview
         stack-definition: etc/stack.yaml
         image: ghcr.io/${{ github.repository }}:${{ github.event.release.tag_name }}
-        template-variables: ${{ secrets.YAZOO_NEXT_VARS }}
+        template-variables: ${{ secrets.YAZOO_PREVIEW_VARS }}
 
   main:
     needs: [image]
