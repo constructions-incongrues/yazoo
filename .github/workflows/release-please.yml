@@ -66,6 +66,8 @@ jobs:
     needs: [release, build]
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4.1.1
     - name: yazoo-next
       uses: carlrygart/portainer-stack-deploy@v1.3.0
       if: ${{ needs.release.outputs.prs_created }}
