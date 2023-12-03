@@ -5,6 +5,10 @@ on:
 
 name: deploy
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   image:
     runs-on: ubuntu-latest
