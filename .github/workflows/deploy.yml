@@ -39,6 +39,8 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository }}:${{ github.event.release.tag_name }}
             ghcr.io/${{ github.repository }}:latest
+          cache-from: type=registry,ref=${{ github.repository }}:${{ github.event.release.tag_name }}
+          cache-to: type=inline
 
   preview:
     needs: [image]
