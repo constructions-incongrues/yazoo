@@ -21,4 +21,4 @@ jobs:
         id: please
         with:
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
-          release-type: php
+          release-type: simple
