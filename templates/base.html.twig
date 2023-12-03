@@ -5,6 +5,10 @@
         <title>{% block title %}Yazoo!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>💻</text></svg>">
         <link rel="manifest" href="/manifest.json">
+
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="theme-color" value="#ffffff">
 
         {% block opengraph %}
@@ -23,10 +27,10 @@
         {% block javascripts %}{% endblock %}
     </head>
 
-    
 
 
-    <body>        
+
+    <body>
         {% block body %}{% endblock %}
     </body>
 </html>
