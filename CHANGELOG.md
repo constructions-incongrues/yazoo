@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.4](https://github.com/constructions-incongrues/yazoo/compare/v0.5.3...v0.5.4) (2023-12-03)
+
+
+### Bug Fixes
+
+* traefik configuration ([#56](https://github.com/constructions-incongrues/yazoo/issues/56)) ([111028d](https://github.com/constructions-incongrues/yazoo/commit/111028ded66f3d99d6a349ccc51d7bd4971826ea))
+
 ## [0.5.2](https://github.com/constructions-incongrues/yazoo/compare/v0.5.1...v0.5.2) (2023-12-03)
 
 
