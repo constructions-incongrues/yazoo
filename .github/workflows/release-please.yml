@@ -57,7 +57,7 @@ jobs:
         uses: docker/build-push-action@v5.1.0
         with:
           context: .
-          push: $s{{ needs.release.outputs.release_created }}
+          push: ${{ needs.release.outputs.releases_created }}
           target: frankenphp_prod
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
