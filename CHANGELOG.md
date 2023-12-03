@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/constructions-incongrues/yazoo/compare/v0.5.0...v0.5.1) (2023-12-03)
+
+
+### Bug Fixes
+
+* use simple release-type ([#51](https://github.com/constructions-incongrues/yazoo/issues/51)) ([aa6d01e](https://github.com/constructions-incongrues/yazoo/commit/aa6d01ef33db36fd42b4a82208cae05d1a65d6cd))
+
 ## [0.5.0](https://github.com/constructions-incongrues/yazoo/compare/v0.4.0...v0.5.0) (2023-12-03)
 
 
