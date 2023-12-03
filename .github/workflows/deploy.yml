@@ -2,6 +2,7 @@ on:
   release:
     types:
       - released
+      - prereleased
 
 name: deploy
 
@@ -39,9 +40,31 @@ jobs:
             ghcr.io/${{ github.repository }}:${{ github.event.release.tag_name }}
             ghcr.io/${{ github.repository }}:latest
 
-  deploy:
+  preview:
     needs: [image]
     runs-on: ubuntu-latest
+    if: ${{ github.event.release.prerelease }}
+    environment:
+      name: yazoo-preview
+      url: https://yazoo-preview.constructions-incongrues.net
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4.1.1
+    - name: yazoo-preview
+      uses: carlrygart/portainer-stack-deploy@v1.3.0
+      with:
+        portainer-host: ${{ secrets.PORTAINER_HOST }}
+        username: ${{ secrets.PORTAINER_USERNAME }}
+        password: ${{ secrets.PORTAINER_PASSWORD }}
+        stack-name: yazoo-preview
+        stack-definition: etc/stack.yaml
+        image: ghcr.io/${{ github.repository }}:${{ github.event.release.tag_name }}
+        template-variables: ${{ secrets.YAZOO_PROD_VARS }}
+
+  main:
+    needs: [image]
+    runs-on: ubuntu-latest
+    if: ${{ ! github.event.release.prerelease }}
     environment:
       name: yazoo-main
       url: https://yazoo.constructions-incongrues.net
