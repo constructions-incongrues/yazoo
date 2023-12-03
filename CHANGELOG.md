@@ -1,0 +1,20 @@
+# Changelog
+
+## [0.5.0](https://github.com/constructions-incongrues/yazoo/compare/v0.4.0...v0.5.0) (2023-12-03)
+
+
+### Features
+
+* better workflow ([#50](https://github.com/constructions-incongrues/yazoo/issues/50)) ([9a2ec5e](https://github.com/constructions-incongrues/yazoo/commit/9a2ec5e66682168c0e7fe1278eaae367b73cffd5))
+* Release Please init ([4027a9f](https://github.com/constructions-incongrues/yazoo/commit/4027a9ff8a0cc7ccdd8aa8545ca0c5cdef865deb))
+
+
+### Bug Fixes
+
+* update release please token ([#46](https://github.com/constructions-incongrues/yazoo/issues/46)) ([cb3885e](https://github.com/constructions-incongrues/yazoo/commit/cb3885e52dbbd14fc58776f91a9e9020f5c6937e))
+
+
+### Miscellaneous Chores
+
+* bootstrap releases for path: . ([#44](https://github.com/constructions-incongrues/yazoo/issues/44)) ([2fb4497](https://github.com/constructions-incongrues/yazoo/commit/2fb449760914622a3f1673afc4d3e0dd94b85594))
+* fix syntax ([ad92253](https://github.com/constructions-incongrues/yazoo/commit/ad9225377da5fbedb1cef0b268354c435b03bf9e))
