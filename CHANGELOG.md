@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.0](https://github.com/constructions-incongrues/yazoo/compare/v0.6.4...v0.7.0) (2023-12-03)
+
+
+### Features
+
+* Expose API documentation in OpenAPI format ([#78](https://github.com/constructions-incongrues/yazoo/issues/78)) ([34de862](https://github.com/constructions-incongrues/yazoo/commit/34de862920e4e3087d9249903f82ddcb84e49f07)), closes [#74](https://github.com/constructions-incongrues/yazoo/issues/74)
+
+
+### Bug Fixes
+
+* POST /api/sync 404 ([#76](https://github.com/constructions-incongrues/yazoo/issues/76)) ([0c52f8f](https://github.com/constructions-incongrues/yazoo/commit/0c52f8f89a5c173dd991896fe0d09e511e1b7cc8)), closes [#75](https://github.com/constructions-incongrues/yazoo/issues/75)
+
 ## [0.6.4](https://github.com/constructions-incongrues/yazoo/compare/v0.6.3...v0.6.4) (2023-12-03)
 
 
