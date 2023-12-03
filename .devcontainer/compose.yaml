@@ -10,7 +10,6 @@ services:
       - ../frankenphp/Caddyfile:/etc/caddy/Caddyfile:ro
       - ../frankenphp/conf.d/app.dev.ini:/usr/local/etc/php/conf.d/app.dev.ini:ro
       - ../:/workspaces
-    network_mode: service:adminer
     depends_on:
       - db
     env_file: ../.env
@@ -30,6 +29,43 @@ services:
     depends_on:
       - db
     env_file: ../.env
+    network_mode: service:php
+
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:1.17.1
+    restart: always
+    depends_on:
+      - n8n-import
+    environment:
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - NODE_ENV=dev
+      - WEBHOOK_URL=https://localhost/
+      - GENERIC_TIMEZONE=Europe/Paris
+    volumes:
+      - ../etc/n8n:/tmp/workflows
+      - n8n_data:/home/node/.n8n
+    network_mode: service:php
+
+  n8n-import:
+    image: docker.n8n.io/n8nio/n8n:1.17.1
+    restart: on-failure
+    environment:
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - NODE_ENV=dev
+      - WEBHOOK_URL=https://localhost/
+      - GENERIC_TIMEZONE=Europe/Paris
+    volumes:
+      - ../etc/n8n:/tmp/workflows
+      - n8n_data:/home/node/.n8n
+    command:
+      - import:workflow
+      - --separate
+      - --input=/tmp/workflows/
 
 volumes:
   db_data: {}
+  n8n_data: {}
