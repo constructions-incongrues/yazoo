@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/constructions-incongrues/yazoo/compare/v0.5.5...v0.6.0) (2023-12-03)
+
+
+### Features
+
+* preview deploy environment ([#60](https://github.com/constructions-incongrues/yazoo/issues/60)) ([919f612](https://github.com/constructions-incongrues/yazoo/commit/919f612433b91a15132f3818fc26485328332546))
+
 ## [0.5.5](https://github.com/constructions-incongrues/yazoo/compare/v0.5.4...v0.5.5) (2023-12-03)
 
 
