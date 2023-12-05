@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.0](https://github.com/constructions-incongrues/yazoo/compare/v0.7.0...v0.8.0) (2023-12-05)
+
+
+### Features
+
+* add n8n service to devcontainer ([#81](https://github.com/constructions-incongrues/yazoo/issues/81)) ([8772f82](https://github.com/constructions-incongrues/yazoo/commit/8772f827fff132d40889ab167f0f7a7efe78af3f)), closes [#71](https://github.com/constructions-incongrues/yazoo/issues/71)
+* create error500.html.twig ([#88](https://github.com/constructions-incongrues/yazoo/issues/88)) ([955de59](https://github.com/constructions-incongrues/yazoo/commit/955de592cf429096208a26c27aeb4541c40c61e3))
+
 ## [0.7.0](https://github.com/constructions-incongrues/yazoo/compare/v0.6.4...v0.7.0) (2023-12-03)
 
 
