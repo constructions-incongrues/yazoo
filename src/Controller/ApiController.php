@@ -5,17 +5,12 @@ namespace App\Controller;
 use App\Repository\DiscussionRepository;
 use App\Repository\LinkRepository;
 use App\Repository\SearchRepository;
-use App\Repository\StatRepository;
-use App\Service\CommentService;
 use App\Service\ExtractService;
-use App\Service\LinkPreviewService;
 use App\Service\MusiqueIncongrueService;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 use Embed\Embed;
@@ -23,14 +18,6 @@ use Exception;
 
 class ApiController extends AbstractController
 {
-    #[Route('/api', name: 'app_job')]
-    public function index(RouterInterface $routerInterface): Response
-    {
-        return $this->render('api/index.html.twig', [
-            'controller_name' => 'JobController',
-        ]);
-    }
-
     #[Route('/api/sync', methods: ['POST'])]
     public function sync(LinkRepository $linkRepository, DiscussionRepository $discussionRepository, MusiqueIncongrueService $MI, ExtractService $extractService): JsonResponse
     {
