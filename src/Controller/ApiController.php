@@ -93,23 +93,6 @@ class ApiController extends AbstractController
         return new JsonResponse($json, 200, [], true);
     }
 
-    #[Route('/api/link/{id}', methods: ['DELETE'])]
-    public function linkDelete(int $id, LinkRepository $linkRepository): JsonResponse
-    {
-        //TODO
-        $link=$linkRepository->find($id);
-        if (!$link) {
-            return new JsonResponse('{}', 404, [], true);
-        }else{
-            $linkRepository->delete($link);
-            //$linkRepository->
-        }
-
-        $json=[];
-
-        return new JsonResponse($json, 200);
-    }
-
     // Random Link
     #[Route('/api/random/image', methods: ['GET'])]
     public function randomImage(LinkRepository $linkRepository): JsonResponse
