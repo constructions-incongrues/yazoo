@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.2](https://github.com/constructions-incongrues/yazoo/compare/v0.8.1...v0.8.2) (2023-12-11)
+
+
+### Bug Fixes
+
+* enpoint removed ([#97](https://github.com/constructions-incongrues/yazoo/issues/97)) ([cb335ae](https://github.com/constructions-incongrues/yazoo/commit/cb335ae8db1e0495dad9a79e2757344896f29a3d))
+
 ## [0.8.1](https://github.com/constructions-incongrues/yazoo/compare/v0.8.0...v0.8.1) (2023-12-08)
 
 
