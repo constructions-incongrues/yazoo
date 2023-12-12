@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.3](https://github.com/constructions-incongrues/yazoo/compare/v0.8.2...v0.8.3) (2023-12-12)
+
+
+### Bug Fixes
+
+* main and preview deployment envs are 404 ([#104](https://github.com/constructions-incongrues/yazoo/issues/104)) ([479fc22](https://github.com/constructions-incongrues/yazoo/commit/479fc22c33313de3b18a324c5e3e013bb654c5e0))
+
 ## [0.8.2](https://github.com/constructions-incongrues/yazoo/compare/v0.8.1...v0.8.2) (2023-12-11)
 
 
