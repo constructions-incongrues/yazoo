@@ -60,15 +60,15 @@ jobs:
         image: ghcr.io/${{ github.repository }}:${{ github.event.release.tag_name }}
         template-variables: |
           {
-            "APP_ENV": "${{ env.APP_ENV }}",
-            "APP_HOSTNAME": "${{ env.APP_HOSTNAME }}",
+            "APP_ENV": "${{ vars.APP_ENV }}",
+            "APP_HOSTNAME": "${{ vars.APP_HOSTNAME }}",
             "APP_SECRET": "${{ secrets.APP_SECRET }}",
             "CADDY_EMAIL": "${{ secrets.CADDY_EMAIL }}",
-            "CADDY_EXTRA_CONFIG": "${{ env.CADDY_EXTRA_CONFIG }}",
-            "CADDY_GLOBAL_OPTIONS": "${{ env.CADDY_GLOBAL_OPTIONS }}",
+            "CADDY_EXTRA_CONFIG": "${{ vars.CADDY_EXTRA_CONFIG }}",
+            "CADDY_GLOBAL_OPTIONS": "${{ vars.CADDY_GLOBAL_OPTIONS }}",
             "DIRECTUS_EMAIL": "${{ secrets.DIRECTUS_EMAIL }}",
             "DIRECTUS_PASSWORD": "${{ secrets.DIRECTUS_PASSWORD }}",
-            "MARIADB_CHARSET": "${{ env.MARIADB_CHARSET }}",
+            "MARIADB_CHARSET": "${{ vars.MARIADB_CHARSET }}",
             "MARIADB_DATABASE": "${{ secrets.MARIADB_DATABASE }}",
             "MARIADB_HOST": "${{ secrets.MARIADB_HOST }}",
             "MARIADB_PASSWORD": "${{ secrets.MARIADB_PASSWORD }}",
@@ -76,7 +76,7 @@ jobs:
             "MARIADB_RANDOM_ROOT_PASSWORD": "true",
             "MARIADB_USER": "${{ secrets.MARIADB_USER }}",
             "MARIADB_VERSION": "${{ secrets.MARIADB_VERSION }}",
-            "SERVER_NAME": "http://${{ env.APP_HOSTNAME }}",
+            "SERVER_NAME": "http://${{ vars.APP_HOSTNAME }}",
             "STACK_NAME": "yazoo-preview",
             "YOUTUBE_API_KEY": "${{ secrets.YOUTUBE_API_KEY }}"
           }
@@ -101,15 +101,15 @@ jobs:
         image: ghcr.io/${{ github.repository }}:${{ github.event.release.tag_name }}
         template-variables: |
           {
-            "APP_ENV": "${{ env.APP_ENV }}",
-            "APP_HOSTNAME": "${{ env.APP_HOSTNAME }}",
+            "APP_ENV": "${{ vars.APP_ENV }}",
+            "APP_HOSTNAME": "${{ vars.APP_HOSTNAME }}",
             "APP_SECRET": "${{ secrets.APP_SECRET }}",
             "CADDY_EMAIL": "${{ secrets.CADDY_EMAIL }}",
-            "CADDY_EXTRA_CONFIG": "${{ env.CADDY_EXTRA_CONFIG }}",
-            "CADDY_GLOBAL_OPTIONS": "${{ env.CADDY_GLOBAL_OPTIONS }}",
+            "CADDY_EXTRA_CONFIG": "${{ vars.CADDY_EXTRA_CONFIG }}",
+            "CADDY_GLOBAL_OPTIONS": "${{ vars.CADDY_GLOBAL_OPTIONS }}",
             "DIRECTUS_EMAIL": "${{ secrets.DIRECTUS_EMAIL }}",
             "DIRECTUS_PASSWORD": "${{ secrets.DIRECTUS_PASSWORD }}",
-            "MARIADB_CHARSET": "${{ env.MARIADB_CHARSET }}",
+            "MARIADB_CHARSET": "${{ vars.MARIADB_CHARSET }}",
             "MARIADB_DATABASE": "${{ secrets.MARIADB_DATABASE }}",
             "MARIADB_HOST": "${{ secrets.MARIADB_HOST }}",
             "MARIADB_PASSWORD": "${{ secrets.MARIADB_PASSWORD }}",
@@ -117,7 +117,7 @@ jobs:
             "MARIADB_RANDOM_ROOT_PASSWORD": "true",
             "MARIADB_USER": "${{ secrets.MARIADB_USER }}",
             "MARIADB_VERSION": "${{ secrets.MARIADB_VERSION }}",
-            "SERVER_NAME": "http://${{ env.APP_HOSTNAME }}",
+            "SERVER_NAME": "http://${{ vars.APP_HOSTNAME }}",
             "STACK_NAME": "yazoo-main",
             "YOUTUBE_API_KEY": "${{ secrets.YOUTUBE_API_KEY }}"
           }
