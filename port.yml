@@ -1,0 +1,7 @@
+- identifier: yazoo
+  title: Yazoo!
+  team: []
+  icon: DefaultBlueprint
+  blueprint: webapp
+  properties: {}
+  relations: {}
