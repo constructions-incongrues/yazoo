@@ -1,0 +1,18 @@
+app: yazoo
+env: darling-pond
+namespace: default
+chart:
+  repository: https://chart.onechart.dev
+  name: static-site
+  version: 0.64.0
+values:
+  buildImage: node:latest
+  buildScript: |-
+    # !/usr/bin/env bash
+
+    npm install
+    npm run build
+  builtAssets: build/
+  gitCloneUrl: https://github.com/gimlet-io/reactjs-test-app.git
+  gitRepository: constructions-incongrues/yazoo
+  gitSha: '{{ .SHA }}'
